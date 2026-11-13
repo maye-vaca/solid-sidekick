@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "revision": {
+    "schema_version": 1,
+    "id": "gap-03",
+    "parent_id": "layout-02",
+    "brief_sha256": "91a4e33436b2c4297eedae96351331d2722d0656f5d0fe3718f47838dca4d754"
+  },
+  "source_binding": {
+    "files": {
+      "cadkit/__init__.py": "9353e176343f7ff4ec18cd543d32d2e391a64242cb66e450bdd2ea91f274031d",
+      "cadkit/assembly.py": "9c9107a9587b32ed5a802fb438ce877dd4022da83d0a25a11fb073956946e225",
+      "cadkit/embedded.py": "34ad776fb49b86c269ba451a85586711f3eea3ea7545850eec8e7ee4a1954ac4",
+      "cadkit/geometry.py": "55a65088cbf7bf9f6200fb26b8a2737b44c83b948e575a300c82c43b001397ea",
+      "cadkit/incremental.py": "c8a3292314a6e5cae4620f769783d704c2df3766aeb0231ab477d36dd1b42ca7",
+      "cadkit/preview.py": "34a016ad6f79e45e8b1dbacd44ac630d9b0f241f8e481e0790e391a80c5ffbd5",
+      "cadkit/regions.py": "efd030872a1107865877c419684f4df4ba1a8c560c8f5dc98aa002a4d85cc3aa",
+      "cadkit/review.py": "87b86ac3ca447a0fc469b2c7823ac6c01c2b77582bdf15cf3227a0efce8629da",
+      "cadkit/revision.py": "3d66d937d0a6089e2bae28a2d258e221f2399518c742ad0f96803ae554a164b9",
+      "cadkit/scene.py": "fb111e9e3d9d2416d5bde0db97dfe366c005cda4f033979dda8bbdf404b2cf32",
+      "cadkit/timing.py": "64488858ad49b58b0d5d2219ede27a7c24a43057985588525897a4369285abad",
+      "cadkit/validation.py": "f850415439b2f90a7707fd0897d4b91ff8aa3817d4aa5f04877a6c62cb1b2b6e",
+      "cadkit/viewer.py": "b93c6e7c3c55df22542df5a36eb06ae3efd530e9ec453730bb0b681c94f34b86",
+      "checks.py": "c26fe553b8cc5fcdccd52e34414908027bd7f9a68daf03b6224797eba05a0d9a",
+      "model.py": "01a196211d3df0214ceb698333d080a13c8b153755c711a7528e6c0e4cdd4f76",
+      "requirements.txt": "5247de8eb6a96e452e353b90783dda53f72a9629442ab0344f0c505c0d1ff682",
+      "test_model.py": "5640f8d9551b5ee281fbe924ddc4906fa4f4e79559d7fe31fc5c0e27deea4929",
+      "validate.py": "baba0566035872f70f056e4b5981af74d5ad2c2e5d008e2d82e0ac93c1cb17d2"
+    },
+    "python": "C:\\Users\\mavaca\\.copilot\\chats\\2026-10-15\\super-waffle-d5c593f6\\.venv\\Scripts\\python.exe",
+    "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:31:18) [MSC v.1943 64 bit (ARM64)]",
+    "packages": {
+      "manifold3d": "3.5.4",
+      "numpy": "2.5.3",
+      "trimesh": "5.1.1"
+    }
+  },
+  "manifest_sha256": "5c79c4c517e41d4e459f6593edcecfcd0dd6b2c295633dabd89b2116084a09fc",
+  "validation_sha256": "07af0e35f7b50083bd7abee726af90d59f02f1e30ba115635d8fa60cddd33180"
+}

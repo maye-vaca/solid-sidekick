@@ -1,0 +1,144 @@
+{
+  "brief": {
+    "assumptions": [
+      "Demonstration geometry only; no load rating or fabrication approval.",
+      "Hole dimensions are illustrative, not verified fits; fasteners and threads are omitted.",
+      "Materials are display labels, not material specifications."
+    ],
+    "coordinate_system": "Millimetres; origin at base lower-front-left corner as viewed from the front. +X right, +Y back, +Z up.",
+    "decisions": {
+      "layout": {
+        "blocks_modeling": true,
+        "selected_option": "standard",
+        "source": "Fictional example explicitly selects standard riser layout",
+        "status": "selected"
+      }
+    },
+    "dimensions": {
+      "depth": {
+        "source": "Illustrative starter default, not a user measurement",
+        "status": "assumed",
+        "unit": "mm",
+        "value": 80
+      },
+      "gap": {
+        "source": "Fictional supported-command demonstration",
+        "status": "confirmed",
+        "unit": "mm",
+        "value": 40
+      },
+      "hole_diameter": {
+        "source": "Illustrative starter default; no verified mating fastener or fit",
+        "status": "assumed",
+        "unit": "mm",
+        "value": 3.4
+      },
+      "inset": {
+        "source": "Illustrative starter default; hole centers from each adjacent edge",
+        "status": "assumed",
+        "unit": "mm",
+        "value": 12
+      },
+      "plate_thickness": {
+        "source": "Illustrative starter default, not verified stock",
+        "status": "assumed",
+        "unit": "mm",
+        "value": 4
+      },
+      "standoff_radius": {
+        "source": "Illustrative starter default, not verified hardware",
+        "status": "assumed",
+        "unit": "mm",
+        "value": 5
+      },
+      "width": {
+        "source": "Illustrative starter default, not a user measurement",
+        "status": "assumed",
+        "unit": "mm",
+        "value": 120
+      }
+    },
+    "intent": "Demonstrate the CAD workflow; replace this example with the user's actual design.",
+    "name": "Illustrative display-riser starter",
+    "revision": {
+      "ancestors": [
+        "initial",
+        "layout-02"
+      ],
+      "delta": "Correct gap only",
+      "dependencies": {
+        "depth": [
+          "parts.plate",
+          "instances.standoff_1",
+          "instances.standoff_2",
+          "instances.standoff_3",
+          "instances.standoff_4"
+        ],
+        "gap": [
+          "instances.top",
+          "parts.standoff"
+        ],
+        "hole_diameter": [
+          "parts.plate",
+          "parts.standoff"
+        ],
+        "inset": [
+          "parts.plate.holes",
+          "instances.standoff_1",
+          "instances.standoff_2",
+          "instances.standoff_3",
+          "instances.standoff_4"
+        ],
+        "plate_thickness": [
+          "parts.plate",
+          "instances.top",
+          "instances.standoff_1",
+          "instances.standoff_2",
+          "instances.standoff_3",
+          "instances.standoff_4"
+        ],
+        "standoff_radius": [
+          "parts.standoff"
+        ],
+        "width": [
+          "parts.plate",
+          "instances.standoff_1",
+          "instances.standoff_2",
+          "instances.standoff_3",
+          "instances.standoff_4"
+        ]
+      },
+      "id": "gap-03",
+      "open_decisions": [
+        "Replace the illustrative riser with the actual requested design"
+      ],
+      "parent_id": "layout-02",
+      "preserve": [
+        "dimensions.width"
+      ],
+      "schema_version": 1,
+      "superseded_facts": [
+        {
+          "fact": {
+            "source": "Illustrative starter default; distance between facing plate surfaces",
+            "status": "assumed",
+            "unit": "mm",
+            "value": 32
+          },
+          "name": "gap",
+          "revision_id": "layout-02"
+        }
+      ],
+      "user_approval": null
+    },
+    "schema_version": 1,
+    "stage": "concept"
+  },
+  "identity": {
+    "brief_sha256": "91a4e33436b2c4297eedae96351331d2722d0656f5d0fe3718f47838dca4d754",
+    "id": "gap-03",
+    "parent_id": "layout-02",
+    "schema_version": 1
+  },
+  "schema_version": 1
+}

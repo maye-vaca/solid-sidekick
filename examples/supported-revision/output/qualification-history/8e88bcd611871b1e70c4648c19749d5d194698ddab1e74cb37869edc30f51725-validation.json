@@ -1,0 +1,57 @@
+{
+  "status": "passed",
+  "revision": {
+    "schema_version": 1,
+    "id": "layout-02",
+    "parent_id": "initial",
+    "brief_sha256": "74df7a1f6927260daa54297b5f281c6867486cf24cbc02090e423e6a7708e5a7"
+  },
+  "project": {
+    "requirements": "Illustrative riser dimensions, through-holes, bores, contacts and gaps",
+    "hole_diameter_mm": 3.4,
+    "plate_gap_mm": 32
+  },
+  "parts": 2,
+  "instances": 6,
+  "preview": {
+    "status": "host_open_not_requested"
+  },
+  "validation_started_at": "2026-11-12T03:03:21.817263+00:00",
+  "exports": {
+    "stls_reloaded": 8,
+    "glb_instances": 6,
+    "shared_geometries": 2,
+    "max_solid_difference_mm3": 0.0,
+    "revision": {
+      "status": "tracked",
+      "identity": {
+        "schema_version": 1,
+        "id": "layout-02",
+        "parent_id": "initial",
+        "brief_sha256": "74df7a1f6927260daa54297b5f281c6867486cf24cbc02090e423e6a7708e5a7"
+      }
+    },
+    "manifest_sha256": "659690c0652df16243a59076870113486698705f7a71371b7809a34ad40676fa"
+  },
+  "interference": {
+    "pairs": 15,
+    "boolean_checks": 0,
+    "documented_overlaps": [],
+    "note": "Zero overlap does not establish clearance or physical fit."
+  },
+  "browser": {
+    "status": "passed",
+    "pixels_by_view": {
+      "top": 203608,
+      "under": 203608,
+      "front": 33468,
+      "side": 26991,
+      "iso": 229126
+    },
+    "errors": [],
+    "remote_requests": []
+  },
+  "limits": "Mesh/static-pose checks, not manufacturing fit, strength or motion certification.",
+  "elapsed_seconds": 3.5310000000172295,
+  "completed_at": "2026-11-12T03:03:25.348329+00:00"
+}

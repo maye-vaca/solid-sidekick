@@ -1,0 +1,34 @@
+Mechanical Design Toolkit: third-party boundaries
+
+The top-level MIT license covers toolkit-authored code and documentation.
+It does not relicense dependencies, model weights, host applications, browsers
+or optional viewer assets.
+
+Runtime dependencies are installed separately; their binaries and source
+distributions are NOT included in this archive:
+
+  Manifold3D: https://github.com/elalish/manifold
+    Apache License 2.0; retain its distribution's LICENSE and notices.
+  NumPy: https://numpy.org/
+    BSD-3-Clause and additional bundled-component licenses. Use the complete
+    notices supplied by the actual NumPy wheel, not just its primary license.
+  Trimesh: https://github.com/mikedh/trimesh
+    MIT; retain its distribution's copyright and license.
+
+Optional browser validation uses separately installed Playwright
+(https://github.com/microsoft/playwright, Apache-2.0) and a compatible browser.
+Browser binaries and Playwright are not bundled. Browser terms are separate.
+
+The default lightweight HTML viewer's toolkit code is included. The optional
+embedded viewer runtime (including three-cad-viewer and its dependencies) is
+NOT included. If supplied separately, retain its full notices and asset manifest;
+the toolkit's MIT license does not replace them.
+
+Copilot, OpenCode, Ollama, OpenAI clients and model weights are not bundled.
+Users obtain them separately under their own licenses and service terms.
+Local inference does not change model-license obligations.
+
+When distributing generated projects containing copied cadkit source, include
+the toolkit LICENSE and this notice alongside the project. The current starter
+helper does not automatically copy these notices. Dependency redistribution
+may carry additional obligations; preserve the notices in those distributions.

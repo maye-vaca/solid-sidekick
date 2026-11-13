@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "stage": "preview_unvalidated",
+  "run_id": "b491af9f62f54eff8570458e81b27407",
+  "build_id": "d24b0654f5544d20ac096be92357d9e6",
+  "published_at": "2026-11-12T03:03:26.503764+00:00",
+  "viewer": "C:\\Users\\mavaca\\.copilot\\chats\\2026-10-15\\super-waffle-d5c593f6\\cad57\\demo\\output\\review.html",
+  "manifest": "C:\\Users\\mavaca\\.copilot\\chats\\2026-10-15\\super-waffle-d5c593f6\\cad57\\demo\\output\\manifest.json",
+  "viewer_sha256": "837c3bbf009cf2902c7e75ca1dd22a493edfaa7dfa5f9314aeedf23d77f21d6f",
+  "manifest_sha256": "5c79c4c517e41d4e459f6593edcecfcd0dd6b2c295633dabd89b2116084a09fc",
+  "parts": 2,
+  "instances": 6,
+  "timings": {
+    "geometry_seconds": 0.033348700031638145,
+    "export_seconds": 0.3883388999965973
+  },
+  "revision": {
+    "schema_version": 1,
+    "id": "gap-03",
+    "parent_id": "layout-02",
+    "brief_sha256": "91a4e33436b2c4297eedae96351331d2722d0656f5d0fe3718f47838dca4d754"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "name": "Illustrative display-riser starter",
+  "intent": "Demonstrate the CAD workflow; replace this example with the user's actual design.",
+  "stage": "concept",
+  "decisions": {},
+  "deliverable": {
+    "status": "selected",
+    "target": "Illustrative riser workflow demonstration, not the user's requested design",
+    "outputs": ["Tracked offline review and STL/GLB demonstration"],
+    "sequence": ["Replace the example brief and geometry with the actual requested deliverable"],
+    "source": "Scaffold example only; not evidence of a user selection"
+  },
+  "coordinate_system": "Millimetres; origin at base lower-front-left corner as viewed from the front. +X right, +Y back, +Z up.",
+  "revision": {
+    "schema_version": 1,
+    "id": "initial",
+    "parent_id": null,
+    "ancestors": [],
+    "delta": "Initial illustrative concept, not a user-approved design",
+    "preserve": [],
+    "dependencies": {
+      "width": ["parts.plate", "instances.standoff_1", "instances.standoff_2", "instances.standoff_3", "instances.standoff_4"],
+      "depth": ["parts.plate", "instances.standoff_1", "instances.standoff_2", "instances.standoff_3", "instances.standoff_4"],
+      "plate_thickness": ["parts.plate", "instances.top", "instances.standoff_1", "instances.standoff_2", "instances.standoff_3", "instances.standoff_4"],
+      "standoff_radius": ["parts.standoff"],
+      "hole_diameter": ["parts.plate", "parts.standoff"],
+      "gap": ["instances.top", "parts.standoff"],
+      "inset": ["parts.plate.holes", "instances.standoff_1", "instances.standoff_2", "instances.standoff_3", "instances.standoff_4"]
+    },
+    "superseded_facts": [],
+    "open_decisions": ["Replace the illustrative riser with the actual requested design"],
+    "user_approval": null
+  },
+  "dimensions": {
+    "width": {"value": 120, "unit": "mm", "status": "assumed", "source": "Illustrative starter default, not a user measurement"},
+    "depth": {"value": 80, "unit": "mm", "status": "assumed", "source": "Illustrative starter default, not a user measurement"},
+    "plate_thickness": {"value": 4, "unit": "mm", "status": "assumed", "source": "Illustrative starter default, not verified stock"},
+    "gap": {"value": 32, "unit": "mm", "status": "assumed", "source": "Illustrative starter default; distance between facing plate surfaces"},
+    "inset": {"value": 12, "unit": "mm", "status": "assumed", "source": "Illustrative starter default; hole centers from each adjacent edge"},
+    "standoff_radius": {"value": 5, "unit": "mm", "status": "assumed", "source": "Illustrative starter default, not verified hardware"},
+    "hole_diameter": {"value": 3.4, "unit": "mm", "status": "assumed", "source": "Illustrative starter default; no verified mating fastener or fit"}
+  },
+  "assumptions": [
+    "Demonstration geometry only; no load rating or fabrication approval.",
+    "Hole dimensions are illustrative, not verified fits; fasteners and threads are omitted.",
+    "Materials are display labels, not material specifications."
+  ]
+}

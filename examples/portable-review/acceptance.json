@@ -1,0 +1,39 @@
+{
+  "automated": {
+    "a_pixels": 12606,
+    "apply": "Automated UI click in isolated test fixture; not human acceptance",
+    "b_pixels": 96596,
+    "browser": "157.0.4341.42",
+    "camera_and_visibility_preserved": true,
+    "context_offline": true,
+    "corruption_malformed_stale_rejected": true,
+    "human_apply": "not_observed",
+    "os": "nt",
+    "page_errors": [],
+    "pending_before_apply": true,
+    "prior_pixels": 88118,
+    "remote_page_requests": [],
+    "same_page": true,
+    "stale_reload_blocked_and_last_seen_recovered": true,
+    "status": "passed",
+    "transport": "Actual file-input File API, no cadReview.load injection",
+    "used_copilot_tools": false,
+    "used_server": false
+  },
+  "human": {
+    "browser_context": "Ordinary Microsoft Edge, as specified by the question",
+    "exact_user_browser_version": "not_collected",
+    "example_archive_sha256": "e4799cbf72efcc7271669ccbe7bf20491c2fdb385ed52c5567ed0a813a7c0bb6",
+    "independently_observed_user_screen": false,
+    "limits": "One user-reported browser review. Not a clean-machine, other-browser, native-agent or fabrication qualification. Original automated evidence and example metadata remain unchanged.",
+    "pending_until_human_apply": true,
+    "reported_at": "2026-11-12T01:19:09.385-08:00",
+    "response": "Yes \u2014 B applied only after my click, and my view was retained",
+    "schema_version": 1,
+    "source": "Direct user response to the ordinary-Edge extracted-ZIP review question",
+    "status": "passed_user_reported",
+    "user_operating_system": "not_collected",
+    "view_retained": true
+  },
+  "limits": "One Edge browser exercise plus one user report; no native host/model or clean-machine qualification"
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "name": "mechanical-design-toolkit",
+  "version": "0.1.0-alpha.8",
+  "license": "MIT",
+  "python": ">=3.10",
+  "canonical_skill": "cad-design",
+  "scope": "Bounded construction publication/access checks and revision-bound guide, inventory, storyboard and optional video; mechanical alpha.7 retained",
+  "execution_requests": ["discover", "local", "remote", "manual"],
+  "default_execution_request": "discover",
+  "hosts": {
+    "copilot": {
+      "skill": ".github/skills/cad-design",
+      "profile": ".github/agents/cad-designer.agent.md",
+      "template": "adapters/copilot/cad-designer.agent.md",
+      "guide": ".github/cad-design-host.md",
+      "guide_template": "adapters/copilot/HOST.md",
+      "status": "Thin Copilot mapping; revised instructions not natively qualified"
+    },
+    "opencode": {
+      "skill": ".opencode/skills/cad-design",
+      "profile": ".opencode/agents/cad-designer.md",
+      "template": "adapters/opencode/cad-designer.md",
+      "guide": ".opencode/cad-design-host.md",
+      "guide_template": "adapters/opencode/HOST.md",
+      "status": "Packaging verified only; native execution not qualified"
+    },
+    "openai": {
+      "skill": ".agents/skills/cad-design",
+      "profile": ".agents/cad-designer.md",
+      "template": "adapters/openai/cad-designer.md",
+      "guide": ".agents/cad-design-host.md",
+      "guide_template": "adapters/openai/HOST.md",
+      "status": "Codex-style local skill layout; startup guide is not an automatically registered agent"
+    },
+    "manual": {
+      "skill": "cad-design",
+      "profile": "CAD_DESIGN_START.md",
+      "template": "adapters/manual/CAD_DESIGN_START.md",
+      "guide": "CAD_DESIGN_HOST.md",
+      "guide_template": "adapters/manual/HOST.md",
+      "execution_requests": ["manual"],
+      "default_execution_request": "manual",
+      "status": "User-supervised local commands; no automatic host discovery"
+    }
+  },
+  "qualification": {
+    "model": "No model selected, installed or qualified by this package",
+    "operating_system": "Packaging exercised on Windows ARM64; other OS execution untested",
+    "native_behavior": "Prior Copilot trial remains partial; revised instructions and other hosts not natively qualified",
+    "privacy": "Depends on host, selected model endpoint and enabled tools; no local-only guarantee"
+  }
+}

@@ -1,0 +1,407 @@
+{
+  "schema_version": 1,
+  "name": "Illustrative display-riser starter",
+  "geometry_units": "mm",
+  "stl_units": "mm",
+  "glb_units": "m",
+  "coordinate_system": "Millimetres; origin at base lower-front-left corner as viewed from the front. +X right, +Y back, +Z up.",
+  "parameters": {
+    "stage": "concept",
+    "intent": "Demonstrate the CAD workflow; replace this example with the user's actual design.",
+    "dimensions": {
+      "width": {
+        "value": 120,
+        "unit": "mm",
+        "status": "assumed",
+        "source": "Illustrative starter default, not a user measurement"
+      },
+      "depth": {
+        "value": 80,
+        "unit": "mm",
+        "status": "assumed",
+        "source": "Illustrative starter default, not a user measurement"
+      },
+      "plate_thickness": {
+        "value": 4,
+        "unit": "mm",
+        "status": "assumed",
+        "source": "Illustrative starter default, not verified stock"
+      },
+      "gap": {
+        "value": 40,
+        "unit": "mm",
+        "status": "confirmed",
+        "source": "Fictional supported-command demonstration"
+      },
+      "inset": {
+        "value": 12,
+        "unit": "mm",
+        "status": "assumed",
+        "source": "Illustrative starter default; hole centers from each adjacent edge"
+      },
+      "standoff_radius": {
+        "value": 5,
+        "unit": "mm",
+        "status": "assumed",
+        "source": "Illustrative starter default, not verified hardware"
+      },
+      "hole_diameter": {
+        "value": 3.4,
+        "unit": "mm",
+        "status": "assumed",
+        "source": "Illustrative starter default; no verified mating fastener or fit"
+      }
+    },
+    "dimensions_mm": {
+      "width": 120,
+      "depth": 80,
+      "plate_thickness": 4,
+      "gap": 40,
+      "inset": 12,
+      "standoff_radius": 5,
+      "hole_diameter": 3.4
+    }
+  },
+  "assumptions": [
+    "Demonstration geometry only; no load rating or fabrication approval.",
+    "Hole dimensions are illustrative, not verified fits; fasteners and threads are omitted.",
+    "Materials are display labels, not material specifications.",
+    "depth: 80 mm (assumed; Illustrative starter default, not a user measurement).",
+    "hole_diameter: 3.4 mm (assumed; Illustrative starter default; no verified mating fastener or fit).",
+    "inset: 12 mm (assumed; Illustrative starter default; hole centers from each adjacent edge).",
+    "plate_thickness: 4 mm (assumed; Illustrative starter default, not verified stock).",
+    "standoff_radius: 5 mm (assumed; Illustrative starter default, not verified hardware).",
+    "width: 120 mm (assumed; Illustrative starter default, not a user measurement)."
+  ],
+  "limitations": "Mesh geometry, not STEP/B-rep. Not a structural or fabrication certification.",
+  "parts": [
+    {
+      "id": "plate",
+      "name": "Drilled plate",
+      "material": "Plywood (illustrative)",
+      "color": "#d9b079",
+      "notes": "",
+      "stl": "parts/plate.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          120.0,
+          80.0,
+          4.0
+        ]
+      ],
+      "volume_mm3": 38254.836446611116
+    },
+    {
+      "id": "standoff",
+      "name": "Tubular standoff",
+      "material": "Printed polymer (illustrative)",
+      "color": "#58b9c9",
+      "notes": "Local origin at bottom of central axis; nominal bore, no fit certification.",
+      "stl": "parts/standoff.stl",
+      "bounds_mm": [
+        [
+          -5.0,
+          -5.0,
+          0.0
+        ],
+        [
+          5.0,
+          5.0,
+          40.0
+        ]
+      ],
+      "volume_mm3": 2776.4413195746492
+    }
+  ],
+  "instances": [
+    {
+      "id": "base",
+      "part_id": "plate",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/base.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          120.0,
+          80.0,
+          4.0
+        ]
+      ]
+    },
+    {
+      "id": "top",
+      "part_id": "plate",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          44.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/top.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          44.0
+        ],
+        [
+          120.0,
+          80.0,
+          48.0
+        ]
+      ]
+    },
+    {
+      "id": "standoff_1",
+      "part_id": "standoff",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          12.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          12.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          4.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/standoff_1.stl",
+      "bounds_mm": [
+        [
+          7.0,
+          7.0,
+          4.0
+        ],
+        [
+          17.0,
+          17.0,
+          44.0
+        ]
+      ]
+    },
+    {
+      "id": "standoff_2",
+      "part_id": "standoff",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          12.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          68.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          4.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/standoff_2.stl",
+      "bounds_mm": [
+        [
+          7.0,
+          63.0,
+          4.0
+        ],
+        [
+          17.0,
+          73.0,
+          44.0
+        ]
+      ]
+    },
+    {
+      "id": "standoff_3",
+      "part_id": "standoff",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          108.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          12.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          4.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/standoff_3.stl",
+      "bounds_mm": [
+        [
+          103.0,
+          7.0,
+          4.0
+        ],
+        [
+          113.0,
+          17.0,
+          44.0
+        ]
+      ]
+    },
+    {
+      "id": "standoff_4",
+      "part_id": "standoff",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          108.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          68.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          4.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/standoff_4.stl",
+      "bounds_mm": [
+        [
+          103.0,
+          63.0,
+          4.0
+        ],
+        [
+          113.0,
+          73.0,
+          44.0
+        ]
+      ]
+    }
+  ],
+  "revision": {
+    "schema_version": 1,
+    "id": "gap-03",
+    "parent_id": "layout-02",
+    "brief_sha256": "91a4e33436b2c4297eedae96351331d2722d0656f5d0fe3718f47838dca4d754"
+  },
+  "review": {
+    "schema_version": 1,
+    "html": "review.html",
+    "state": "review-state.json"
+  },
+  "files_sha256": {
+    "assembled/base.stl": "f58db7a9c36df1ee1fc0576c38aed73a2c482887ceda3c0462d9e43d36465398",
+    "assembled/standoff_1.stl": "2e3391ab0a052d732be2d5664565c76ade544732699b5689bfba0a8dc7d86d89",
+    "assembled/standoff_2.stl": "4a49d9b9bf27f43fc645075f52387bc8261b02e0949d73a999e74d1372395240",
+    "assembled/standoff_3.stl": "6fd54b6d2eed759a6143329c7a37e68cb5112758a7f0c369c797da0074652739",
+    "assembled/standoff_4.stl": "645af397b5e36aadce04980c79645a2258ff98d27c3740d7f6e0d2578bc1dbcf",
+    "assembled/top.stl": "21c0592c10e61ef733402472d650ad86b598c64ff5f66252f0f6730c715bb368",
+    "assembly.glb": "e7053ada00e1b588a32d645bd906dcee6d645e42c5a408f7a633bdf4f3450e54",
+    "parts/plate.stl": "f58db7a9c36df1ee1fc0576c38aed73a2c482887ceda3c0462d9e43d36465398",
+    "parts/standoff.stl": "6c22ec29c4a4bfe588a680bb1b5e078258089088ce3198a21a482a84dfefee5f",
+    "review-state.json": "9a214d5883da22b869e4cad934101d9f24faff0bce290505c953aefce2e47e2d",
+    "review.html": "837c3bbf009cf2902c7e75ca1dd22a493edfaa7dfa5f9314aeedf23d77f21d6f",
+    "revision-state.json": "dfdc375a7fa19bb924c2ec2553ecc91ef71481bb703ab424304eeadcc15c5dac",
+    "viewer.html": "27febd0e7a23427772a04a51677b9d03e7383b7a1d90b774001631f5550eb2c3"
+  }
+}

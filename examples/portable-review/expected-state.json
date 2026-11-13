@@ -1,0 +1,39 @@
+{
+  "a": {
+    "assembly_height_mm": 40,
+    "gap_mm": 32,
+    "revision": {
+      "brief_sha256": "59524f563377699668d5377fbfa595a4b27b402b34ed3e18d4ae9af3e95592fe",
+      "id": "initial",
+      "parent_id": null,
+      "schema_version": 1
+    },
+    "top_bottom_z_mm": 36
+  },
+  "b": {
+    "assembly_height_mm": 56,
+    "gap_mm": 48,
+    "revision": {
+      "brief_sha256": "49a720311954480ebafb32cd377e1b4fab40818d3e56bd776d6f3d0b3aa0b57c",
+      "id": "gap-48",
+      "parent_id": "initial",
+      "schema_version": 1
+    },
+    "top_bottom_z_mm": 52
+  },
+  "fixed": {
+    "depth_mm": 80,
+    "physical_instances": 6,
+    "plate_thickness_mm": 4,
+    "reusable_parts": 2,
+    "width_mm": 120
+  },
+  "human_apply": "not_observed",
+  "limits": "Illustrative geometry only; no fit or fabrication certification",
+  "producer": {
+    "a_validation": "passed",
+    "b_validation": "passed",
+    "commands": "Supported qualify/revise/verify; no handwritten revision advancement"
+  },
+  "schema_version": 1
+}

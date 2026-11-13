@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portable CAD review - start here</title>
+<style>
+body { max-width: 860px; margin: 36px auto; padding: 0 20px; font: 17px/1.6 system-ui; color: #172936; background: #f5f8fa; }
+h1,h2 { line-height: 1.2; } code { background: #e4edf2; padding: 2px 5px; }
+a { color: #075884; } .note { border-left: 4px solid #d99522; padding: 12px 18px; background: #fff5dc; }
+li { margin: 12px 0; }
+</style>
+<h1>Review a CAD revision in your browser</h1>
+<p>This is an illustrative display riser: two plates and four spacers.
+Revision A has a <strong>32 mm gap</strong> between the plates.
+Revision B changes only that gap to <strong>48 mm</strong>, extending the spacers
+and moving the upper plate. Plate width, depth and thickness stay unchanged.</p>
+<p><strong>No assistant, Python, installation, server or internet connection is
+needed to view this example.</strong> Extract the entire ZIP into a folder first;
+do not open it inside the ZIP preview. Use an ordinary browser. Microsoft Edge
+on Windows ARM64 is the browser exercised for this release; other browsers and
+platforms are not yet qualified.</p>
+<h2>Try the complete review loop</h2>
+<ol>
+<li>Open <a href="review.html" target="_blank" rel="noopener">review.html</a>
+once. Its current revision should be <code>initial</code> (A).
+The prior-reference panel is initially empty.</li>
+<li>Use <strong>Compare isometric</strong>, drag the model to rotate it, and
+optionally uncheck a component in the current view. Leave this review tab open.</li>
+<li>In that same review tab, use <strong>Load newer review</strong> and choose
+<code>updates\revision-b.json</code> from your extracted folder.
+The message should say <code>gap-48</code> is waiting.
+The displayed revision must still be <code>initial</code>; loading is not applying.</li>
+<li>When you are ready, choose <strong>Apply newer revision</strong> yourself.
+The current revision should become <code>gap-48</code>, with A shown as the prior
+reference. Your camera and matching component visibility should be retained.
+The model must not change before this click.</li>
+</ol>
+<p class="note">Applying a display update is <strong>not</strong> manufacturing
+approval. These files are snapshots, not a live connection to CAD.
+The review page labels geometry <em>unchecked at export</em>: production checks
+were performed separately, but the page does not certify current files, physical
+fit, strength or safety.</p>
+<h2>If something goes wrong</h2>
+<p>Keep the current page open and report the visible message. Do not weaken
+browser security or organization policy. A browser without suitable WebGL or
+local-file support may not be usable for this trial.</p>
+<p>After B is displayed, reloading the original A HTML may intentionally block
+the stale snapshot. Load the same B packet and choose Apply again to recover
+the last-shown revision. This protection is local to the page's browser session,
+not a global registry across browsers or a publisher signature.</p>
+<p>The page checks packet consistency and lineage. Per-file hashes in
+<code>file-hashes.json</code> provide an inventory, not proof of publisher identity.
+No remote file URLs or original developer folders are needed.</p>
+<h2>Feedback to return</h2>
+<p>Report your browser/OS, whether A opened, whether B stayed pending until your
+click, whether your view was preserved, and any error. Automated checks and
+your human review are recorded separately.</p>
+</html>

@@ -1,0 +1,20 @@
+{
+  "event": "cadkit.revision_handoff",
+  "status": "validated",
+  "validation_status": "passed",
+  "revision": {
+    "schema_version": 1,
+    "id": "layout-02",
+    "parent_id": "initial",
+    "brief_sha256": "74df7a1f6927260daa54297b5f281c6867486cf24cbc02090e423e6a7708e5a7"
+  },
+  "tier": "topology",
+  "recovery": false,
+  "affected": null,
+  "execution": "full conservative rebuild and all geometry/export/project checks",
+  "review_packet": "C:\\Users\\mavaca\\.copilot\\chats\\2026-10-15\\super-waffle-d5c593f6\\cad57\\demo\\output\\review-state.json",
+  "review_packet_sha256": "10c2b1aa4ff9a4db2b5001141154759b16d23705a8932460bc4a18c406f6703c",
+  "review_page": "file:///C:/Users/mavaca/.copilot/chats/2026-10-15/super-waffle-d5c593f6/cad57/demo/output/review.html",
+  "panel_action": "load packet into the current review panel; stage pending, do not auto-apply",
+  "packaged": false
+}

@@ -1,0 +1,150 @@
+# Validation and delivery
+
+## Checks are evidence, not labels
+
+Require only the checks relevant to the task, but actually execute them.
+Distinguish "source builds", "geometry validated", "export reloaded", "viewer
+inspected", and "user-approved arrangement". None implies the others.
+
+| Surface | Relevant check |
+|---|---|
+| Solid | Manifold status, finite coordinates, positive volume |
+| Mesh | Watertightness, winding/positive volume, finite vertices |
+| Requested dimension | Bounds or direct geometric measurement against the requirement |
+| Mating interface | Hole/shaft dimensions, axes, insertion direction and measured clearance |
+| Relative placement | Contact faces, edge alignment, support height, orientation |
+| Repeated parts | One definition, correct instance count and transforms |
+| Interference | Relevant pairs checked; acceptable/intentional intersections documented |
+| Motion | Geometry at relevant positions or a justified swept check, not just the final pose |
+| STL | Reload and measure bounds/scale in mm, including a small detailed part |
+| GLB | Reload named instances, shared geometry and transform scale in metres |
+| Viewer | Visible geometry, useful camera, selection/visibility controls and no rendering error |
+| Portability | Build/export from a fresh project location without original-session paths |
+
+Do not "fix" a failed test by removing the requirement. Do not repair a mesh in
+a way that changes a fit without explaining and checking the resulting geometry.
+
+For a user-requested physical part count, check connected positive-volume
+solids, not only file count, mesh grouping or names. Distinguish visual colour
+regions from manufactured pieces. Verify actual mating cavities, bottom-out
+clearance and a feasible insertion/removal path where applicable.
+
+Keep independent requirement oracles; derive dependent relationships without
+copying implementation errors into tests. A finite probe crossing a cut plane
+may contain partial material: do not classify the entire probe by its centre.
+Distinguish a real geometry failure, an incorrect test expectation and a bounded
+numerical residual. For Boolean slivers, quantify any excluded residual and
+verify that no meaningful material was discarded; do not broadly relax checks.
+
+## Use the shared checker
+
+Generated projects include `validate.py`, `checks.py` and `cadkit.validation`.
+After exporting, run:
+
+```powershell
+python validate.py --browser "<Edge or Chromium executable>"
+```
+
+`CADKIT_BROWSER` is the default browser path when set. Browser checks additionally
+need Playwright in the validation environment; geometry/export runtime does not.
+The checker reloads every current local and placed STL, compares bounds and
+symmetric solid differences, verifies manifest provenance/transforms and GLB
+sharing/scale/colors, checks all static instance pairs with AABB pruning, and
+exercises the real offline viewer. It uses native Manifold distance queries,
+not optional SciPy proximity tracing.
+
+Write only project-specific assertions in `checks.check(context)`: actual
+dimensions, holes, bores, placements and required gaps. Return concise measured
+results as a JSON-compatible dictionary. `context` supplies `assembly`, `local`
+and `placed` Trimesh dictionaries, placed Manifold `solids`, `require`,
+`expect_bounds` and `expect_gap`. A deliberately intersecting design may declare
+`ALLOWED_OVERLAPS = (("first_id", "second_id"), ...)` in `checks.py`; explain each
+allowance. Unexpected overlaps greater than 0.01 mm^3 fail. The thin unit-test
+wrapper must use the same allowances when the design requires them.
+
+Full results go to `output\validation.json`; successful stdout is a compact
+status/count/time summary. Read full diagnostics only when needed. Missing,
+malformed or stale exports fail explicitly. Without a browser executable the
+status is **geometry_passed_browser_not_run**, never an implied browser pass.
+Model assertions and generic export agreement are complementary: an export
+matching the wrong model does not establish that the user's design was met.
+Keep an independent numeric/source oracle for reconstruction evaluations.
+
+## Export contract
+
+`Assembly.export` produces:
+
+- `parts`: one ASCII STL per part definition in local coordinates.
+- `assembled`: one ASCII STL per placed instance.
+- `assembly.glb`: shared part meshes with named placement transforms.
+- `viewer.html`: geometry and metadata embedded; no remote scripts/server.
+- `manifest.json`: current file list, parameters, transforms, units and limits.
+
+The lightweight viewer is the default. The explicitly selected
+[embedded backend](viewer-backends.md) adds `viewer-scene.json`, `viewer-assets`
+and a manifest `viewer` entry. The shared checker uses that entry to select
+scene/runtime integrity and actual embedded-browser checks. Preview readiness
+hashes the companion files too. Do not infer the active backend from leftover
+files in a reused output directory.
+
+STLs use mm coordinates but carry no unit field; instruct importers to use mm.
+GLB uses metres for vertices and translation, preserving the documented Z-up
+modeling convention rather than silently rotating the model.
+ASCII STL avoids the float32 small-detail loss encountered in binary STL.
+Test actual output: text encoding alone is not proof of correct geometry.
+
+Source inputs may be in inches but convert once at the model boundary. Do not
+scale an already-normalized `Part` or `Placement` a second time.
+Do not call STL "editable parametric CAD"; edit Python parameters and rebuild.
+
+## Input provenance in generated outputs
+
+Tracked projects bind the brief snapshot, preview, manifest and validation
+report to one revision identity. Before handing off, run
+`python -m cadkit.revision verify design_brief.json output --validated`.
+It rejects changed generated files and stale reports; success still does not
+mean a skipped browser check or physical fit was verified. See
+[revision state](revision-state.md) for lineage, correction and restore limits.
+
+Carry the brief's unresolved assumptions and dimension statuses into the
+assembly parameters/assumptions. Visual estimates must remain distinguishable
+from measured geometry in the delivered artifacts, not just the conversation.
+
+If the user asks for only source/STL, do not add a film, BOM, shopping exercise,
+cut list or drilling template. Explain exclusions that materially affect use.
+
+## File handling and delivery
+
+The exporter stages a build before replacing generated files, but publication
+is not an atomic transaction. A file lock or permissions error must be reported.
+The exporter preserves unrelated files and old renamed STLs; use a new output
+directory for revisions that remove/rename components, or follow the manifest.
+Never delete a whole user folder to "clean" an export.
+
+Provide a short executable command, output path, units and remaining limits.
+Include the project source, its local toolkit and requirements together so it
+can run independently. A generated HTML viewer can be shared alone.
+If the host can attach files, attach actual artifacts rather than merely
+describing files that have not been generated.
+
+Refresh a current review surface when supported instead of opening a new tab
+for every scalar change. Preserve prior outputs for history; package source at
+requested handoff or a meaningful checkpoint, not automatically on every edit.
+Always validate the particular exports being delivered, including current
+provenance; a previously passed report does not qualify a later modified build.
+
+Keep separate outcomes for native agent execution, geometry/export validation,
+host visual review, host-assisted recovery and user approval. Retain the failed
+run when the host repairs or finishes artifacts, and identify the recovery as
+such. Tests of package mechanics do not establish that new prompt guidance
+improves agent behaviour; that requires fresh, bounded conversational trials.
+
+## Evaluation scope
+
+Helper and template checks verify the package mechanics. They do not prove an
+LLM will consistently ask the right questions or interpret arbitrary designs.
+The [revision evaluation](revision-evaluation.md) uses actual fresh conversations
+for bracket, enclosure and simplified assembly revisions, including ambiguity,
+adverse inputs and format limitations. Consult its per-turn evidence and trial
+versions; one controlled conversation per case does not establish reliability
+for arbitrary requests or fabrication suitability.

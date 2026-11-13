@@ -1,0 +1,59 @@
+{
+  "baseline_sha256": "958f24f6fedc7c13af1935b4276a8fea171db719e14021af708ce00d62c3dc70",
+  "changed_files": {
+    "README.md": {
+      "after": "80e8d4049a040a3b7372066b5dfdb034e7cf702b1df8dcdf5d68e1f03a0c1626",
+      "before": "007b5cde35997c30894c4158001b8c46782765a04e283938f27ba9dfdce64a17"
+    },
+    "VERSION": {
+      "after": "33d2fddff2fead5031af255364b501477e8c33387c41eefe3c8fdfed280af373",
+      "before": "45550a481d6e1399293b9b181b0402a375ae84fda1eef26878ac8124e9337039"
+    },
+    "cad-design/SKILL.md": {
+      "after": "465a84b80eb8a5880af958824058c291dbe0480afd992111bb95781003441cb0",
+      "before": "c117e2fdd57496a3071f43ab4b463438ffc47468b7f4c77502c10542b9ee7a67"
+    },
+    "cad-design/references/construction-production.md": {
+      "after": "881af89c94c0ba3c693e311bd8a5607902afe8645f9a0c2c65c28cbe8c3e7ad4",
+      "before": null
+    },
+    "cad-design/references/public-api.md": {
+      "after": "7515fbc2c815158d3eced09c234140c06b564404b9eef14e41ddae9566b84478",
+      "before": "ff8025497abef541c6dc05c5ed5bd1f0184bdf064ce970ec5aec4b3d944dc020"
+    },
+    "cad-design/scripts/foundation/cadkit/construction.py": {
+      "after": "77c5f0934779f0bbd58f27075e372cdc9c70d0cab136feb40c25fc377d1fc911",
+      "before": null
+    },
+    "cad-design/scripts/foundation/tests/test_browser.py": {
+      "after": "5615b57ad714854ecf7fda641a8e1d1320b21fbd0e0316a86008ff19b2db10c5",
+      "before": "d124beac87c9e011b3e36edfa576c4b8babe247d736aaf7ef932b66ed53653de"
+    },
+    "cad-design/scripts/new_project.py": {
+      "after": "bdb877e914754ecd93df36b537aa49d3894c7dd37e40aeeda08dc904f332cbd7",
+      "before": "bd56cd3a6c1fb324ec8b7c1ff0330076c830224d5bb3540144d73660fa87c790"
+    },
+    "cad-design/tests/test_construction.py": {
+      "after": "01e63da157eb1eb7ecbfd9e507db6e9d3f3e85b40065e6c62744616042cc41a3",
+      "before": null
+    },
+    "cad-design/tests/test_package.py": {
+      "after": "5362c5d2ae3ebb10fb3dc2921f325d4c6c5226fc2fa7f43613e0c409b06c2a32",
+      "before": "e7acf76969062e900cc40a2632c5b7e7f54a01510b5367d90facf5bf61dc22c7"
+    },
+    "cad-design/tests/test_review_timing.py": {
+      "after": "f045684d14efa46fd2c23e5643fc42daabf5439b7982c439baa65d466930c14e",
+      "before": "41d52e2baf38d7151ebc4b0e9356ea7c55730d082e077f460db3ad4e4997c83f"
+    },
+    "qualification.json": {
+      "after": "d3fc9398275893d1ba27ea0bcb6d2375e3f732bf6855f7869223cb6885637df9",
+      "before": "6f3eda0a2e40f4649a7a357705f4619af5d3f954d9cc6a19215cd7f80491b391"
+    },
+    "toolkit.json": {
+      "after": "af147267be43f895fb5b6efd2a0e7ce9d97b4ed27eb6fddd23b3b84729e7e6c1",
+      "before": "994310a4e9e18e6ac52af1913655a37a3b95c4c8a2b7051bb0ea4f0a4ae075c5"
+    }
+  },
+  "examples": "Byte-identical historical examples, not alpha.8 qualification",
+  "version": "0.1.0-alpha.8"
+}

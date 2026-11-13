@@ -1,0 +1,17 @@
+{
+  "architecture_archive_sha256": "164f4568b18de421cb9a6f435ca3e66af97506f9931f5b8240d2cf44a8b7c742",
+  "architecture_source_version": "0.1.0-alpha.5",
+  "mechanical_baseline_archive_sha256": "555a7849a9ef2789012dd577a748c94bc463be72360c7468f54376f8e2cd18cb",
+  "modules": {
+    "cad-design/scripts/foundation/cadkit/checkpoint.py": {
+      "architecture_path": "drawing-revision/scripts/archkit/shared/checkpoint.py",
+      "baseline_sha256": "8163fc1cd42ed61e09a4f536e6da671d0e1661901aadff976ac74f0e9c4c3bbd",
+      "integrated_sha256": "89a2c33fc5bcc831245a8258934d08b237367e683e17dc6556b6a6c2b17f960c"
+    },
+    "cad-design/scripts/foundation/cadkit/revision.py": {
+      "architecture_path": "drawing-revision/scripts/archkit/shared/revision.py",
+      "baseline_sha256": "d1927e41be97df97b25e7a0745a1fa2a49158fb889c321dca00ddf6eccb1a0bd",
+      "integrated_sha256": "669caaae2f279bd07426aa6404c78286e433324ef2fe0f327ea847350dae4eff"
+    }
+  }
+}

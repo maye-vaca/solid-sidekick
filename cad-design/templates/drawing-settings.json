@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "title": "Illustrative riser / replace with the requested drawing title",
+  "units": "mm",
+  "fraction_denominator": 64,
+  "decimal_places": 2,
+  "scale_denominator": 2,
+  "sheet": {"size": "A3", "orientation": "landscape", "margin_mm": 10, "columns": 2, "rows": 2},
+  "style": {"line_mm": 0.25, "text_mm": 3, "hatch_spacing_mm": 3},
+  "views": [
+    {"id": "top", "title": "Top plan", "kind": "projection", "direction": "top"},
+    {"id": "front", "title": "Front elevation", "kind": "projection", "direction": "front"},
+    {"id": "section", "title": "Section at Y=40 mm / illustrative cut", "kind": "section", "axis": "y", "offset_mm": 40},
+    {"id": "axon", "title": "Axonometric", "kind": "axonometric", "dimensions": false}
+  ],
+  "schedule": true
+}

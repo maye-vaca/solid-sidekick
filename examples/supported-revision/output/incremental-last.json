@@ -1,0 +1,34 @@
+{
+  "event": "cadkit.revision_handoff",
+  "status": "validated",
+  "validation_status": "passed",
+  "revision": {
+    "schema_version": 1,
+    "id": "gap-03",
+    "parent_id": "layout-02",
+    "brief_sha256": "91a4e33436b2c4297eedae96351331d2722d0656f5d0fe3718f47838dca4d754"
+  },
+  "tier": "scalar",
+  "recovery": false,
+  "affected": {
+    "parts": [
+      "standoff"
+    ],
+    "transforms": [
+      "top"
+    ],
+    "instances": [
+      "standoff_1",
+      "standoff_2",
+      "standoff_3",
+      "standoff_4",
+      "top"
+    ]
+  },
+  "execution": "full conservative rebuild and all geometry/export/project checks",
+  "review_packet": "C:\\Users\\mavaca\\.copilot\\chats\\2026-10-15\\super-waffle-d5c593f6\\cad57\\demo\\output\\review-state.json",
+  "review_packet_sha256": "9a214d5883da22b869e4cad934101d9f24faff0bce290505c953aefce2e47e2d",
+  "review_page": "file:///C:/Users/mavaca/.copilot/chats/2026-10-15/super-waffle-d5c593f6/cad57/demo/output/review.html",
+  "panel_action": "load packet into the current review panel; stage pending, do not auto-apply",
+  "packaged": false
+}

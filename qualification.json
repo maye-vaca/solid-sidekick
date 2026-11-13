@@ -1,0 +1,77 @@
+{
+  "baseline_sha256": "958f24f6fedc7c13af1935b4276a8fea171db719e14021af708ce00d62c3dc70",
+  "limits": [
+    "Conservative convex translation sweeps only; static introduction not insertion proof.",
+    "Instruction prose/hardware/physical/engineering acceptance remains unverified.",
+    "Native custom-agent startup and actual human Apply remain pending.",
+    "No old designs/releases/installations changed."
+  ],
+  "reports": {
+    "foundation": {
+      "errors": [],
+      "failures": [],
+      "run": 16,
+      "skipped": [
+        {
+          "reason": "Optional prebuilt runtime: set CADKIT_VIEWER_ASSETS",
+          "test": "test_embedded.EmbeddedTests.test_bundle_roundtrip_assets_integrity_and_preview_hashes"
+        },
+        {
+          "reason": "Optional prebuilt runtime: set CADKIT_VIEWER_ASSETS",
+          "test": "test_embedded.EmbeddedTests.test_embedded_browser_controls_offline_and_disposal"
+        },
+        {
+          "reason": "Optional prebuilt runtime: set CADKIT_VIEWER_ASSETS",
+          "test": "test_embedded.EmbeddedTests.test_malformed_asset_metadata_rejected_before_output_replacement"
+        }
+      ],
+      "status": "passed"
+    },
+    "skill": {
+      "errors": [],
+      "failures": [],
+      "run": 104,
+      "skipped": [
+        {
+          "reason": "Original milestone-1 source not present in portable package",
+          "test": "test_package.PackageTests.test_lightweight_viewer_preserves_original_model_data"
+        },
+        {
+          "reason": "Original milestone-1 source not present in portable package",
+          "test": "test_package.PackageTests.test_unchanged_toolkit_files_match_foundation_when_available"
+        },
+        {
+          "reason": "Supply trusted optional assets",
+          "test": "test_regions_incremental.RegionTests.test_embedded_backend_preserves_surface_to_physical_mapping"
+        },
+        {
+          "reason": "Supply the optional trusted viewer runtime",
+          "test": "test_revision.RevisionTests.test_embedded_preview_binds_revision_and_hashes_all_companions"
+        }
+      ],
+      "status": "passed"
+    }
+  },
+  "status": "bounded_construction_workflow_qualified",
+  "synthetic_lab": {
+    "context_excluded": [
+      "wood_x",
+      "wood_y"
+    ],
+    "copy_regeneration": "byte-identical nonvideo deliverables",
+    "inventory_instances": 29,
+    "native_agent_trial": "not_executed",
+    "user_apply": "not_observed",
+    "verification": {
+      "limits": "Prototype only: conservative convex swept envelopes for straight translations; stationary placement steps do not verify insertion. No rotation paths, threads, tool access, deformation, forces, hardware tolerances or fabrication approval.",
+      "revision": {
+        "brief_sha256": "01ef493425a1c6875861045770e7cd4778501ba19fc6dc2d9045196911429245",
+        "id": "lab-construction-01",
+        "parent_id": "jig-03",
+        "schema_version": 1
+      },
+      "status": "verified_prototype"
+    }
+  },
+  "version": "0.1.0-alpha.8"
+}
