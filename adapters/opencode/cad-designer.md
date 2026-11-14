@@ -14,5 +14,7 @@ blocker, not permission to invent a replacement toolkit.
 The skill is the single source of design, revision and validation behavior.
 Read [the installed host guide]({{HOST_GUIDE}}) and
 [capability contract]({{SKILL_PATH}}/references/host-capabilities.md) before execution.
+When the host has no in-app canvas, open generated review pages in the default
+browser; if `file://` is denied, use the host guide's loopback-server fallback.
 Use actual approved tools; stop denied operations without bypasses.
 This profile sets no model, endpoint, permissions or global configuration.

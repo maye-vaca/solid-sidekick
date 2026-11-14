@@ -64,7 +64,10 @@ Replace `copilot` with `opencode`, `openai` or `manual` as appropriate.
 The destination is a project/workspace folder, NOT the host's global config
 directory. It may already exist; unrelated files are preserved. Installation
 refuses any existing target skill folder, profile, receipt or link/reparse path,
-including an identical installation. There is deliberately no force/overwrite
+including an identical installation. The package folder itself must contain
+only files listed in `file-hashes.json`; the installer also refuses unlisted
+files in its own folder, including `.git`, notes and editor files. Copy a git
+checkout to a clean folder before running it. There is deliberately no force/overwrite
 option. For an update, install into a new workspace and review/migrate your work.
 Do not delete existing customizations to silence a conflict.
 
@@ -76,6 +79,86 @@ models or host applications and changes no host/provider/global settings.
 If an I/O failure occurs during installation, it exits nonzero and explicitly
 reports that a partial installation may remain. Inspect it before retrying;
 the installer is not a filesystem sandbox or a concurrent-writer lock.
+
+## OpenCode + Ollama setup
+
+OpenCode supplies the agent runtime and tools; Ollama supplies the model. The
+installer connects them to neither; you do that separately.
+
+1. Install the adapter into your project folder (not OpenCode's config folder):
+
+   ```powershell
+   python .\install.py --host opencode --destination "..\my-design-workspace"
+   ```
+
+   This creates `.opencode\agents\cad-designer.md`,
+   `.opencode\skills\cad-design\` (including `SKILL.md`) and
+   `.opencode\cad-design-host.md`, plus the receipt
+   `.mechanical-design-toolkit\opencode.json`.
+
+2. Point OpenCode at Ollama. OpenCode speaks the OpenAI-compatible API, so add
+   an `ollama` provider block to your OpenCode config (project
+   `opencode.json`, user `~/.config/opencode/opencode.json`, or the `OPENCODE_CONFIG`
+   environment variable). `OLLAMA_API_KEY` is accepted by Ollama but unused;
+   any non-empty value is fine:
+
+   ```json
+   {
+     "$schema": "https://opencode.ai/config.json",
+     "provider": {
+       "ollama": {
+         "npm": "@ai-sdk/openai-compatible",
+         "name": "Ollama",
+         "options": { "baseURL": "http://127.0.0.1:11434/v1" },
+         "models": {
+           "qwen3.8:27b": {
+             "name": "Qwen 3.8 27B",
+             "limit": { "context": 262144, "output": 32768 }
+           }
+         }
+       }
+     }
+   }
+   ```
+
+   Pick a model large enough for agentic tool use (a 27B-class or larger local
+   model is a sensible floor). List it in `models` so it shows in the model
+   picker.
+
+3. Launch OpenCode from the project folder so it discovers the installed
+   agent: `opencode` in that directory, then pick the `cad-designer` agent
+   and your Ollama model. OpenCode loads its config once at startup: after
+   editing the config or installing the adapter, quit and restart OpenCode.
+   Verify with `opencode agent` (or the agent list) that `cad-designer`
+   appears, and with `opencode models` that your Ollama model is listed.
+
+   Example first request:
+
+   > Use cad-design to help me design a small mounting bracket. Ask about
+   > consequential unknowns before modeling.
+
+Runtime notes:
+
+- The installer copies no Python dependencies. The skill's
+  `scripts/foundation/requirements.txt` lists Manifold3D, NumPy and Trimesh;
+  install them into an approved virtual environment before the agent runs
+  geometry commands.
+- The agent needs shell and file tools for execution. In the OpenCode TUI
+  (interactive sessions) these are on by default; only headless/CI invocations
+  require `--permission edit=allow --permission bash=allow`. Do not run the
+  toolkit with `--auto`; the skill's workflow is permission-driven and expects
+  interactive approval.
+- `execution_capabilities_verified` in the receipt is always `false`; the
+  installer never probes your environment. Treat "discover" as intent until
+  you have actually run a command successfully.
+- When the host has no in-app canvas, the agent opens review pages in your
+  default browser. If `file://` navigation is denied (for example a managed
+  device blocks browser reads of DLP-tagged files), the agent serves the output
+  over `http://127.0.0.1:<port>` instead; that URL is local to your machine.
+- OpenCode's own docs for providers, agents and skills:
+  https://opencode.ai/docs/ , https://opencode.ai/docs/agents/ ,
+  https://opencode.ai/docs/skills/ , and
+  https://docs.ollama.com/integrations/opencode
 
 ## Choose the execution boundary independently of the model
 
