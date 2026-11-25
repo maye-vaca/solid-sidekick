@@ -50,6 +50,17 @@ class SharedValidationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "exported solid changed"):
                 check_exports(Context(assembly), output)
 
+    def test_invalid_stl_reports_reload_facts_without_relaxing_checks(self):
+        assembly = example()
+        with tempfile.TemporaryDirectory() as directory:
+            output = assembly.export(directory)
+            mesh = solid_mesh(assembly.parts["plate"].solid)
+            mesh.update_faces(list(range(len(mesh.faces) - 1)))
+            mesh.export(output / "parts" / "plate.stl", file_type="stl_ascii")
+            with self.assertRaisesRegex(ValueError, r"invalid reloaded STL .*watertight=False"):
+                check_exports(Context(assembly), output)
+
+
     def test_stale_metadata_and_paths_fail(self):
         assembly = example()
         with tempfile.TemporaryDirectory() as directory:

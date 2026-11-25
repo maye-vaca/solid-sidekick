@@ -17,4 +17,8 @@ Read [the installed host guide]({{HOST_GUIDE}}) and
 When the host has no in-app canvas, open generated review pages in the default
 browser; if `file://` is denied, use the host guide's loopback-server fallback.
 Use actual approved tools; stop denied operations without bypasses.
+After a compaction/resume, check the current brief, validation result and last
+command before continuing the recorded next experiment. Keep observations and
+unproven hypotheses separate; do not repeat the same diagnostic plan without
+executing it. Use the skill's reusable geometry helpers before kernel exploration.
 This profile sets no model, endpoint, permissions or global configuration.

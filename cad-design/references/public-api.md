@@ -38,6 +38,16 @@ Callable forms:
 - `box(width, depth, height)`: lower corner origin, +X/+Y/+Z extents, mm.
 - `cylinder(radius, height, segments=96)`: +Z axis, base Z=0, XY centered.
 - `plate_with_holes(width, depth, thickness, holes)`: each hole `(x, y, diameter)`.
+- `internal_thread_tool(major_diameter, pitch, height, *, radial_clearance=0.0,
+  steps_per_turn=144)`: simplified single-start right-hand 60-degree internal
+  thread cutter in mm. Full threads cover Z=0 through `height`; the tool
+  overruns both faces for subtraction. Requires positive dimensions, a nominal
+  major greater than `1.08253 * pitch`, nonnegative finite clearance and integer
+  requested resolution of at least 12 steps/turn. The request is a floor:
+  the helix and bore core use enough facets to limit radial chord sag to
+  2% of profile depth or 0.01 mm, whichever is smaller; helix steps round up
+  to a multiple of four. This is a geometric approximation bound, not a
+  thread-fit tolerance or class. See the thread recipe below.
 - `Part(id, solid, name, material, color, units="mm", notes="", visual_regions=())`.
 - `VisualRegion(id, name, color, triangles)`: disjoint final physical-mesh triangle
   indices, not extra solids. Import from `cadkit`; derive after final Booleans.
@@ -55,6 +65,48 @@ circular_segments=96)`. Use focused Manifold docs only for unfamiliar geometry.
 Parts and placements normalize explicit `mm`/`in` once; never double-scale.
 IDs start with a letter, contain letters/digits/underscore/hyphen, are
 case-insensitively unique and must avoid platform device names.
+
+### Threaded bores and fit trials
+
+```python
+from cadkit.geometry import cylinder, internal_thread_tool
+
+# Illustrative assumed 3/8-16 pitch; 0.50 mm RADIAL clearance, not a fit guarantee.
+cutter = internal_thread_tool(9.525, 25.4 / 16, 6, radial_clearance=0.50)
+ring = cylinder(7, 6) - cutter
+```
+
+The cutter uses an internal major of `major_diameter + 2 * radial_clearance`
+and minor of `major_diameter - 1.08253 * pitch + 2 * radial_clearance`.
+Clearance is relative to that nominal profile, not automatically to a measured
+bolt crest. It is not a class-fit implementation, calibrated gauge, external
+bolt generator, multi-start or left-hand thread. Add required lead-in chamfers
+and independently check the remaining wall, through-bore, thread engagement,
+pitch repetition and default STL reload. Keep `Mesh64`/float64 through custom
+mesh Booleans too; ASCII export cannot restore precision already discarded.
+Do not judge a helix only at angular sample vertices: coarse chords on a
+large-diameter/fine-pitch profile can fall inside the bore radius and interrupt
+the cutting groove. Check intermediate angles and compare a finer reference
+as well as through-bore, pitch and handedness. The helper increases resolution
+instead of silently accepting that interrupted geometry.
+
+Do not infer pitch or thread class from one caliper diameter. A reading in the
+grooves is not a pitch/effective-diameter measurement. Keep nominal standard,
+measured crest/minor, assumed pitch and trial clearance distinct in the brief.
+Resolve consequential uncertainty or explicitly retain the user's chosen
+assumption. For FDM trials, use the actual mating part, retain material/print
+settings and label each clearance unambiguously. Printed coupons/gauges are
+fit aids, not calibrated metrology; a visually plausible thread is not fit proof.
+When increasing clearance, report both the diameter change and remaining
+engagement with the measured mate. More clearance reduces binding but also
+reduces engagement; material stiffness alone does not determine an optimum.
+If pitch/profile is wrong, enlarging the hole does not establish a correct fit.
+
+Keep comparison variants separate from accepted output. A variant using
+`incremental qualify/revise` needs a complete project, including its own
+`requirements.txt`, local runtime and source-bound checks, not just four wrapper
+files pointing outside it. Scaffold/adapt a new project or use the existing
+project's supported revision path; preserve approval and lineage.
 
 Keep `build(brief_path=DEFAULT_BRIEF) -> Assembly` in `model.py`.
 Keep editable dimensions, units, statuses and sources in `design_brief.json`;

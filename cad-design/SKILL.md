@@ -21,8 +21,7 @@ the working commands and callable forms. Other references are on-demand:
 [environment details](references/toolkit-guide.md),
 [validation/delivery](references/validation-and-delivery.md),
 [drawings/checkpoint tools](references/drawing-production.md), [construction publication](references/construction-production.md),
-[optional viewer backend](references/viewer-backends.md),
-[optional Copilot CLI harness](references/cli-runner.md).
+[optional viewer backend](references/viewer-backends.md), [optional Copilot CLI harness](references/cli-runner.md).
 Do not read the renderer/core implementation unless debugging an API failure.
 
 ## Intent and boundaries
@@ -96,7 +95,8 @@ weaken the user's approval settings.
    for published corrections, not manual advancement or reused IDs.
 2. Convert declared inch inputs to mm once. Derive contacts, support heights,
    hole alignment and flush edges from named parameters, not unrelated offsets.
-   There is no general constraint solver.
+   There is no general constraint solver. For threaded bores, use the public
+   API's `internal_thread_tool`; do not rediscover a helical mesh implementation.
 3. AFTER blocking choices are resolved, export useful requested geometry and
    expose its viewer before deep checks. Preview/unvalidated is not approved.
 4. Ask for review at meaningful design decisions, not every code change.

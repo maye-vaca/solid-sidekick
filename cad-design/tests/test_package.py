@@ -55,9 +55,8 @@ class PackageTests(unittest.TestCase):
             self.skipTest("Original milestone-1 source not present in portable package")
         bundled = ROOT / "scripts" / "foundation"
         for relative in (
-            Path("cadkit") / "geometry.py",
             Path("requirements.txt"), Path("README.md"), Path("example.py"),
-            Path("tests") / "test_foundation.py", Path("tests") / "test_browser.py",
+            Path("tests") / "test_browser.py",
         ):
             self.assertEqual(digest(original / relative), digest(bundled / relative), str(relative))
 

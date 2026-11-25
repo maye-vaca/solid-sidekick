@@ -36,6 +36,48 @@ Distinguish a real geometry failure, an incorrect test expectation and a bounded
 numerical residual. For Boolean slivers, quantify any excluded residual and
 verify that no meaningful material was discarded; do not broadly relax checks.
 
+## Bounded mesh failure diagnosis
+
+Start with the actual current `validation.json`, brief/revision, failing command
+and file path. A transcript summary is a lead, not proof of current disk state.
+Separate **observed**, **hypothesized**, **ruled out** and **next experiment**.
+Do not promote "in-memory valid" into "the exporter/checker is wrong".
+
+1. Reproduce the smallest failing part once. Compare in-memory, serialized and
+   default-reloaded mesh counts, finite coordinates, bounds, watertightness and
+   positive volume. The shared invalid-STL error reports reload facts.
+2. For custom meshes, check precision at construction before changing export
+   or validation. Use `m.Mesh64` with float64 vertices and uint64 indices before
+   Booleans. A threaded ribbon built with float32 can produce tiny intersections
+   that collapse under default STL vertex welding. A valid in-memory topology
+   alone does not establish a robust printable export.
+3. Change one cause and rerun the same default export/reload check. Keep its
+   negative control and a regression covering the failing fit variants.
+   Do not remove watertight/volume checks, globally tighten merge tolerance,
+   or declare the failure a false positive without discriminating evidence.
+   `process=False` on STL gives unstitched triangle soup, not proof of a solid.
+4. Inspect the installed API before using unfamiliar methods. Prefer
+   `importlib.metadata.version("manifold3d")` to assuming `__version__`; inspect
+   the particular method's help rather than enumerating the entire kernel.
+   Do not add SciPy solely to investigate a problem already exposed by basic
+   mesh counts and the existing Manifold operations. On Windows, use ASCII
+   diagnostic text or `python -X utf8`; an encoding error is not geometry evidence.
+5. Each additional diagnostic must resolve a different open hypothesis. After
+   two experiments that add no evidence, reassess and report the precise blocker
+   instead of repeating analysis, rereading the same files or rewriting another
+   nearly identical `_diag` script. Keep scratch scripts outside the project:
+   root-level Python files participate in qualified source binding.
+6. Across compaction or handoff, retain paths, revision, observed results, ruled-out
+   experiments, unresolved hypotheses and the next executable check. Resume
+   that check after verifying current files; do not restart the entire trace.
+   State success only after the actual command, not while writing its script.
+
+Track units through numerical diagnosis. For example, `6e-9 mm` is `0.006 nm`,
+not `6 nm`; neither magnitude by itself excuses a failed export.
+After a geometry repair, retain the prior exports/brief and use the supported
+topology revision or recorded-failure recovery path. Do not requalify changed
+geometry under the old identity or hand-edit failure evidence.
+
 ## Use the shared checker
 
 Generated projects include `validate.py`, `checks.py` and `cadkit.validation`.
