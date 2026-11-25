@@ -230,6 +230,8 @@ class Assembly:
             from .embedded import read_assets
             assets = read_assets(viewer_assets)
         local, placed = self.meshes()
+        from .validation import check_glb, preflight_glb
+        preflight_glb(local)
         output = Path(output).expanduser().resolve()
         if previous_output is not None and self.revision is None:
             raise ValueError("Revision comparison requires tracked source")
@@ -254,6 +256,7 @@ class Assembly:
                 scene.graph.update(frame_to=instance.id, frame_from=scene.graph.base_frame,
                                    matrix=transform, geometry=instance.part_id)
             (stage / "assembly.glb").write_bytes(scene.export(file_type="glb"))
+            check_glb(self, local, placed, stage / "assembly.glb")
             info = {}
             for instance in self.instances:
                 part = self.parts[instance.part_id]

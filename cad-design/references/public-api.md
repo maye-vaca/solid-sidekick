@@ -125,6 +125,12 @@ the schema, migration, snapshot/restore and validated-handoff commands.
 ASCII STLs in mm, shared-instance `assembly.glb` in metres, offline `viewer.html`,
 `manifest.json`. Z-up is preserved. These are meshes, not STEP/B-rep.
 STL has no units; import as mm. Use new output after part removals/renames.
+GLB precision is checked before any export files are created by simulating
+metre/float32 positions, then the actual staged GLB is independently reloaded
+and checked before publication. Keep local part geometry near its origin and
+use `Placement` for offsets; do not silently change geometry or formats when
+precision fails. See [the GLB gates](validation-and-delivery.md#glb-precision-gates).
+These gates do not replace project checks or normal STL/browser validation.
 
 The lightweight viewer remains the default. For an explicitly requested embedded
 component plus matching HTML, see [viewer backends](viewer-backends.md).

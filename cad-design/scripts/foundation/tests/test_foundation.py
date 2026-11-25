@@ -51,6 +51,24 @@ class FoundationTests(unittest.TestCase):
                     check_exports(Context(assembly), assembly.export(directory))
 
 
+    def test_nested_and_depth_staggered_tangent_cuts_remain_valid(self):
+        large = cylinder(3, 10).translate((7, 7, -1))
+        # A smaller same-depth circle inside the larger one is redundant, not invalid.
+        small = cylinder(1, 10).translate((9, 7, -1))
+        stock = box(14, 14, 8)
+        shapes = (stock - large - small,
+                  stock - cylinder(3, 4).translate((7, 7, 5))
+                  - cylinder(1, 10).translate((9, 7, -1)))
+        reference = stock - large
+        self.assertAlmostEqual((shapes[0] - reference).volume() + (reference - shapes[0]).volume(),
+                               0, delta=1e-6)
+        for solid in shapes:
+            with self.subTest(volume=solid.volume()), tempfile.TemporaryDirectory() as directory:
+                assembly = Assembly("Tangent cut sections", "+Z up; mm")
+                assembly.add_part(Part("block", solid, "Block", "Concept", "#70c7d7"))
+                assembly.add_instance(Instance("block", "block"))
+                check_exports(Context(assembly), assembly.export(directory))
+
     def test_internal_thread_clearance_variants_survive_default_export_reload(self):
         pitch, height, major = 25.4 / 16.0, 6.0, 9.525
         body = m.Manifold.cylinder(height, 12.0 / math.sqrt(3.0),

@@ -17,7 +17,7 @@ inspected", and "user-approved arrangement". None implies the others.
 | Interference | Relevant pairs checked; acceptable/intentional intersections documented |
 | Motion | Geometry at relevant positions or a justified swept check, not just the final pose |
 | STL | Reload and measure bounds/scale in mm, including a small detailed part |
-| GLB | Reload named instances, shared geometry and transform scale in metres |
+| GLB | Preflight float32 precision; reload physical solids, triangle geometry, finishes and named placements in metres |
 | Viewer | Visible geometry, useful camera, selection/visibility controls and no rendering error |
 | Portability | Build/export from a fresh project location without original-session paths |
 
@@ -95,6 +95,13 @@ sharing/scale/colors, checks all static instance pairs with AABB pruning, and
 exercises the real offline viewer. It uses native Manifold distance queries,
 not optional SciPy proximity tracing.
 
+GLB checks also compare the independently reloaded physical meshes to the
+source, not just their outer bounds. Missing holes can preserve both bounds
+and plausible rendering. Finish-color seams are welded only at exactly equal
+positions for physical checks; no looser merge tolerance is used to hide lost
+detail. The report's `exports.glb` records checked part count and maximum
+solid difference in mm^3.
+
 Write only project-specific assertions in `checks.check(context)`: actual
 dimensions, holes, bores, placements and required gaps. Return concise measured
 results as a JSON-compatible dictionary. `context` supplies `assembly`, `local`
@@ -134,6 +141,36 @@ GLB uses metres for vertices and translation, preserving the documented Z-up
 modeling convention rather than silently rotating the model.
 ASCII STL avoids the float32 small-detail loss encountered in binary STL.
 Test actual output: text encoding alone is not proof of correct geometry.
+
+### GLB precision gates
+
+Before creating export files, `Assembly.export` simulates the actual
+mm-to-metres-to-float32 position conversion for each local part. It rejects
+nonfinite/collapsed vertices, degenerate or non-volumetric physical geometry,
+reversed triangles, triangle displacement beyond 0.0002 mm, and solid changes
+beyond the shared Boolean-difference tolerance. This predicts serialization
+loss; it is not merely a check of the original float64 mesh.
+
+After serialization, the exporter reloads the staged GLB and applies the same
+physical/geometry checks, plus exact finish assignment, shared-part references
+and placed transforms/bounds. This catches serializer or format-path problems
+the prediction cannot establish. Either GLB failure leaves the existing output
+files and qualification untouched. `validate.py` repeats the actual GLB reload
+checks later, so changed untracked GLBs do not evade geometry validation.
+
+Keep detailed geometry near the part's local origin and express assembly
+offsets with `Placement`. A large offset baked into vertex coordinates consumes
+float32 precision; an ordinary-looking STL can therefore accompany a collapsed
+GLB. The error identifies the part and suggests local-coordinate correction.
+The exporter does not silently rebase coordinates, enlarge features, omit GLB
+or substitute a different delivery format. If the geometry cannot be represented
+within this contract, resolve the requested output explicitly.
+
+These are GLB-specific gates, not full project qualification or a blanket
+tangency rule. Independent dimensional/mating checks, normal STL reload and
+browser checks remain separate. The exporter still permits an unchecked STL
+preview to be published before the shared validator reports an STL failure.
+Do not claim its entire multi-file publication is atomic.
 
 Source inputs may be in inches but convert once at the model boundary. Do not
 scale an already-normalized `Part` or `Placement` a second time.
