@@ -497,6 +497,38 @@ class IncrementalTests(unittest.TestCase):
                           output, require_validation=True)
             self.cli(project, "verify", "--include-packet", success=False)
 
+    def test_invalid_browser_fails_before_advancing_or_retiring_handoff(self):
+        with tempfile.TemporaryDirectory() as directory:
+            project = new_project.create_project(Path(directory) / "project")
+            self.cli(project, "qualify")
+            output = project / "output"
+            original_brief = (project / "design_brief.json").read_bytes()
+            original = {name: (output / name).read_bytes() for name in
+                        ("incremental-state.json", "incremental-last.json", "validation.json")}
+            missing = project / "missing-browser.exe"
+            result = self.cli(project, "revise", "--revision", "bad-browser",
+                              "--delta", "Preflight fixture", "--tier", "topology",
+                              "--browser", missing, success=False)
+            self.assertIn("Browser executable not found", result.stdout+result.stderr)
+            self.assertEqual(original_brief, (project / "design_brief.json").read_bytes())
+            for name, content in original.items():
+                self.assertEqual(content, (output / name).read_bytes())
+
+    def test_standalone_validation_preflight_preserves_qualification(self):
+        with tempfile.TemporaryDirectory() as directory:
+            project = new_project.create_project(Path(directory) / "project")
+            self.cli(project, "qualify")
+            output = project / "output"
+            original = {name: (output / name).read_bytes() for name in
+                        ("incremental-state.json", "incremental-last.json", "validation.json")}
+            result = subprocess.run(
+                [sys.executable, "validate.py", "--browser", str(project / "missing-browser.exe")],
+                cwd=project, capture_output=True, text=True, timeout=120)
+            self.assertNotEqual(result.returncode, 0, result.stdout)
+            self.assertIn("Browser executable not found", result.stdout+result.stderr)
+            for name, content in original.items():
+                self.assertEqual(content, (output / name).read_bytes())
+
     def test_missing_dependency_and_unlisted_geometry_are_rejected_by_scalar_guard(self):
         with tempfile.TemporaryDirectory() as directory:
             for kind in ("missing", "unlisted"):

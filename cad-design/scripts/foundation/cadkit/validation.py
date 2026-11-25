@@ -1,25 +1,44 @@
 """Reusable solid, export and offline-browser checks; no design-specific geometry."""
 
 import argparse
-import importlib
+import importlib.util
 from itertools import combinations
 import json
 import os
 from pathlib import Path
+import shutil
 import sys
+import tempfile
 import time
 
 import manifold3d as m
 import numpy as np
 import trimesh
 
-from .preview import utc_now, wait_for_ack
+from .preview import utc_now, wait_for_ack, write_json
 from .timing import stage
 
 
 def require(condition, message):
     if not condition:
         raise ValueError(message)
+
+
+def preflight_browser(executable):
+    """Resolve the browser and require Playwright before destructive work."""
+    candidate = Path(executable).expanduser()
+    if not candidate.is_file():
+        found = shutil.which(str(executable))
+        if not found:
+            raise ValueError(f"Browser executable not found: {executable}")
+        candidate = Path(found)
+    try:
+        installed = importlib.util.find_spec("playwright") is not None
+    except (ImportError, ValueError):
+        installed = False
+    if not installed:
+        raise ValueError("Playwright is not installed in the validation environment")
+    return candidate.resolve()
 
 
 def mesh_solid(mesh):
@@ -80,6 +99,86 @@ def compare_solid(actual, expected, label):
     return float(difference)
 
 
+def check_glb_geometry(actual, expected, label):
+    """Check physical geometry in mm, including meshes unmerged for finish colors."""
+    require(len(actual.faces) == len(expected.faces), f"{label}: geometry triangle count changed")
+    require(np.isfinite(actual.vertices).all(), f"{label}: geometry contains nonfinite coordinates")
+    vertices, indices = np.unique(actual.vertices, axis=0, return_inverse=True)
+    require(len(vertices) == len(np.unique(expected.vertices, axis=0)),
+            f"{label}: geometry precision collapsed or changed distinct vertices")
+    # Exact welding only joins identical GLB positions split for vertex colors.
+    physical = trimesh.Trimesh(vertices=vertices, faces=indices[actual.faces], process=False)
+    require(np.all(physical.area_faces > 0) and physical.is_watertight and physical.is_volume,
+            f"{label}: geometry is degenerate or not a closed consistently oriented volume")
+    require(np.allclose(actual.triangles, expected.triangles, atol=.0002, rtol=0),
+            f"{label}: geometry precision exceeds 0.0002 mm or triangle mapping changed")
+    before = np.cross(expected.triangles[:, 1] - expected.triangles[:, 0],
+                      expected.triangles[:, 2] - expected.triangles[:, 0])
+    after = np.cross(actual.triangles[:, 1] - actual.triangles[:, 0],
+                     actual.triangles[:, 2] - actual.triangles[:, 0])
+    require(np.all(np.einsum("ij,ij->i", before, after) > 0),
+            f"{label}: geometry precision reversed a triangle")
+    # Center both solids together for the Boolean comparison, without changing exported coordinates.
+    reference = expected.copy()
+    origin = expected.bounds.mean(axis=0)
+    reference.apply_translation(-origin)
+    physical.apply_translation(-origin)
+    return compare_solid(mesh_solid(physical), mesh_solid(reference), label + " geometry")
+
+
+def preflight_glb(local):
+    """Predict glTF POSITION float32 rounding in metres before writing any artifacts."""
+    for name, mesh in local.items():
+        candidate = mesh.copy()
+        with np.errstate(over="ignore", invalid="ignore"):
+            candidate.vertices = (np.asarray(mesh.vertices * .001, dtype=np.float32)
+                                  .astype(np.float64) * 1000)
+        try:
+            check_glb_geometry(candidate, mesh, f"GLB {name}")
+        except ValueError as error:
+            raise ValueError(
+                f"GLB {name}: precision preflight failed before serialization: {error}. "
+                "Keep part geometry near its local origin and use Placement for assembly offsets; "
+                "if necessary, revise the feature scale or use a higher-precision delivery format. "
+                "No new exports were published."
+            ) from error
+
+
+def check_glb(assembly, local, placed, path):
+    """Independently reload actual GLB bytes, checking geometry, instances and finishes."""
+    scene = trimesh.load(path, force="scene")
+    require(set(scene.graph.nodes_geometry) == set(placed), "Wrong GLB instance nodes")
+    require(set(scene.geometry) == set(local), "GLB did not reuse the expected part definitions")
+    errors = []
+    for name, expected in local.items():
+        actual = scene.geometry[name]
+        physical = actual.copy()
+        physical.apply_scale(1000)
+        errors.append(check_glb_geometry(physical, expected, f"GLB {name}"))
+        part = assembly.parts[name]
+        if part.visual_regions:
+            from .regions import colored_mesh
+            expected_mesh = colored_mesh(part, expected)
+            require(np.array_equal(actual.visual.vertex_colors[actual.faces],
+                                   expected_mesh.visual.vertex_colors[expected_mesh.faces]),
+                    f"{name}: wrong GLB region colors")
+        else:
+            color = trimesh.visual.color.hex_to_rgba(part.color)
+            require(np.all(actual.visual.vertex_colors == color), f"{name}: wrong GLB color")
+    for item in assembly.instances:
+        transform, geometry = scene.graph[item.id]
+        expected = item.placement.matrix()
+        expected[:3, 3] *= .001
+        require(geometry == item.part_id and np.isfinite(transform).all()
+                and np.allclose(transform, expected, atol=1e-8, rtol=0),
+                f"{item.id}: wrong GLB transform or part reference")
+        mesh = scene.geometry[geometry].copy()
+        mesh.apply_transform(transform)
+        require(np.allclose(mesh.bounds, placed[item.id].bounds * .001, atol=2e-7, rtol=0),
+                f"{item.id}: wrong GLB bounds/scale")
+    return {"parts_checked": len(errors), "max_solid_difference_mm3": max(errors)}
+
+
 def check_exports(context, output):
     output = Path(output)
     assembly = context.assembly
@@ -114,7 +213,10 @@ def check_exports(context, output):
             require(path.read_bytes().startswith(b"solid "), f"{entry['id']}: expected ASCII STL")
             mesh = trimesh.load_mesh(path)
             require(mesh.is_volume and mesh.is_watertight and np.isfinite(mesh.vertices).all(),
-                    f"{entry['id']}: invalid reloaded STL")
+                    f"{entry['id']}: invalid reloaded STL "
+                    f"(vertices={len(mesh.vertices)}, faces={len(mesh.faces)}, "
+                    f"watertight={mesh.is_watertight}, volume={mesh.is_volume}, "
+                    f"finite={bool(np.isfinite(mesh.vertices).all())})")
             require(np.allclose(mesh.bounds, meshes[entry["id"]].bounds, atol=.0002, rtol=0),
                     f"{entry['id']}: STL bounds mismatch")
             require(np.allclose(mesh.bounds, entry["bounds_mm"], atol=.0002, rtol=0),
@@ -129,31 +231,7 @@ def check_exports(context, output):
         require(entry["part_id"] == item.part_id and
                 np.allclose(entry["transform_mm"], item.placement.matrix(), atol=1e-8, rtol=0),
                 f"{item.id}: wrong manifest part reference or transform")
-    scene = trimesh.load(output / "assembly.glb", force="scene")
-    require(set(scene.graph.nodes_geometry) == set(context.placed), "Wrong GLB instance nodes")
-    require(len(scene.geometry) == len(context.local), "GLB did not reuse part definitions")
-    for item in assembly.instances:
-        transform, geometry = scene.graph[item.id]
-        expected = item.placement.matrix()
-        expected[:3, 3] *= .001
-        require(np.allclose(transform, expected, atol=1e-8, rtol=0), f"{item.id}: wrong GLB transform")
-        mesh = scene.geometry[geometry].copy()
-        mesh.apply_transform(transform)
-        require(np.allclose(mesh.bounds, context.placed[item.id].bounds*.001, atol=2e-7, rtol=0),
-                f"{item.id}: wrong GLB bounds/scale")
-        part = assembly.parts[item.part_id]
-        actual = scene.geometry[geometry]
-        if part.visual_regions:
-            from .regions import colored_mesh
-            expected_mesh = colored_mesh(part, context.local[item.part_id])
-            require(np.allclose(actual.triangles, expected_mesh.triangles*.001, atol=2e-7, rtol=0),
-                    f"{item.id}: GLB region geometry mapping changed")
-            require(np.array_equal(actual.visual.vertex_colors[actual.faces],
-                                   expected_mesh.visual.vertex_colors[expected_mesh.faces]),
-                    f"{item.id}: wrong GLB region colors")
-        else:
-            color = trimesh.visual.color.hex_to_rgba(part.color)
-            require(np.all(actual.visual.vertex_colors == color), f"{item.id}: wrong GLB color")
+    glb = check_glb(assembly, context.local, context.placed, output / "assembly.glb")
     html = (output / "viewer.html").read_text(encoding="utf-8")
     backend = manifest.get("viewer", {}).get("backend", "lightweight")
     require(backend in ("lightweight", "embedded"), "Unknown exported viewer backend")
@@ -177,7 +255,7 @@ def check_exports(context, output):
         return {"stls_reloaded": len(errors), "glb_instances": len(context.placed),
                 "shared_geometries": len(context.local), "max_solid_difference_mm3": max(errors),
                 "viewer_backend": backend, "scene_schema_version": 1,
-                "revision": revision, "manifest_sha256": sha256(output / "manifest.json")}
+                "glb": glb, "revision": revision, "manifest_sha256": sha256(output / "manifest.json")}
     payload = html.split('<script id="model" type="application/json">')[1].split("</script>")[0]
     viewer = json.loads(payload)
     require(viewer["units"] == "mm" and viewer["coordinateSystem"] == assembly.coordinate_system,
@@ -199,7 +277,27 @@ def check_exports(context, output):
         require({part["name"] for part in viewer["parts"]} == set(context.placed), "Wrong viewer components")
     return {"stls_reloaded": len(errors), "glb_instances": len(context.placed),
             "shared_geometries": len(context.local), "max_solid_difference_mm3": max(errors),
-            "revision": revision, "manifest_sha256": sha256(output / "manifest.json")}
+            "glb": glb, "revision": revision, "manifest_sha256": sha256(output / "manifest.json")}
+
+
+def capture_evidence(page, output):
+    """Screenshot to a private temporary file until browser checks complete."""
+    descriptor, name = tempfile.mkstemp(prefix=".validated-preview-", suffix=".png", dir=output)
+    os.close(descriptor)
+    path = Path(name)
+    try:
+        page.screenshot(path=str(path))
+    except BaseException:
+        path.unlink(missing_ok=True)
+        raise
+    return path
+
+
+def publish_evidence(output, temporary):
+    """Atomically replace the published browser evidence image."""
+    evidence = Path(output) / "evidence"
+    evidence.mkdir(exist_ok=True)
+    os.replace(temporary, evidence / "validated-preview.png")
 
 
 def rendered_pixels(page):
@@ -242,6 +340,7 @@ def check_browser(output, count, executable):
 
     output = Path(output).resolve()
     errors, remote, pixels = [], [], {}
+    temporary = None
     with sync_playwright() as pw:
         browser = pw.chromium.launch(
             executable_path=str(executable), headless=True,
@@ -264,8 +363,7 @@ def check_browser(output, count, executable):
                 page.locator("#"+preset).click()
                 pixels[preset] = rendered_pixels(page)
                 require(pixels[preset] > 1000, f"{preset}: no meaningful raster geometry")
-            (output / "evidence").mkdir(exist_ok=True)
-            page.screenshot(path=str(output / "evidence" / "validated-preview.png"))
+            temporary = capture_evidence(page, output)
             name = page.locator("#components .part button").first.inner_text()
             page.locator("#search").fill(name)
             require(page.locator("#components .part:visible").count() >= 1, "Search failed")
@@ -300,8 +398,14 @@ def check_browser(output, count, executable):
             require(page.evaluate("pan") != [0, 0], "Pan failed")
             require(page.evaluate("gl.getError()") == 0 and not errors, f"Rendering errors: {errors}")
             require(not remote, f"Offline viewer requested remote resources: {remote}")
+            publish_evidence(output, temporary)
+            temporary = None
         finally:
-            browser.close()
+            try:
+                browser.close()
+            finally:
+                if temporary is not None:
+                    temporary.unlink(missing_ok=True)
     return {"status": "passed", "raster_method": "rendered_vs_cleared_framebuffer",
             "pixels_by_view": pixels, "errors": errors, "remote_requests": remote}
 
@@ -310,6 +414,7 @@ def check_embedded_browser(output, count, executable):
     from playwright.sync_api import sync_playwright
 
     errors, remote, pixels = [], [], {}
+    temporary = None
     with sync_playwright() as pw:
         browser = pw.chromium.launch(executable_path=str(executable), headless=True,
                                     args=["--use-angle=swiftshader", "--enable-unsafe-swiftshader"])
@@ -363,15 +468,20 @@ def check_embedded_browser(output, count, executable):
             page.mouse.move(x+100, y+65, steps=4); page.mouse.up(button="right")
             require(page.evaluate("()=>cadViewer.getState().then(s=>s.camera.target)") != before,
                     "Embedded pointer pan failed")
-            (output / "evidence").mkdir(exist_ok=True)
-            page.screenshot(path=str(output / "evidence" / "validated-preview.png"))
+            temporary = capture_evidence(page, output)
             disposal = page.evaluate("()=>cadViewer.dispose()")
             require(disposal["after"]["total"] == 0 and disposal["remainingCanvas"] == 0,
                     "Embedded tracked GPU resources remained after disposal")
             require(page.locator("iframe").count() == 0, "Embedded frame remained after disposal")
             require(not errors and not remote, f"Embedded browser errors/network: {errors}/{remote}")
+            publish_evidence(output, temporary)
+            temporary = None
         finally:
-            browser.close()
+            try:
+                browser.close()
+            finally:
+                if temporary is not None:
+                    temporary.unlink(missing_ok=True)
     return {"status": "passed", "backend": "embedded", "pixels_by_view": pixels,
             "errors": errors, "remote_requests": remote, "disposal": disposal}
 
@@ -391,6 +501,11 @@ def main(*, _assembly_provider=None):
         try:
             require_modeling_ready(json.loads(brief_path.read_text(encoding="utf-8")))
         except (OSError, ValueError, KeyError) as error:
+            parser.exit(1, json.dumps({"status": "blocked", "error": str(error)})+"\n")
+    if args.browser:
+        try:
+            args.browser = preflight_browser(args.browser)
+        except (OSError, ValueError) as error:
             parser.exit(1, json.dumps({"status": "blocked", "error": str(error)})+"\n")
     try:
         from .revision import retire_qualification
@@ -428,13 +543,12 @@ def main(*, _assembly_provider=None):
         }
     except (OSError, ValueError, AssertionError, KeyError) as error:
         report = {"status": "failed", "error": str(error)}
-        args.output.mkdir(parents=True, exist_ok=True)
-        report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
+        write_json(report_path, report)
         parser.exit(1, json.dumps(report)+"\n")
     report["elapsed_seconds"] = time.monotonic()-started
     report["completed_at"] = utc_now()
     with stage("validation_report"):
-        report_path.write_text(json.dumps(report, indent=2, allow_nan=False), encoding="utf-8")
+        write_json(report_path, report)
     print(json.dumps({key: report[key] for key in ("status", "parts", "instances", "elapsed_seconds")},
                      separators=(",", ":")))
 

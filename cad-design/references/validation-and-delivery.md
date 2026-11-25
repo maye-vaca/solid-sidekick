@@ -17,7 +17,7 @@ inspected", and "user-approved arrangement". None implies the others.
 | Interference | Relevant pairs checked; acceptable/intentional intersections documented |
 | Motion | Geometry at relevant positions or a justified swept check, not just the final pose |
 | STL | Reload and measure bounds/scale in mm, including a small detailed part |
-| GLB | Reload named instances, shared geometry and transform scale in metres |
+| GLB | Preflight float32 precision; reload physical solids, triangle geometry, finishes and named placements in metres |
 | Viewer | Visible geometry, useful camera, selection/visibility controls and no rendering error |
 | Portability | Build/export from a fresh project location without original-session paths |
 
@@ -36,6 +36,48 @@ Distinguish a real geometry failure, an incorrect test expectation and a bounded
 numerical residual. For Boolean slivers, quantify any excluded residual and
 verify that no meaningful material was discarded; do not broadly relax checks.
 
+## Bounded mesh failure diagnosis
+
+Start with the actual current `validation.json`, brief/revision, failing command
+and file path. A transcript summary is a lead, not proof of current disk state.
+Separate **observed**, **hypothesized**, **ruled out** and **next experiment**.
+Do not promote "in-memory valid" into "the exporter/checker is wrong".
+
+1. Reproduce the smallest failing part once. Compare in-memory, serialized and
+   default-reloaded mesh counts, finite coordinates, bounds, watertightness and
+   positive volume. The shared invalid-STL error reports reload facts.
+2. For custom meshes, check precision at construction before changing export
+   or validation. Use `m.Mesh64` with float64 vertices and uint64 indices before
+   Booleans. A threaded ribbon built with float32 can produce tiny intersections
+   that collapse under default STL vertex welding. A valid in-memory topology
+   alone does not establish a robust printable export.
+3. Change one cause and rerun the same default export/reload check. Keep its
+   negative control and a regression covering the failing fit variants.
+   Do not remove watertight/volume checks, globally tighten merge tolerance,
+   or declare the failure a false positive without discriminating evidence.
+   `process=False` on STL gives unstitched triangle soup, not proof of a solid.
+4. Inspect the installed API before using unfamiliar methods. Prefer
+   `importlib.metadata.version("manifold3d")` to assuming `__version__`; inspect
+   the particular method's help rather than enumerating the entire kernel.
+   Do not add SciPy solely to investigate a problem already exposed by basic
+   mesh counts and the existing Manifold operations. On Windows, use ASCII
+   diagnostic text or `python -X utf8`; an encoding error is not geometry evidence.
+5. Each additional diagnostic must resolve a different open hypothesis. After
+   two experiments that add no evidence, reassess and report the precise blocker
+   instead of repeating analysis, rereading the same files or rewriting another
+   nearly identical `_diag` script. Keep scratch scripts outside the project:
+   root-level Python files participate in qualified source binding.
+6. Across compaction or handoff, retain paths, revision, observed results, ruled-out
+   experiments, unresolved hypotheses and the next executable check. Resume
+   that check after verifying current files; do not restart the entire trace.
+   State success only after the actual command, not while writing its script.
+
+Track units through numerical diagnosis. For example, `6e-9 mm` is `0.006 nm`,
+not `6 nm`; neither magnitude by itself excuses a failed export.
+After a geometry repair, retain the prior exports/brief and use the supported
+topology revision or recorded-failure recovery path. Do not requalify changed
+geometry under the old identity or hand-edit failure evidence.
+
 ## Use the shared checker
 
 Generated projects include `validate.py`, `checks.py` and `cadkit.validation`.
@@ -52,6 +94,13 @@ symmetric solid differences, verifies manifest provenance/transforms and GLB
 sharing/scale/colors, checks all static instance pairs with AABB pruning, and
 exercises the real offline viewer. It uses native Manifold distance queries,
 not optional SciPy proximity tracing.
+
+GLB checks also compare the independently reloaded physical meshes to the
+source, not just their outer bounds. Missing holes can preserve both bounds
+and plausible rendering. Finish-color seams are welded only at exactly equal
+positions for physical checks; no looser merge tolerance is used to hide lost
+detail. The report's `exports.glb` records checked part count and maximum
+solid difference in mm^3.
 
 Write only project-specific assertions in `checks.check(context)`: actual
 dimensions, holes, bores, placements and required gaps. Return concise measured
@@ -92,6 +141,36 @@ GLB uses metres for vertices and translation, preserving the documented Z-up
 modeling convention rather than silently rotating the model.
 ASCII STL avoids the float32 small-detail loss encountered in binary STL.
 Test actual output: text encoding alone is not proof of correct geometry.
+
+### GLB precision gates
+
+Before creating export files, `Assembly.export` simulates the actual
+mm-to-metres-to-float32 position conversion for each local part. It rejects
+nonfinite/collapsed vertices, degenerate or non-volumetric physical geometry,
+reversed triangles, triangle displacement beyond 0.0002 mm, and solid changes
+beyond the shared Boolean-difference tolerance. This predicts serialization
+loss; it is not merely a check of the original float64 mesh.
+
+After serialization, the exporter reloads the staged GLB and applies the same
+physical/geometry checks, plus exact finish assignment, shared-part references
+and placed transforms/bounds. This catches serializer or format-path problems
+the prediction cannot establish. Either GLB failure leaves the existing output
+files and qualification untouched. `validate.py` repeats the actual GLB reload
+checks later, so changed untracked GLBs do not evade geometry validation.
+
+Keep detailed geometry near the part's local origin and express assembly
+offsets with `Placement`. A large offset baked into vertex coordinates consumes
+float32 precision; an ordinary-looking STL can therefore accompany a collapsed
+GLB. The error identifies the part and suggests local-coordinate correction.
+The exporter does not silently rebase coordinates, enlarge features, omit GLB
+or substitute a different delivery format. If the geometry cannot be represented
+within this contract, resolve the requested output explicitly.
+
+These are GLB-specific gates, not full project qualification or a blanket
+tangency rule. Independent dimensional/mating checks, normal STL reload and
+browser checks remain separate. The exporter still permits an unchecked STL
+preview to be published before the shared validator reports an STL failure.
+Do not claim its entire multi-file publication is atomic.
 
 Source inputs may be in inches but convert once at the model boundary. Do not
 scale an already-normalized `Part` or `Placement` a second time.

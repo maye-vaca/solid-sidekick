@@ -7,8 +7,11 @@ import runpy
 import subprocess
 import sys
 import tempfile
+import threading
 import unittest
 from unittest.mock import patch
+import urllib.error
+import urllib.request
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -52,9 +55,8 @@ class PackageTests(unittest.TestCase):
             self.skipTest("Original milestone-1 source not present in portable package")
         bundled = ROOT / "scripts" / "foundation"
         for relative in (
-            Path("cadkit") / "geometry.py",
             Path("requirements.txt"), Path("README.md"), Path("example.py"),
-            Path("tests") / "test_foundation.py", Path("tests") / "test_browser.py",
+            Path("tests") / "test_browser.py",
         ):
             self.assertEqual(digest(original / relative), digest(bundled / relative), str(relative))
 
@@ -164,6 +166,29 @@ class PackageTests(unittest.TestCase):
                     new_project.create_project(target)
             self.assertFalse(target.exists())
 
+    def test_review_server_serves_page_without_directory_listing(self):
+        sys.path.insert(0, str(ROOT / "scripts" / "foundation"))
+        from cadkit.review_server import serve
+
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            (output / "review.html").write_text("<html>review</html>", encoding="utf-8")
+            server, url = serve(output, port=0, open_browser=False)
+            thread = threading.Thread(target=server.serve_forever, daemon=True)
+            thread.start()
+            try:
+                with urllib.request.urlopen(url, timeout=5) as response:
+                    self.assertEqual(response.status, 200)
+                    self.assertEqual(response.read(), b"<html>review</html>")
+                    self.assertEqual(response.headers["Cache-Control"], "no-store")
+                with self.assertRaises(urllib.error.HTTPError) as raised:
+                    urllib.request.urlopen(url.rsplit("/", 1)[0] + "/", timeout=5)
+                self.assertEqual(raised.exception.code, 404)
+            finally:
+                server.shutdown()
+                server.server_close()
+                thread.join(5)
+
     def test_new_project_builds_and_checks_from_another_cwd(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -180,12 +205,14 @@ class PackageTests(unittest.TestCase):
                 "cadkit/revision.py", "cadkit/timing.py", "cadkit/review.py",
                 "cadkit/regions.py", "cadkit/incremental.py",
                 "cadkit/drawing.py", "cadkit/checkpoint.py", "drawing-settings.json",
-                "cadkit/construction.py",
+                "cadkit/construction.py", "cadkit/review_server.py", "serve_review.py",
             }
             self.assertEqual(
                 {p.relative_to(project).as_posix() for p in project.rglob("*") if p.is_file()},
                 expected,
             )
+            self.assertEqual(list(root.glob(".cad-starter-*")), [])
+            self.assertEqual(list(project.parent.glob(".cad-starter-*")), [])
             result = self.run_cli([project / "model.py"], root)
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertNotIn("Traceback", result.stderr)

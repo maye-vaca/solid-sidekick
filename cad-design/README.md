@@ -26,6 +26,8 @@ See [the operating model](references/operating-model.md).
 - [Physical-language examples](references/physical-language-examples.md): translate "flush", "higher" and similar corrections into geometric relationships.
 - [Toolkit guide](references/toolkit-guide.md): environment setup and API/commands.
 - [Public API](references/public-api.md): compact modeling/checking contract; read first.
+- Threaded bores: `cadkit.geometry.internal_thread_tool` supplies a 64-bit,
+  simplified right-hand 60-degree cutter; see the public API for fit limits.
 - [Validation and delivery](references/validation-and-delivery.md): checks, output contract and limits.
 - [CLI runner](references/cli-runner.md): standalone discovery, owned-process cleanup, writer exclusion, deadlines and one verified bounded resume.
 - [Revision evaluation](references/revision-evaluation.md): real multi-turn scenarios, findings and limits.
@@ -106,6 +108,8 @@ Adapt `model.py`, the brief and checks to the actual design.
 New projects share deterministic STL/GLB/manifest/interference/browser validation.
 Write only design-specific requirements in `checks.py`, then run `validate.py`.
 Full diagnostics stay in `output\validation.json`; browser omissions are explicit.
+For repeated failures, use the validation reference's bounded diagnosis recipe
+and preserve observations separately from hypotheses across compaction.
 See the public API rather than loading toolkit/renderer internals routinely.
 The starter also emits a fresh unvalidated-preview marker before deep checks.
 The optional supervised CLI gate lets the host open that viewer immediately

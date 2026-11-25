@@ -17,7 +17,7 @@ from .revision import (
     retire_qualification, sha256, verify_export,
 )
 from .timing import stage
-from .validation import require
+from .validation import preflight_browser, require
 
 
 def source_binding(root):
@@ -159,6 +159,8 @@ def execute(args):
                         "Brief changed during handoff")
                 result["panel_action"] = "pass this verified result to cadReview.loadHandoff; stage pending, do not auto-apply"
             return result
+        if args.browser:
+            args.browser = preflight_browser(args.browser)
         scope, updates, prior_manifest = None, {}, None
         if args.command == "revise":
             if args.recover:
