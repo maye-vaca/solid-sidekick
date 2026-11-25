@@ -1,25 +1,44 @@
 """Reusable solid, export and offline-browser checks; no design-specific geometry."""
 
 import argparse
-import importlib
+import importlib.util
 from itertools import combinations
 import json
 import os
 from pathlib import Path
+import shutil
 import sys
+import tempfile
 import time
 
 import manifold3d as m
 import numpy as np
 import trimesh
 
-from .preview import utc_now, wait_for_ack
+from .preview import utc_now, wait_for_ack, write_json
 from .timing import stage
 
 
 def require(condition, message):
     if not condition:
         raise ValueError(message)
+
+
+def preflight_browser(executable):
+    """Resolve the browser and require Playwright before destructive work."""
+    candidate = Path(executable).expanduser()
+    if not candidate.is_file():
+        found = shutil.which(str(executable))
+        if not found:
+            raise ValueError(f"Browser executable not found: {executable}")
+        candidate = Path(found)
+    try:
+        installed = importlib.util.find_spec("playwright") is not None
+    except (ImportError, ValueError):
+        installed = False
+    if not installed:
+        raise ValueError("Playwright is not installed in the validation environment")
+    return candidate.resolve()
 
 
 def mesh_solid(mesh):
@@ -114,7 +133,10 @@ def check_exports(context, output):
             require(path.read_bytes().startswith(b"solid "), f"{entry['id']}: expected ASCII STL")
             mesh = trimesh.load_mesh(path)
             require(mesh.is_volume and mesh.is_watertight and np.isfinite(mesh.vertices).all(),
-                    f"{entry['id']}: invalid reloaded STL")
+                    f"{entry['id']}: invalid reloaded STL "
+                    f"(vertices={len(mesh.vertices)}, faces={len(mesh.faces)}, "
+                    f"watertight={mesh.is_watertight}, volume={mesh.is_volume}, "
+                    f"finite={bool(np.isfinite(mesh.vertices).all())})")
             require(np.allclose(mesh.bounds, meshes[entry["id"]].bounds, atol=.0002, rtol=0),
                     f"{entry['id']}: STL bounds mismatch")
             require(np.allclose(mesh.bounds, entry["bounds_mm"], atol=.0002, rtol=0),
@@ -202,6 +224,26 @@ def check_exports(context, output):
             "revision": revision, "manifest_sha256": sha256(output / "manifest.json")}
 
 
+def capture_evidence(page, output):
+    """Screenshot to a private temporary file until browser checks complete."""
+    descriptor, name = tempfile.mkstemp(prefix=".validated-preview-", suffix=".png", dir=output)
+    os.close(descriptor)
+    path = Path(name)
+    try:
+        page.screenshot(path=str(path))
+    except BaseException:
+        path.unlink(missing_ok=True)
+        raise
+    return path
+
+
+def publish_evidence(output, temporary):
+    """Atomically replace the published browser evidence image."""
+    evidence = Path(output) / "evidence"
+    evidence.mkdir(exist_ok=True)
+    os.replace(temporary, evidence / "validated-preview.png")
+
+
 def rendered_pixels(page):
     """Compare rendered geometry with the same framebuffer cleared of geometry."""
     return page.evaluate("""()=>{
@@ -242,6 +284,7 @@ def check_browser(output, count, executable):
 
     output = Path(output).resolve()
     errors, remote, pixels = [], [], {}
+    temporary = None
     with sync_playwright() as pw:
         browser = pw.chromium.launch(
             executable_path=str(executable), headless=True,
@@ -264,8 +307,7 @@ def check_browser(output, count, executable):
                 page.locator("#"+preset).click()
                 pixels[preset] = rendered_pixels(page)
                 require(pixels[preset] > 1000, f"{preset}: no meaningful raster geometry")
-            (output / "evidence").mkdir(exist_ok=True)
-            page.screenshot(path=str(output / "evidence" / "validated-preview.png"))
+            temporary = capture_evidence(page, output)
             name = page.locator("#components .part button").first.inner_text()
             page.locator("#search").fill(name)
             require(page.locator("#components .part:visible").count() >= 1, "Search failed")
@@ -300,8 +342,14 @@ def check_browser(output, count, executable):
             require(page.evaluate("pan") != [0, 0], "Pan failed")
             require(page.evaluate("gl.getError()") == 0 and not errors, f"Rendering errors: {errors}")
             require(not remote, f"Offline viewer requested remote resources: {remote}")
+            publish_evidence(output, temporary)
+            temporary = None
         finally:
-            browser.close()
+            try:
+                browser.close()
+            finally:
+                if temporary is not None:
+                    temporary.unlink(missing_ok=True)
     return {"status": "passed", "raster_method": "rendered_vs_cleared_framebuffer",
             "pixels_by_view": pixels, "errors": errors, "remote_requests": remote}
 
@@ -310,6 +358,7 @@ def check_embedded_browser(output, count, executable):
     from playwright.sync_api import sync_playwright
 
     errors, remote, pixels = [], [], {}
+    temporary = None
     with sync_playwright() as pw:
         browser = pw.chromium.launch(executable_path=str(executable), headless=True,
                                     args=["--use-angle=swiftshader", "--enable-unsafe-swiftshader"])
@@ -363,15 +412,20 @@ def check_embedded_browser(output, count, executable):
             page.mouse.move(x+100, y+65, steps=4); page.mouse.up(button="right")
             require(page.evaluate("()=>cadViewer.getState().then(s=>s.camera.target)") != before,
                     "Embedded pointer pan failed")
-            (output / "evidence").mkdir(exist_ok=True)
-            page.screenshot(path=str(output / "evidence" / "validated-preview.png"))
+            temporary = capture_evidence(page, output)
             disposal = page.evaluate("()=>cadViewer.dispose()")
             require(disposal["after"]["total"] == 0 and disposal["remainingCanvas"] == 0,
                     "Embedded tracked GPU resources remained after disposal")
             require(page.locator("iframe").count() == 0, "Embedded frame remained after disposal")
             require(not errors and not remote, f"Embedded browser errors/network: {errors}/{remote}")
+            publish_evidence(output, temporary)
+            temporary = None
         finally:
-            browser.close()
+            try:
+                browser.close()
+            finally:
+                if temporary is not None:
+                    temporary.unlink(missing_ok=True)
     return {"status": "passed", "backend": "embedded", "pixels_by_view": pixels,
             "errors": errors, "remote_requests": remote, "disposal": disposal}
 
@@ -391,6 +445,11 @@ def main(*, _assembly_provider=None):
         try:
             require_modeling_ready(json.loads(brief_path.read_text(encoding="utf-8")))
         except (OSError, ValueError, KeyError) as error:
+            parser.exit(1, json.dumps({"status": "blocked", "error": str(error)})+"\n")
+    if args.browser:
+        try:
+            args.browser = preflight_browser(args.browser)
+        except (OSError, ValueError) as error:
             parser.exit(1, json.dumps({"status": "blocked", "error": str(error)})+"\n")
     try:
         from .revision import retire_qualification
@@ -428,13 +487,12 @@ def main(*, _assembly_provider=None):
         }
     except (OSError, ValueError, AssertionError, KeyError) as error:
         report = {"status": "failed", "error": str(error)}
-        args.output.mkdir(parents=True, exist_ok=True)
-        report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
+        write_json(report_path, report)
         parser.exit(1, json.dumps(report)+"\n")
     report["elapsed_seconds"] = time.monotonic()-started
     report["completed_at"] = utc_now()
     with stage("validation_report"):
-        report_path.write_text(json.dumps(report, indent=2, allow_nan=False), encoding="utf-8")
+        write_json(report_path, report)
     print(json.dumps({key: report[key] for key in ("status", "parts", "instances", "elapsed_seconds")},
                      separators=(",", ":")))
 

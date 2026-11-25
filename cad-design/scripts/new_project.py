@@ -3,7 +3,7 @@
 import argparse
 from pathlib import Path
 import shutil
-import tempfile
+import uuid
 
 
 SKILL_ROOT = Path(__file__).resolve().parents[1]
@@ -19,18 +19,20 @@ def create_project(destination):
         foundation / "cadkit" / name
         for name in ("__init__.py", "assembly.py", "geometry.py", "viewer.py", "scene.py",
                      "embedded.py", "validation.py", "preview.py", "revision.py", "timing.py", "review.py",
-                     "regions.py", "incremental.py", "drawing.py", "checkpoint.py", "construction.py")
+                     "regions.py", "incremental.py", "drawing.py", "checkpoint.py", "construction.py",
+                     "review_server.py")
     ] + [foundation / "requirements.txt"] + [
         templates / name for name in ("model.py", "design_brief.json", "test_model.py",
-                                     "checks.py", "validate.py", "README.md", "drawing-settings.json")
+                                     "checks.py", "validate.py", "README.md", "drawing-settings.json",
+                                     "serve_review.py")
     ]
     for source in required:
         if not source.is_file():
             raise FileNotFoundError(f"Skill bundle is incomplete: {source}")
     destination.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(prefix="cad-starter-", dir=destination.parent) as directory:
-        staged = Path(directory) / "project"
-        staged.mkdir()
+    staged = destination.parent / f".cad-starter-{uuid.uuid4().hex}"
+    staged.mkdir()
+    try:
         for source in required:
             relative = Path("cadkit") / source.name if source.parent.name == "cadkit" else Path(source.name)
             target = staged / relative
@@ -40,6 +42,8 @@ def create_project(destination):
         destination.mkdir()
         for source in staged.iterdir():
             shutil.move(str(source), str(destination / source.name))
+    finally:
+        shutil.rmtree(staged, ignore_errors=True)
     return destination
 
 

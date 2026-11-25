@@ -181,8 +181,30 @@ python validate.py --browser "C:\Program Files (x86)\Microsoft\Edge\Application\
 ```
 
 `CADKIT_BROWSER` also supplies that path. Browser automation is optional, not
-a geometry dependency. Neither a static interference pass nor visual plausibility
-establishes functional motion, physical fits or load capacity.
+a geometry dependency. Browser validation is preflighted before qualification
+retirement or revision advancement: a missing executable or Playwright
+installation fails without invalidating the current handoff. Browser evidence
+is published only after every browser check passes. Neither a static
+interference pass nor visual plausibility establishes functional motion,
+physical fits or load capacity.
+
+## Review page access
+
+If a browser reports that `output\review.html` is not readable, the export is
+being blocked by `file://` permissions or an endpoint DLP policy. Serve the
+output over loopback instead:
+
+```powershell
+python serve_review.py
+```
+
+The server binds only to `127.0.0.1`, opens `review.html` (or `viewer.html`)
+in the default browser, and runs until Ctrl+C. Use the printed URL. The same
+server is available as `python -m cadkit.review_server`. Generated files now
+inherit the project folder's ACL, so direct access should also work after a
+fresh export. This is account-independent: no username is hardcoded. Do not
+strip DLP tags. If direct `file://` access is required, ask IT to allowlist the
+project folder.
 
 ## Outputs
 

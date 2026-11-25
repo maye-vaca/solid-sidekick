@@ -1,16 +1,31 @@
 """Reusable components, placement and exports; canonical geometry uses millimetres."""
 
 from dataclasses import dataclass, field
+import contextlib
 import json
 import math
 from pathlib import Path
 import re
-import tempfile
+import shutil
+import uuid
 
 import manifold3d as m
 import numpy as np
 import trimesh
 from .regions import VisualRegion
+
+
+@contextlib.contextmanager
+def stage_directory(parent, prefix=".cadkit-stage-"):
+    """Create a private stage that inherits the output folder's ACL, then remove it."""
+    parent = Path(parent)
+    stage = parent / f"{prefix}{uuid.uuid4().hex}"
+    stage.mkdir()
+    try:
+        yield stage
+    finally:
+        shutil.rmtree(stage, ignore_errors=True)
+
 
 def identifier(value, label):
     if not isinstance(value, str) or not re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]*", value):
@@ -218,10 +233,9 @@ class Assembly:
         output = Path(output).expanduser().resolve()
         if previous_output is not None and self.revision is None:
             raise ValueError("Revision comparison requires tracked source")
-        # Stage a complete build before replacing generated files. No directory deletion.
+        # Stage a complete build before replacing generated files; only the private stage is removed.
         output.parent.mkdir(parents=True, exist_ok=True)
-        with tempfile.TemporaryDirectory(prefix="cadkit-", dir=output.parent) as temp:
-            stage = Path(temp)
+        with stage_directory(output.parent) as stage:
             for subdir in ("parts", "assembled"):
                 (stage / subdir).mkdir()
             for key, mesh in local.items():

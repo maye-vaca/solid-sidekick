@@ -18,10 +18,10 @@ URL for a local downloadable file.
 
 If a direct `file://` navigation is denied, serve the output over a loopback
 HTTP server and open that URL instead:
-- start `python -m http.server <port> --bind 127.0.0.1` in the output folder as
-  a background process;
-- open `http://127.0.0.1:<port>/review.html` (or `viewer.html`) in the default
-  browser;
+- from a new project with the helper, run `python serve_review.py --port 0`
+  (or `python -m cadkit.review_server --output "<output folder>"`);
+- the helper selects a free loopback port, prints the real URL, disables
+  directory listings and opens the review page in the default browser;
 - confirm the server responds before telling the user it is ready, then stop
   the server after the user has the page.
 Loopback only: never bind the server to another interface. This also works when

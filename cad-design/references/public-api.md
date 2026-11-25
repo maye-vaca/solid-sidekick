@@ -218,7 +218,10 @@ context.expect_gap("first", "second", expected_mm)  # real native distance
 `validate.py` handles STL solid comparisons, manifest/GLB checks, static
 interferences and real offline raster/controls checks. It saves full
 `output\validation.json` and prints a concise summary; open full diagnostics
-only on failure. No browser means **geometry_passed_browser_not_run**.
+only on failure. Browser checks preflight the executable and Playwright before
+qualification retirement or revision advancement; missing prerequisites leave
+the current handoff intact. Browser evidence is published only after all checks
+pass. No browser means **geometry_passed_browser_not_run**.
 `test_model.py` is an optional thin regression wrapper; do not duplicate
 the validator in project code. For intentional overlaps or delivery nuances,
 consult [validation and delivery](validation-and-delivery.md).
