@@ -1,0 +1,43 @@
+{
+  "status": "geometry_checks_passed",
+  "checks": [
+    "Seat shoulder and sleeve bore",
+    "0.20 mm shaft radial gap",
+    "8 mm sleeve / 2 mm floor stack"
+  ],
+  "interference": {
+    "pairs": 3,
+    "boolean_checks": 0,
+    "documented_overlaps": [],
+    "note": "Zero overlap does not establish clearance or physical fit."
+  },
+  "physical_acceptance": "not_performed",
+  "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+  "exports": {
+    "stls_reloaded": 6,
+    "glb_instances": 3,
+    "shared_geometries": 3,
+    "max_solid_difference_mm3": 0.0,
+    "glb": {
+      "parts_checked": 3,
+      "max_solid_difference_mm3": 0.00021687328838561695
+    },
+    "revision": {
+      "status": "untracked"
+    },
+    "manifest_sha256": "cacc7fced16765d98eb20d9c7e378ec8990fbefacb66fdda0321ada65f2013f5"
+  },
+  "browser": {
+    "status": "passed",
+    "raster_method": "rendered_vs_cleared_framebuffer",
+    "pixels_by_view": {
+      "top": 88898,
+      "under": 88898,
+      "front": 60802,
+      "side": 36322,
+      "iso": 120315
+    },
+    "errors": [],
+    "remote_requests": []
+  }
+}

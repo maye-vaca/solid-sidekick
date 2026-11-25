@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "name": "08 Motion profiles - eccentric cam",
+  "geometry_units": "mm",
+  "stl_units": "mm",
+  "glb_units": "m",
+  "coordinate_system": "Millimetres; +Z up. Local part STLs are not an arranged print plate.",
+  "parameters": {
+    "outer_radius_mm": 12,
+    "eccentricity_mm": 2,
+    "pivot_bore_diameter_mm": 4.4
+  },
+  "assumptions": [
+    "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+    "2 mm eccentric circular cam geometry. Not an involute gear, conjugate follower pair, lead screw or motion solver."
+  ],
+  "limitations": "Mesh geometry, not STEP/B-rep. Not a structural or fabrication certification.",
+  "parts": [
+    {
+      "id": "eccentric_cam",
+      "name": "eccentric cam",
+      "material": "Unspecified prototype material",
+      "color": "#70c7d7",
+      "notes": "2 mm eccentric circular cam geometry. Not an involute gear, conjugate follower pair, lead screw or motion solver.",
+      "stl": "parts/eccentric_cam.stl",
+      "bounds_mm": [
+        [
+          -10.0,
+          -12.0,
+          0.0
+        ],
+        [
+          14.0,
+          12.0,
+          4.0
+        ]
+      ],
+      "volume_mm3": 1747.487897024008
+    }
+  ],
+  "instances": [
+    {
+      "id": "eccentric_cam",
+      "part_id": "eccentric_cam",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/eccentric_cam.stl",
+      "bounds_mm": [
+        [
+          -10.0,
+          -12.0,
+          0.0
+        ],
+        [
+          14.0,
+          12.0,
+          4.0
+        ]
+      ]
+    }
+  ]
+}

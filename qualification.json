@@ -1,4 +1,137 @@
 {
+  "record_scope": "Original alpha.8 qualification retained below; followups records bounded checks of later source changes without rewriting historical acceptance.",
+  "followups": {
+    "thread_sampling_and_glb_precision": {
+      "version": "0.1.0-alpha.9",
+      "status": "bounded_geometry_serialization_and_regression_checks_passed",
+      "assessment": "cad-design/references/improvement-actions.md#geometry-validity-audit-follow-up",
+      "runtime_regression": {
+        "run": 88,
+        "skipped": 4,
+        "status": "passed",
+        "scope": "Foundation, shared validation, review/timing, package/scaffold, browser, regions/incremental and revision suites",
+        "skip_reasons": ["Historical original-foundation sources not present", "Optional trusted embedded-viewer assets not supplied"]
+      },
+      "thread": {
+        "requested_steps_per_turn": 12,
+        "diameter_pitch_clearance_mm": [[20, 0.5, 0], [100, 0.25, 0], [9.525, 1.5875, 0.5]],
+        "negative_control": "Prior coarse sampling erased or reduced grooves between angular samples",
+        "checks": ["Intermediate-angle finite probes against a finer reference", "Through-bore", "Normal STL/GLB export and reload"],
+        "new_contract": "Requested sampling is a floor; helix/core radial chord sag bounded to min(0.01 mm, 2% of profile depth)"
+      },
+      "glb": {
+        "pre_serialization": "Predict actual float32 metre-coordinate rounding before writing artifacts",
+        "post_serialization": "Reload staged GLB; check physical geometry, triangle mapping/orientation, colors, part references, transforms and bounds",
+        "regressions": [
+          "Far-local-coordinate bore-loss case rejected before serialization",
+          "Thin-solid and thin-frame collapse cases rejected before serialization",
+          "Failures preserve existing files; new output not published",
+          "Same-bounds and same-volume moved bore rejected by actual GLB reload validation",
+          "Deliberately damaged serializer output rejected while still staged",
+          "Locally modeled thin frame remains valid and shared under a large rotated Placement",
+          "Finish-region meshes retain physical geometry and color assignments"
+        ]
+      },
+      "valid_tangent_examples": ["Contained same-depth redundant cut", "Internally tangent stepped-depth bore"],
+      "idiom_examples": {"sets": 14, "parts": 23, "geometry_export_and_browser": "passed", "physical_acceptance": "not_performed"},
+      "clean_package": {
+        "run": 12,
+        "skipped": 0,
+        "status": "passed",
+        "host_install_and_dry_run_checks": ["copilot", "opencode", "openai", "manual"],
+        "installed_opencode_scaffold": "Fresh installed project passed export/GLB geometry and actual browser validation"
+      },
+      "limits": [
+        "No blanket tangency prohibition; evaluate the resulting 3D solid.",
+        "No automatic coordinate rebasing, feature resizing or silent format omission.",
+        "GLB gates are not full project qualification; STL reload and browser checks remain separate.",
+        "Old installed runtimes and historical examples remain unchanged."
+      ]
+    },
+    "current_first_review_and_idiom_test_pieces": {
+      "version": "0.1.0-alpha.9",
+      "status": "bounded_source_geometry_export_and_browser_checks_passed",
+      "assessment": "cad-design/references/improvement-actions.md#viewer-and-idiom-test-piece-follow-up",
+      "viewer_checks": {
+        "scope": "Source inspection and actual offline Edge/Playwright DOM, keyboard and raster checks using the supplied accessibility-audit checklist",
+        "report": {"run": 33, "skipped": 2, "status": "passed", "skip_reason": "Historical original-foundation sources not present"},
+        "covered": [
+          "Current-only isometric initial view and explicit keyboard-operable comparison",
+          "Hidden comparison controls/prior pane and full-width current frame",
+          "Camera, selection, visibility and pending update retained through toggles",
+          "Stale reload blocking, last-seen recovery and explicit Apply retained",
+          "Keyboard orbit/pan/zoom and click/tap alternatives",
+          "Computed text contrast including placeholders, 24px minimum control height",
+          "320 CSS-pixel reflow and text-spacing overrides",
+          "Offline rendering without remote requests"
+        ],
+        "accessibility_conformance": "Not assessed as a complete WCAG conformance audit",
+        "unverified": ["Screen-reader usability", "Actual browser zoom with assistive technology", "OS high-contrast visual review"]
+      },
+      "runtime_regression": {
+        "run": 82,
+        "skipped": 4,
+        "status": "passed",
+        "scope": "Review/timing, package/scaffold, browser, shared validation, foundation, regions/incremental and revision suites",
+        "skip_reasons": ["Historical original-foundation sources not present", "Optional trusted embedded-viewer assets not supplied"]
+      },
+      "clean_package": {
+        "run": 12,
+        "skipped": 0,
+        "status": "passed",
+        "host_install_and_dry_run_checks": ["copilot", "opencode", "openai", "manual"],
+        "installed_opencode_scaffold": "Fresh installed project passed geometry/export and actual offline browser validation with the new review controls"
+      },
+      "specimens": {
+        "source": "examples/mechanical-idioms/model.py",
+        "catalog": "examples/mechanical-idioms/output/index.html",
+        "report": "examples/mechanical-idioms/output/checks.json",
+        "families": 14,
+        "physical_part_definitions": 23,
+        "local_part_stls": 23,
+        "glbs": 14,
+        "unit_tests": {"run": 3, "skipped": 0, "status": "passed"},
+        "checks": ["Independent sections/gaps/connectivity/probes", "Default STL reload and solid comparison", "GLB scale/instances", "Five offline raster views per specimen", "Broken-geometry negative controls"],
+        "physical_acceptance": "not_performed"
+      },
+      "limits": [
+        "One bounded example per idiom family, not a generator for every listed mechanism.",
+        "Cam/compliant/bent-sheet geometry does not qualify gears, spring performance or sheet-metal flat patterns.",
+        "No physical fit, load, fatigue, seal or manufacturing acceptance is supplied.",
+        "Original project exports, installed skill copies and historical examples remain unchanged."
+      ]
+    },
+    "printed_thread_and_opencode_repairs": {
+      "version": "0.1.0-alpha.9",
+      "status": "bounded_geometry_export_and_install_checks_passed",
+      "assessment": "cad-design/references/improvement-actions.md#printed-nut-opencode-follow-up",
+      "reports": {
+        "foundation_geometry": {"run": 10, "skipped": 0, "status": "passed"},
+        "shared_validation": {"run": 10, "skipped": 0, "status": "passed"},
+        "skill_package": {"run": 9, "skipped": 2, "status": "passed", "skip_reason": "Historical original-foundation sources not present"},
+        "regions_incremental": {"run": 24, "skipped": 1, "status": "passed", "skip_reason": "Optional trusted embedded viewer assets not supplied"},
+        "clean_package_installer_and_portable_review": {"run": 12, "skipped": 0, "status": "passed"}
+      },
+      "browser_checks": "Executed with installed Edge and Playwright where applicable",
+      "installed_scaffold_thread_roundtrip": "OpenCode install from a clean package, new project scaffold, thread helper, ASCII STL/GLB export and shared reload checks passed",
+      "thread_fixture": {
+        "nominal_major_mm": 9.525,
+        "height_mm": 6.0,
+        "radial_clearances_mm": [0.25, 0.35, 0.50, 0.55],
+        "pitch_candidates_tpi": [16, 18, 20],
+        "checks": ["default export/reload validity", "connected nut", "preserved bounds", "through-bore", "thread engagement", "pitch repetition", "right-handed progression", "invalid inputs"],
+        "float32_negative_control": {"in_memory_volume": true, "default_stl_reload_volume": false, "vertices_before": 4416, "vertices_after": 4364},
+        "float64_control": {"in_memory_volume": true, "default_stl_reload_volume": true, "vertices_before": 4132, "vertices_after": 4132}
+      },
+      "limits": [
+        "Original OpenCode/Ollama failure remains a failure; recovered project artifacts were host-assisted.",
+        "Revised agent wording and broader mechanical-idiom guidance have not had a fresh native conversational acceptance trial.",
+        "Physical pitch, fit, strength, fatigue, manufacturing suitability and thread class remain unverified.",
+        "The reusable cutter covers simplified single-start right-hand internal threads, not a general screw or mechanism generator.",
+        "Existing projects, installed skills and historical examples were not overwritten."
+      ]
+    }
+  },
   "baseline_sha256": "958f24f6fedc7c13af1935b4276a8fea171db719e14021af708ce00d62c3dc70",
   "limits": [
     "Conservative convex translation sweeps only; static introduction not insertion proof.",

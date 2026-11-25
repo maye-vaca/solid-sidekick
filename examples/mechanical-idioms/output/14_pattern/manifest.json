@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "name": "14 Patterns - vent and ligament card",
+  "geometry_units": "mm",
+  "stl_units": "mm",
+  "glb_units": "m",
+  "coordinate_system": "Millimetres; +Z up. Local part STLs are not an arranged print plate.",
+  "parameters": {
+    "count": 18,
+    "hole_diameter_mm": 3,
+    "pitch_mm": [
+      8,
+      9
+    ],
+    "minimum_ligament_mm": 5
+  },
+  "assumptions": [
+    "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+    "18 through-holes on 8 x 9 mm pitch; minimum nominal ligament 5 mm. No lattice strength/airflow claim."
+  ],
+  "limitations": "Mesh geometry, not STEP/B-rep. Not a structural or fabrication certification.",
+  "parts": [
+    {
+      "id": "vent_card",
+      "name": "vent card",
+      "material": "Unspecified prototype material",
+      "color": "#70c7d7",
+      "notes": "18 through-holes on 8 x 9 mm pitch; minimum nominal ligament 5 mm. No lattice strength/airflow claim.",
+      "stl": "parts/vent_card.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          50.0,
+          30.0,
+          3.0
+        ]
+      ],
+      "volume_mm3": 4118.568950329805
+    }
+  ],
+  "instances": [
+    {
+      "id": "vent_card",
+      "part_id": "vent_card",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/vent_card.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          50.0,
+          30.0,
+          3.0
+        ]
+      ]
+    }
+  ]
+}

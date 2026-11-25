@@ -16,6 +16,11 @@ intentional dependency change. Browser automation additionally uses Playwright.
 
 ## Modeling contract
 
+For an unfamiliar mating/moving/manufacturing feature, use the
+[mechanical idiom guardrails](mechanical-idioms.md) before choosing geometry.
+They distinguish available helpers from project-specific prototypes and
+unsupported functional/production claims.
+
 For requested parts/assembly instructions, use the qualified construction
 variant and [construction publication](construction-production.md):
 `python -m cadkit.construction --plan .\construction-plan.json --output .\construction-01`.

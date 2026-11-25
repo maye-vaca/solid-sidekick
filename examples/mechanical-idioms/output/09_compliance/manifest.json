@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "name": "09 Compliance - parallel-leaf frame",
+  "geometry_units": "mm",
+  "stl_units": "mm",
+  "glb_units": "m",
+  "coordinate_system": "Millimetres; +Z up. Local part STLs are not an arranged print plate.",
+  "parameters": {
+    "beam_thickness_mm": 1.6,
+    "thickness_z_mm": 3,
+    "window_mm": [
+      30,
+      16.8
+    ]
+  },
+  "assumptions": [
+    "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+    "Two 1.6 mm beams and a rigid-end envelope. Geometry only; stiffness, travel, creep and fatigue are unresolved."
+  ],
+  "limitations": "Mesh geometry, not STEP/B-rep. Not a structural or fabrication certification.",
+  "parts": [
+    {
+      "id": "flexure_frame",
+      "name": "flexure frame",
+      "material": "Unspecified prototype material",
+      "color": "#70c7d7",
+      "notes": "Two 1.6 mm beams and a rigid-end envelope. Geometry only; stiffness, travel, creep and fatigue are unresolved.",
+      "stl": "parts/flexure_frame.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          40.0,
+          20.0,
+          3.0
+        ]
+      ],
+      "volume_mm3": 860.8760142456744
+    }
+  ],
+  "instances": [
+    {
+      "id": "flexure_frame",
+      "part_id": "flexure_frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/flexure_frame.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          40.0,
+          20.0,
+          3.0
+        ]
+      ]
+    }
+  ]
+}

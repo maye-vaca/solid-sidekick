@@ -1,4 +1,5 @@
 {
+  "record_scope": "Historical alpha.8 baseline comparison; later alpha.9 repairs and printed-thread checks are recorded in qualification.json followups. file-hashes.json is the current complete integrity inventory.",
   "baseline_sha256": "958f24f6fedc7c13af1935b4276a8fea171db719e14021af708ce00d62c3dc70",
   "changed_files": {
     "README.md": {

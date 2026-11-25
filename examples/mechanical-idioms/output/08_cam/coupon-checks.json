@@ -1,0 +1,42 @@
+{
+  "status": "geometry_checks_passed",
+  "checks": [
+    "Pivot bore",
+    "Eccentric outer bounds: -10 to +14 mm from pivot"
+  ],
+  "interference": {
+    "pairs": 0,
+    "boolean_checks": 0,
+    "documented_overlaps": [],
+    "note": "Zero overlap does not establish clearance or physical fit."
+  },
+  "physical_acceptance": "not_performed",
+  "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+  "exports": {
+    "stls_reloaded": 2,
+    "glb_instances": 1,
+    "shared_geometries": 1,
+    "max_solid_difference_mm3": 0.0,
+    "glb": {
+      "parts_checked": 1,
+      "max_solid_difference_mm3": 0.00013435814970655504
+    },
+    "revision": {
+      "status": "untracked"
+    },
+    "manifest_sha256": "f6fbbac12568ed5b4825e0dd0a8c64bf9a06c40461d4cb17f6809aae2250fda3"
+  },
+  "browser": {
+    "status": "passed",
+    "raster_method": "rendered_vs_cleared_framebuffer",
+    "pixels_by_view": {
+      "top": 179750,
+      "under": 179750,
+      "front": 39366,
+      "side": 39366,
+      "iso": 165248
+    },
+    "errors": [],
+    "remote_requests": []
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "status": "geometry_checks_passed",
+  "checks": [
+    "Through-bore",
+    "Pitch 1.5 mm and right-hand progression",
+    "Retained wall and 16 mm AF"
+  ],
+  "interference": {
+    "pairs": 0,
+    "boolean_checks": 0,
+    "documented_overlaps": [],
+    "note": "Zero overlap does not establish clearance or physical fit."
+  },
+  "physical_acceptance": "not_performed",
+  "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+  "exports": {
+    "stls_reloaded": 2,
+    "glb_instances": 1,
+    "shared_geometries": 1,
+    "max_solid_difference_mm3": 0.0,
+    "glb": {
+      "parts_checked": 1,
+      "max_solid_difference_mm3": 8.241804393962658e-05
+    },
+    "revision": {
+      "status": "untracked"
+    },
+    "manifest_sha256": "b85003df7bec730f8ef50e3d334408cbffa03fd4b78e892dfa33312e3084a2b9"
+  },
+  "browser": {
+    "status": "passed",
+    "raster_method": "rendered_vs_cleared_framebuffer",
+    "pixels_by_view": {
+      "top": 121501,
+      "under": 121501,
+      "front": 72600,
+      "side": 83820,
+      "iso": 164476
+    },
+    "errors": [],
+    "remote_requests": []
+  }
+}

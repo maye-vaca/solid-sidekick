@@ -1,0 +1,42 @@
+{
+  "status": "geometry_checks_passed",
+  "checks": [
+    "Two 1.6 x 3 mm beams",
+    "Open flexure window and two fixture holes"
+  ],
+  "interference": {
+    "pairs": 0,
+    "boolean_checks": 0,
+    "documented_overlaps": [],
+    "note": "Zero overlap does not establish clearance or physical fit."
+  },
+  "physical_acceptance": "not_performed",
+  "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+  "exports": {
+    "stls_reloaded": 2,
+    "glb_instances": 1,
+    "shared_geometries": 1,
+    "max_solid_difference_mm3": 0.0,
+    "glb": {
+      "parts_checked": 1,
+      "max_solid_difference_mm3": 0.0002419566902053797
+    },
+    "revision": {
+      "status": "untracked"
+    },
+    "manifest_sha256": "f0bb7190328f0d4f528c757cb314d6472fd367e5bddb61360367b0be5eb36bcd"
+  },
+  "browser": {
+    "status": "passed",
+    "raster_method": "rendered_vs_cleared_framebuffer",
+    "pixels_by_view": {
+      "top": 68974,
+      "under": 68974,
+      "front": 29046,
+      "side": 14570,
+      "iso": 90665
+    },
+    "errors": [],
+    "remote_requests": []
+  }
+}

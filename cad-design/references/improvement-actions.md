@@ -159,3 +159,135 @@ first-preview and end-to-end stage timings, native completion versus host
 recovery, and output validity separately. Repeat bounded cases before claiming
 reliability or a performance improvement. Package/unit tests only establish
 their stated mechanical contracts, not prompt effectiveness or physical fit.
+
+## Printed-nut OpenCode follow-up
+
+This assessment uses both user-supplied exports, `session-ses_df55.md` and
+`session-ses_df10.md`, plus the installed files and subsequent host-assisted
+repair. Exports contain prior summaries and tool dumps, not a complete original
+intake or an independent engineering specification. Counts below describe the
+exported record, not hidden model work or a general model-quality benchmark.
+
+| Observed evidence | Reusable action |
+|---|---|
+| The earlier export has 125 tool-call blocks and includes repeated installer failures on stale hashes (`df55`, lines 9126-9278). | Preserve existing toolkit repairs; refresh the complete package inventory after source edits and exercise installation from a clean package, not the live git checkout. Integrity guards stay enabled. |
+| The later export has 102 tool-call blocks and 11 compaction sections. `validation.py` appears in 11 read/write file-path fields and `model.py` in nine. The last retained summary still proposes the same unrun diagnostic (`df10`, lines 17240-17362). | Keep compact observed/hypothesis/ruled-out/next-command state. Require a distinct empirical question per new diagnostic instead of replaying the same analysis. |
+| Custom thread ribbons were rebuilt in project and coupon code with float32. Host recovery reproduced both 0.50/0.55 mm STL failures and fixed them with `Mesh64`/float64, leaving strict reload validation intact. | Extract `internal_thread_tool` into the reusable runtime. Cover 0.25/0.35/0.50/0.55 mm radial-clearance nuts and 16/18/20 TPI pitch behavior, including default STL/GLB export validation. No copied nut design is installed as the starter. |
+| The later summary repeatedly calls the root cause fully diagnosed and suggests removing the supposedly redundant watertight check, without the discriminating experiment (`df10`, lines 17264-17344). It also confuses millimetres and nanometres. | Explicitly label hypotheses, check units, inspect construction precision first, and never turn a valid in-memory mesh into permission to weaken export checks. |
+| Diagnostics fail on `Trimesh.body`, missing SciPy, `manifold3d.__version__`, and Windows output encoding (`df10`, lines 10726, 11055, 14965, 17392). | Prefer documented installed APIs, metadata version lookup, existing mesh/kernel queries and ASCII/UTF-8 diagnostics; avoid new dependencies and broad API enumeration without a concrete need. |
+| Sourced brief text treats a groove caliper reading as effective diameter/class evidence; pitch remains assumed. Printed coupons are used as fit aids. | Public thread guidance separates nominal/crest/minor/pitch measurements, assumed standards and empirical radial clearance. Printed gauges do not certify a standard thread or physical fit. |
+
+### Source and installation boundaries
+
+The install receipt under `.mechanical-design-toolkit` points to the actual skill
+copy under `.opencode/skills/cad-design` and the agent under `.opencode/agents`.
+The receipt is not a live synchronization mechanism. At review start the
+installed skill's runtime, references, templates and tests already matched the
+canonical repository's uncommitted repairs, apart from the canonical README's
+additional repair documentation. The printed-nut runtime matched too. Existing
+ACL-safe staging, browser preflight, staged browser evidence, atomic validation
+reports, review server and scaffold fixes were preserved, not reimplemented.
+
+New reusable thread construction and workflow guidance belong in the canonical
+skill/runtime/adapter. Actual bolt measurements, print-fit results, coupons,
+STLs, project-specific briefs and historical exports remain project evidence,
+not universal defaults. Existing projects and OpenCode installations are not
+silently overwritten. Test future installations from the updated source package;
+migrate an existing project deliberately, retaining revision/source guards.
+
+### Acceptance and limits
+
+The original OpenCode/Ollama run remains incomplete; the useful recovered nuts
+are host-assisted recovery, not proof that the local agent completed its task.
+Automated geometry, export, package and installation checks establish only their
+specific mechanical contracts. The new wording has not been evaluated in a fresh
+native OpenCode conversation; physical pitch, fit, strength and thread class
+remain unverified. External/multi-start/left-hand threads are not supported by
+the new internal cutter.
+
+A fresh bounded replay should ask for one threaded nut, then an approved
+clearance-only comparison. Require helper reuse, preserved dimensions/units and
+lineage, no extra dependency, default export validation, a real user-visible
+review and a factual handoff after compaction. Keep one deliberate float32
+construction regression as a negative control; report diagnosis cost separately
+from model/tool time and never relabel the historical failure as a pass.
+
+The follow-up also adds [mechanical idiom guardrails](mechanical-idioms.md):
+reusable feature contracts for holes/fits, sockets, bearings, hinges, snap-fits,
+gears, shells, springs, blends, sheet metal, hardware and patterns. This is
+guidance and capability triage, not a claim that those generators or engineering
+solvers have been implemented. Start with one bounded interface experiment when
+needed; cosmetic appearance, valid meshes and physical behavior stay distinct.
+
+### Viewer and idiom test-piece follow-up
+
+The reported screenshot had stacked provenance/deliverable prose, duplicate
+viewer headings and an always-on equal-width reference view. New exports open
+one full-width isometric current model; comparison is an explicit persisted
+checkbox, with synchronized presets/reference pane hidden when off. Details,
+captured validation facts, assumptions and pending/apply controls remain
+available without dominating the initial view. Old exported projects and
+historical examples were not overwritten.
+
+The supplied accessibility auditor's HTML/WCAG 2.2 AA checklist guided direct
+source and live-browser checks. Added keyboard camera navigation, click/tap
+alternatives to dragging, visible focus, native disclosures, selection pressed
+states, named controls, dark native widgets and readable placeholders. Browser
+regressions cover default single view, keyboard comparison, pending/apply and
+stale recovery, camera/selection retention, computed text contrast, target
+height, 320 CSS-pixel reflow and text-spacing overrides. These are bounded
+checks, not a complete conformance audit; real screen-reader use, browser zoom
+with assistive technology and OS high-contrast visual review remain unverified.
+
+Revealing/resizing the prior frame exposed an interaction race: unchanged
+resize draws could broadcast stale state back over a new checkbox/camera
+change. The review bridge now announces changed state only and records
+programmatically applied state before normal announcements resume.
+
+The new source-package `examples\mechanical-idioms` contains one specimen/set
+per catalog family, 23 physical part definitions, STL/GLB exports, a linked
+offline catalog and gallery. Independent checks and shared export/browser
+checks are generated alongside the pieces. Labels distinguish internal thread
+geometry, eccentric cam, compliant envelope and folded display geometry from
+qualified external screws, gears, springs and unfolded sheet-metal blanks.
+
+The snap envelope caught another real roundtrip failure: a polygon edge fused
+to a separately computed decimal box edge left two roughly 3e-9 mm edges;
+default STL reload merged 25 vertices to 23 and rejected the result. Building
+the beam/hook as one planar profile removed the slivers without weakening
+reload checks. Thread progression checks also isolate the circular thread
+region before quarter-turn comparison so the hexagonal exterior cannot create
+a false failure. None of these specimens establishes physical performance.
+
+### Geometry-validity audit follow-up
+
+The adversarial audit reproduced two distinct problems: an admitted 12-step
+thread request could lose its cutting groove between angular samples, and
+float32 metre-coordinate GLBs could lose walls/bores while passing bounds-only
+checks. A same-bounds moved-bore negative control also passed the former GLB
+validator. These are geometric/serialization failures, not physical-fit tests.
+
+Thread resolution is now a requested floor. Helix and core sampling adapt to
+radial chord sag (at most 2% of profile depth or 0.01 mm, whichever is smaller);
+quarter-turn-compatible helical sampling preserves the progression checks.
+Regressions probe intermediate angles against a finer reference for three
+diameter/pitch/clearance combinations and roundtrip the resulting rings.
+
+GLB precision preflight simulates the actual metre/float32 conversion before
+export writes any artifact. It checks finite/distinct vertices, physical solid
+validity, orientation, triangle correspondence and Boolean difference. The
+actual serialized GLB is then reloaded and checked in the private stage, with
+the shared validator repeating those checks later. Finish surfaces are joined
+only at identical positions for physical checks; no relaxed weld hides detail
+loss. Failure reports the part and local-origin/Placement remedy rather than
+silently rebasing it, changing dimensions or delivering a missing format.
+Early-failure and deliberately damaged-serializer tests preserve prior files;
+large assembly placement with locally modeled detail remains supported.
+
+The tangent-hole observation does not justify a general tangency prohibition.
+Redundant contained same-depth cuts and an internally tangent stepped bore
+pass normal export/reload regressions. Adjacent externally tangent through
+cuts can instead produce a zero-ligament solid rejected by normal reload.
+Judge the resulting 3D material and requested depths. STL validation remains
+a separate post-export check; GLB-specific early gates do not turn an unchecked
+preview into full project qualification.

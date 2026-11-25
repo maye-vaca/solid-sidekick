@@ -1,0 +1,43 @@
+{
+  "status": "geometry_checks_passed",
+  "checks": [
+    "2 mm thickness and R6 inner/R8 outer bend",
+    "Constant-thickness section volume",
+    "No flat-pattern claim"
+  ],
+  "interference": {
+    "pairs": 0,
+    "boolean_checks": 0,
+    "documented_overlaps": [],
+    "note": "Zero overlap does not establish clearance or physical fit."
+  },
+  "physical_acceptance": "not_performed",
+  "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+  "exports": {
+    "stls_reloaded": 2,
+    "glb_instances": 1,
+    "shared_geometries": 1,
+    "max_solid_difference_mm3": 0.0,
+    "glb": {
+      "parts_checked": 1,
+      "max_solid_difference_mm3": 0.00018386398327565796
+    },
+    "revision": {
+      "status": "untracked"
+    },
+    "manifest_sha256": "fbc77fc173ab882169de8d3b874f37ab16eaba08bd7e6ee8e2a9afc3ea95205e"
+  },
+  "browser": {
+    "status": "passed",
+    "raster_method": "rendered_vs_cleared_framebuffer",
+    "pixels_by_view": {
+      "top": 146482,
+      "under": 146482,
+      "front": 25391,
+      "side": 126360,
+      "iso": 163993
+    },
+    "errors": [],
+    "remote_requests": []
+  }
+}

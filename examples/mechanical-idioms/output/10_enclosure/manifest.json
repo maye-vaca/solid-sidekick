@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "name": "10 Enclosures - open shell and lipped lid",
+  "geometry_units": "mm",
+  "stl_units": "mm",
+  "glb_units": "m",
+  "coordinate_system": "Millimetres; +Z up. Local part STLs are not an arranged print plate.",
+  "parameters": {
+    "wall_mm": 2,
+    "floor_mm": 2,
+    "lip_clearance_per_side_mm": 0.3,
+    "effective_lip_depth_mm": 2.8
+  },
+  "assumptions": [
+    "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+    "2 mm walls/floor; 0.30 mm per-side lip clearance. Lid shown beside shell, lip up. No sealing/closure-force claim."
+  ],
+  "limitations": "Mesh geometry, not STEP/B-rep. Not a structural or fabrication certification.",
+  "parts": [
+    {
+      "id": "shell",
+      "name": "shell",
+      "material": "Unspecified prototype material",
+      "color": "#70c7d7",
+      "notes": "2 mm walls/floor; 0.30 mm per-side lip clearance. Lid shown beside shell, lip up. No sealing/closure-force claim.",
+      "stl": "parts/shell.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          36.0,
+          28.0,
+          12.0
+        ]
+      ],
+      "volume_mm3": 4416.0
+    },
+    {
+      "id": "lid",
+      "name": "lid",
+      "material": "Unspecified prototype material",
+      "color": "#e7b365",
+      "notes": "2 mm walls/floor; 0.30 mm per-side lip clearance. Lid shown beside shell, lip up. No sealing/closure-force claim.",
+      "stl": "parts/lid.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          36.0,
+          28.0,
+          4.8
+        ]
+      ],
+      "volume_mm3": 2584.9599999999996
+    }
+  ],
+  "instances": [
+    {
+      "id": "shell",
+      "part_id": "shell",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/shell.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          36.0,
+          28.0,
+          12.0
+        ]
+      ]
+    },
+    {
+      "id": "lid",
+      "part_id": "lid",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          38.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/lid.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          38.0,
+          0.0
+        ],
+        [
+          36.0,
+          66.0,
+          4.8
+        ]
+      ]
+    }
+  ]
+}

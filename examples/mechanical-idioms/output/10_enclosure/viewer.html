@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>STL component viewer</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#101923;color:#edf3f7;font:14px system-ui}
+html{color-scheme:dark}
+header{padding:16px 20px}h1{font-size:22px;margin:0 0 6px}p{margin:6px 0;color:#b9c9d3}
+button,input{font:inherit}button{background:#263e50;color:#edf3f7;border:1px solid #58758b;
+border-radius:5px;padding:7px 10px;cursor:pointer}button:hover{background:#36536a}
+:focus-visible{outline:3px solid #70d7e9;outline-offset:3px}
+button{min-height:36px;border-color:#8da7b8}
+input[type=checkbox]{width:24px;height:24px;accent-color:#70d7e9}
+summary{cursor:pointer}details{margin-top:8px}#assumptions{overflow-wrap:anywhere}
+summary{min-height:36px;padding:7px 0;width:fit-content}
+header h1{overflow-wrap:anywhere}.embedded header{padding:8px 16px;display:flex;
+flex-wrap:wrap;gap:4px 20px;align-items:flex-start}
+.embedded header details{margin:0;min-width:0}.embedded header details[open]{flex-basis:100%}
+.embedded .caveat{display:none}
+.embedded .viewport{height:68vh;min-height:400px}.embedded aside{height:68vh}
+#model-details p{overflow-wrap:anywhere}#navigation-controls{margin:0}
+#navigation-controls .actions{max-width:650px}
+.skip{position:absolute;top:-100px;left:12px;background:#edf3f7;color:#101923;padding:10px;z-index:2}
+.skip:focus{top:8px}.sr-only,.embedded header h1{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+details .collapse-label{display:none}details[open] .expand-label{display:none}
+details[open] .collapse-label{display:inline}
+.toolbar{display:flex;flex-wrap:wrap;gap:7px;padding:0 20px 12px}
+main{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:12px;padding:0 20px 20px}
+.viewport{height:74vh;min-height:450px;background:#101923;border:1px solid #8da7b8;
+border-radius:8px;overflow:hidden}canvas{width:100%;height:100%;display:block;touch-action:none}
+.viewport:focus-within{outline:3px solid #70d7e9;outline-offset:3px}
+aside{display:flex;flex-direction:column;min-height:0;height:74vh;min-width:0;background:#172634;
+border:1px solid #354b5b;border-radius:8px;padding:12px}aside h2{font-size:16px;margin:0 0 8px}
+#search{background:#101923;color:#edf3f7;border:1px solid #8da7b8;border-radius:4px;
+padding:8px;width:100%}.actions{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0}
+#search::placeholder{color:#b9c9d3;opacity:1}
+.actions button{padding:6px;font-size:13px}#components{overflow:auto;flex:1}
+.part{display:flex;align-items:center;gap:7px;border-radius:4px;padding:3px}
+.part[hidden]{display:none}.part.selected{background:#305467}.part input{flex:none}.part button{border:0;background:none;
+padding:6px 2px;text-align:left;overflow-wrap:anywhere;min-width:0;flex:1}
+.swatch{width:10px;height:10px;border:1px solid #c9d1d7;flex:none}
+#selected,#status,#filterStatus{font-size:12px;overflow-wrap:anywhere}#selected{margin:10px 0 0}
+#error{background:#5e2027;color:#fff;padding:14px 20px;white-space:pre-wrap}
+@media(max-width:850px){main{grid-template-columns:minmax(0,1fr);padding:0 10px 10px}
+.viewport,.embedded .viewport{height:60vh;min-height:300px}aside,.embedded aside{height:320px}
+.toolbar{padding:0 10px 10px}}
+@media(forced-colors:active){button,#search,.viewport,aside{border-color:CanvasText}
+:focus-visible{outline-color:Highlight}.part.selected{outline:2px solid Highlight}}
+</style></head><body>
+<a class="skip" href="#model-main">Skip to model</a>
+<header><h1 id="model-title">Model viewer</h1>
+<p class="caveat">Concept preview only; physical fit and fabrication safety are not verified.</p>
+<details id="model-details"><summary>Model details</summary>
+<p id="summary">Loading meshes...</p>
+<p id="conventions"></p></details>
+<details id="assumptions-section" hidden><summary>Assumptions / limitations
+<span class="expand-label"> - Read more</span><span class="collapse-label"> - Collapse</span></summary>
+<p id="assumptions"></p></details></header>
+<div id="error" role="alert" hidden></div>
+<div class="toolbar">
+<button id="iso">Assembly / isometric</button><button id="top">Top</button>
+<button id="front">Front</button><button id="side">Side</button>
+<button id="under">Underside</button><button id="fit">Fit visible</button>
+<details id="navigation-controls"><summary>Move / zoom</summary>
+<p id="view-help">Drag to orbit, Shift-drag to pan, or use these buttons.
+On the model, arrow keys orbit, Shift + arrows pan, + / - zoom, and Home fits.</p>
+<div class="actions" role="group" aria-label="Move and zoom model">
+<button data-camera="left">Orbit left</button><button data-camera="right">Orbit right</button>
+<button data-camera="up">Orbit up</button><button data-camera="down">Orbit down</button>
+<button data-camera="pan-left">Pan left</button><button data-camera="pan-right">Pan right</button>
+<button data-camera="pan-up">Pan up</button><button data-camera="pan-down">Pan down</button>
+<button data-camera="in">Zoom in</button><button data-camera="out">Zoom out</button>
+</div></details>
+</div>
+<main id="model-main" tabindex="-1"><div class="viewport"><canvas id="view" tabindex="0" role="img"
+aria-label="Interactive 3D model" aria-describedby="canvas-help">3D model preview.
+Component names, dimensions and materials are available in the Components panel.</canvas></div>
+<p id="canvas-help" class="sr-only">Arrow keys orbit. Shift and arrows pan. Plus and minus zoom.
+Home fits visible components. Equivalent buttons are under Move / zoom.</p>
+<aside><h2>Components</h2><input id="search" type="search" placeholder="Filter filenames"
+aria-label="Filter component filenames">
+<div class="actions"><button id="showAll">Show all</button><button id="hideAll">Hide all</button>
+<button id="isolate">Isolate selected</button><button id="focus">Fit selected</button></div>
+<p id="filterStatus"></p><div id="components"></div>
+<p id="selected" role="status">Select a filename to highlight a component.</p>
+<p id="status" role="status"></p></aside></main>
+<script id="model" type="application/json">{"parts":[{"name":"shell","color":"#70c7d7","bounds":[[-0.2727272727272727,-0.5,-0.09090909090909091],[0.2727272727272727,-0.07575757575757576,0.09090909090909091]],"triangles":28,"vertices":"6aKLvgAAAL+MLrq9AAAAAAAAgL8AAAAA6aKLPgAAAL+MLrq9AAAAAAAAgL8AAAAA6aKLvgAAAL+MLro9AAAAAAAAgL8AAAAA6aKLvgAAAL+MLrq9AAAAAAAAAAAAAIC/6aKLvsomm72MLrq9AAAAAAAAAAAAAIC/6aKLPgAAAL+MLrq9AAAAAAAAAAAAAIC/6aKLvgAAAL+MLrq9AACAvwAAAAAAAAAA6aKLvgAAAL+MLro9AACAvwAAAAAAAAAA6aKLvsomm72MLro9AACAvwAAAAAAAAAA6aKLvgAAAL+MLro9AAAAAAAAAAAAAIA/ED54vh988L6MLro9AAAAAAAAAAAAAIA/ED54vk422b2MLro9AAAAAAAAAAAAAIA/6aKLvgAAAL+MLro9AAAAAAAAAIAAAIA/6aKLPgAAAL+MLro9AAAAAAAAAIAAAIA/ED54vh988L6MLro9AAAAAAAAAIAAAIA/6aKLvgAAAL+MLrq9AACAvwAAAAAAAAAA6aKLvsomm72MLro9AACAvwAAAAAAAAAA6aKLvsomm72MLrq9AACAvwAAAAAAAAAA6aKLvgAAAL+MLro9AAAAAAAAAIAAAIA/ED54vk422b2MLro9AAAAAAAAAIAAAIA/6aKLvsomm72MLro9AAAAAAAAAIAAAIA/6aKLvsomm72MLrq9AAAAAAAAgD8AAAAA6aKLvsomm72MLro9AAAAAAAAgD8AAAAA6aKLPsomm72MLro9AAAAAAAAgD8AAAAA6aKLvsomm72MLro9AAAAgAAAAAAAAIA/ED54vk422b2MLro9AAAAgAAAAAAAAIA/ED54Pk422b2MLro9AAAAgAAAAAAAAIA/6aKLPgAAAL+MLrq9AACAPwAAAAAAAACA6aKLPsomm72MLrq9AACAPwAAAAAAAACA6aKLPgAAAL+MLro9AACAPwAAAAAAAACA6aKLvgAAAL+MLro9AAAAAAAAgL8AAAAA6aKLPgAAAL+MLrq9AAAAAAAAgL8AAAAA6aKLPgAAAL+MLro9AAAAAAAAgL8AAAAA6aKLPgAAAL+MLro9AAAAAAAAAAAAAIA/ED54Ph988L6MLro9AAAAAAAAAAAAAIA/ED54vh988L6MLro9AAAAAAAAAAAAAIA/6aKLPgAAAL+MLro9AAAAAAAAAIAAAIA/6aKLPsomm72MLro9AAAAAAAAAIAAAIA/ED54Ph988L6MLro9AAAAAAAAAIAAAIA/6aKLvsomm72MLrq9AAAAAAAAAAAAAIC/6aKLPsomm72MLrq9AAAAAAAAAAAAAIC/6aKLPgAAAL+MLrq9AAAAAAAAAAAAAIC/6aKLvsomm72MLrq9AAAAgAAAgD8AAAAA6aKLPsomm72MLro9AAAAgAAAgD8AAAAA6aKLPsomm72MLrq9AAAAgAAAgD8AAAAA6aKLvsomm72MLro9AAAAgAAAAAAAAIA/ED54Pk422b2MLro9AAAAgAAAAAAAAIA/6aKLPsomm72MLro9AAAAgAAAAAAAAIA/6aKLPgAAAL+MLro9AACAPwAAAIAAAAAA6aKLPsomm72MLrq9AACAPwAAAIAAAAAA6aKLPsomm72MLro9AACAPwAAAIAAAAAA6aKLPsomm72MLro9AAAAAAAAAAAAAIA/ED54Pk422b2MLro9AAAAAAAAAAAAAIA/ED54Ph988L6MLro9AAAAAAAAAAAAAIA/ED54vh988L4QPni9AAAAgAAAgD8AAAAAED54vh988L6MLro9AAAAgAAAgD8AAAAAED54Ph988L4QPni9AAAAgAAAgD8AAAAAED54vh988L4QPni9AAAAAAAAAIAAAIA/ED54Ph988L4QPni9AAAAAAAAAIAAAIA/ED54vk422b0QPni9AAAAAAAAAIAAAIA/ED54vh988L4QPni9AACAPwAAAAAAAACAED54vk422b2MLro9AACAPwAAAAAAAACAED54vh988L6MLro9AACAPwAAAAAAAACAED54vh988L4QPni9AACAPwAAAAAAAAAAED54vk422b0QPni9AACAPwAAAAAAAAAAED54vk422b2MLro9AACAPwAAAAAAAAAAED54vk422b0QPni9AAAAAAAAgL8AAAAAED54Pk422b2MLro9AAAAAAAAgL8AAAAAED54vk422b2MLro9AAAAAAAAgL8AAAAAED54Ph988L4QPni9AACAvwAAAAAAAAAAED54Ph988L6MLro9AACAvwAAAAAAAAAAED54Pk422b0QPni9AACAvwAAAAAAAAAAED54Ph988L4QPni9AAAAAAAAgD8AAACAED54vh988L6MLro9AAAAAAAAgD8AAACAED54Ph988L6MLro9AAAAAAAAgD8AAACAED54vk422b0QPni9AAAAgAAAAAAAAIA/ED54Ph988L4QPni9AAAAgAAAAAAAAIA/ED54Pk422b0QPni9AAAAgAAAAAAAAIA/ED54vk422b0QPni9AAAAAAAAgL8AAAAAED54Pk422b0QPni9AAAAAAAAgL8AAAAAED54Pk422b2MLro9AAAAAAAAgL8AAAAAED54Pk422b0QPni9AACAvwAAAAAAAAAAED54Ph988L6MLro9AACAvwAAAAAAAAAAED54Pk422b2MLro9AACAvwAAAAAAAAAA","material":"Unspecified prototype material","notes":"shell. 2 mm walls/floor; 0.30 mm per-side lip clearance. Lid shown beside shell, lip up. No sealing/closure-force claim."},{"name":"lid","color":"#e7b365","bounds":[[-0.2727272727272727,0.07575757575757576,-0.09090909090909091],[0.2727272727272727,0.5,-0.018181818181818184]],"triangles":44,"vertices":"f5Zzvm6F4j0J8pS8AACAvwAAAIAAAACAf5Zzvlco7j4QPni9AACAvwAAAIAAAACAf5Zzvm6F4j0QPni9AACAvwAAAIAAAACAf5Zzvm6F4j0J8pS8AAAAAAAAAAAAAIA/vY5UvnlKED4J8pS8AAAAAAAAAAAAAIA/vY5Uvnak3j4J8pS8AAAAAAAAAAAAAIA/f5Zzvm6F4j0J8pS8AAAAAAAAgL8AAAAAf5Zzvm6F4j0QPni9AAAAAAAAgL8AAAAAf5ZzPm6F4j0J8pS8AAAAAAAAgL8AAAAAf5Zzvm6F4j0J8pS8AAAAAAAAAIAAAIA/f5ZzPm6F4j0J8pS8AAAAAAAAAIAAAIA/vY5UvnlKED4J8pS8AAAAAAAAAIAAAIA/f5Zzvm6F4j0J8pS8AAAAAAAAAIAAAIA/vY5Uvnak3j4J8pS8AAAAAAAAAIAAAIA/f5Zzvlco7j4J8pS8AAAAAAAAAIAAAIA/f5Zzvm6F4j0J8pS8AACAvwAAAAAAAAAAf5Zzvlco7j4J8pS8AACAvwAAAAAAAAAAf5Zzvlco7j4QPni9AACAvwAAAAAAAAAAf5Zzvlco7j4J8pS8AAAAAAAAgD8AAAAAf5ZzPlco7j4QPni9AAAAAAAAgD8AAAAAf5Zzvlco7j4QPni9AAAAAAAAgD8AAAAAf5Zzvlco7j4J8pS8AAAAgAAAAAAAAIA/vY5Uvnak3j4J8pS8AAAAgAAAAAAAAIA/vY5UPnak3j4J8pS8AAAAgAAAAAAAAIA/f5ZzPm6F4j0J8pS8AAAAAAAAgL8AAACAf5Zzvm6F4j0QPni9AAAAAAAAgL8AAACAf5ZzPm6F4j0QPni9AAAAAAAAgL8AAACAvY5UvnlKED4J8pS8AAAAgAAAAIAAAIA/f5ZzPm6F4j0J8pS8AAAAgAAAAIAAAIA/vY5UPnlKED4J8pS8AAAAgAAAAIAAAIA/f5ZzPm6F4j0J8pS8AACAPwAAAIAAAAAAf5ZzPm6F4j0QPni9AACAPwAAAIAAAAAAf5ZzPlco7j4J8pS8AACAPwAAAIAAAAAAvY5UPnlKED4J8pS8AAAAgAAAAAAAAIA/f5ZzPm6F4j0J8pS8AAAAgAAAAAAAAIA/f5ZzPlco7j4J8pS8AAAAgAAAAAAAAIA/f5Zzvlco7j4J8pS8AAAAgAAAgD8AAAAAf5ZzPlco7j4J8pS8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","material":"Unspecified prototype material","notes":"lid. 2 mm walls/floor; 0.30 mm per-side lip clearance. Lid shown beside shell, lip up. No sealing/closure-force claim."}],"extent":[36.0,66.0,12.0],"bounds":[[-0.2727272727272727,-0.5,-0.09090909090909091],[0.2727272727272727,0.5,0.09090909090909091]],"title":"10 Enclosures - open shell and lipped lid","units":"mm","explicitMetadata":true,"coordinateSystem":"Millimetres; +Z up. Local part STLs are not an arranged print plate.","assumptions":["Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.","2 mm walls/floor; 0.30 mm per-side lip clearance. Lid shown beside shell, lip up. No sealing/closure-force claim."]}</script>
+<script>
+"use strict";
+const el=id=>document.getElementById(id);
+function showError(message){el("error").hidden=false;el("error").textContent=message;}
+window.addEventListener("error",event=>showError(event.message));
+const model=JSON.parse(el("model").textContent);
+document.body.classList.toggle("embedded",!!model.reviewFrame);
+el("model-title").textContent=model.title||"Model viewer";
+const parts=model.parts.map(part=>({...part,visible:true}));
+const canvas=el("view"),gl=canvas.getContext("webgl",{antialias:true});
+if(!gl){showError("WebGL is unavailable. Open this HTML in Edge or Chrome with hardware graphics enabled.");
+throw Error("WebGL unavailable");}
+canvas.addEventListener("webglcontextlost",event=>{
+event.preventDefault();showError("The graphics context was lost. Reload this page to restore the viewer.");});
+function shader(type,source){const s=gl.createShader(type);gl.shaderSource(s,source);gl.compileShader(s);
+if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));return s;}
+const program=gl.createProgram();
+gl.attachShader(program,shader(gl.VERTEX_SHADER,`
+attribute vec3 position;attribute vec3 normal;
+uniform vec3 center;uniform vec4 rotation;uniform vec2 scale;uniform vec2 pan;
+uniform float depthRange;varying float light;
+void main(){vec3 q=position-center;float along=q.x*rotation.y+q.y*rotation.x;
+float u=q.x*rotation.x-q.y*rotation.y;
+float up=q.z*rotation.z-along*rotation.w;
+float depth=along*rotation.z+q.z*rotation.w;
+gl_Position=vec4(u*scale.x+pan.x,up*scale.y+pan.y,-depth/depthRange,1.);
+float na=normal.x*rotation.y+normal.y*rotation.x;
+vec3 n=vec3(normal.x*rotation.x-normal.y*rotation.y,
+normal.z*rotation.z-na*rotation.w,na*rotation.z+normal.z*rotation.w);
+light=.48+.52*abs(dot(n,normalize(vec3(.3,.5,.81))));}`));
+gl.attachShader(program,shader(gl.FRAGMENT_SHADER,`
+precision mediump float;uniform vec3 color;varying float light;
+void main(){gl_FragColor=vec4(color*light,1.);}`));
+gl.linkProgram(program);
+if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(program));
+gl.useProgram(program);gl.enable(gl.DEPTH_TEST);
+const uniforms=Object.fromEntries(["center","rotation","scale","pan","depthRange","color"]
+.map(name=>[name,gl.getUniformLocation(program,name)]));
+for(const part of parts){
+const decoded=atob(part.vertices),bytes=new Uint8Array(decoded.length);
+for(let i=0;i<decoded.length;i++)bytes[i]=decoded.charCodeAt(i);
+part.buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,part.buffer);
+gl.bufferData(gl.ARRAY_BUFFER,bytes,gl.STATIC_DRAW);
+part.count=bytes.byteLength/24;delete part.vertices;
+if(gl.getError()!==gl.NO_ERROR)throw Error("Could not upload mesh: "+part.name);}
+const attributes=[["position",0],["normal",12]].map(([name,offset])=>({
+location:gl.getAttribLocation(program,name),offset}));
+for(const attribute of attributes)gl.enableVertexAttribArray(attribute.location);
+let yaw=Math.PI-.5,pitch=.85,center=[0,0,0],span=1,zoom=1,pan=[0,0],selected=-1,drag=null;
+function boundsFor(indices){const low=[Infinity,Infinity,Infinity],high=[-Infinity,-Infinity,-Infinity];
+for(const index of indices)for(let axis=0;axis<3;axis++){
+low[axis]=Math.min(low[axis],parts[index].bounds[0][axis]);
+high[axis]=Math.max(high[axis],parts[index].bounds[1][axis]);}return[low,high];}
+function fit(indices){
+if(!indices.length){draw();return;}
+const [low,high]=boundsFor(indices);center=low.map((v,i)=>(v+high[i])/2);
+span=Math.max(1e-7,Math.hypot(...high.map((v,i)=>v-low[i]))*1.12);
+zoom=1;pan=[0,0];draw();}
+function visibleIndices(){return parts.flatMap((p,i)=>p.visible?[i]:[]);}
+function draw(){
+const width=canvas.clientWidth,height=canvas.clientHeight;if(!width||!height)return;
+const ratio=Math.min(devicePixelRatio||1,2);
+const targetWidth=Math.round(width*ratio),targetHeight=Math.round(height*ratio);
+if(canvas.width!==targetWidth||canvas.height!==targetHeight){
+canvas.width=targetWidth;canvas.height=targetHeight;}
+gl.viewport(0,0,canvas.width,canvas.height);gl.clearColor(.063,.098,.137,1);
+gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+const scale=Math.min(width,height)/span*zoom;
+gl.uniform3fv(uniforms.center,center);
+gl.uniform4f(uniforms.rotation,Math.cos(yaw),Math.sin(yaw),Math.cos(pitch),Math.sin(pitch));
+gl.uniform2f(uniforms.scale,2*scale/width,2*scale/height);
+gl.uniform2f(uniforms.pan,2*pan[0]/width,-2*pan[1]/height);
+gl.uniform1f(uniforms.depthRange,4+Math.hypot(...center));
+for(let index=0;index<parts.length;index++){
+const part=parts[index];if(!part.visible)continue;
+gl.bindBuffer(gl.ARRAY_BUFFER,part.buffer);
+for(const attribute of attributes)gl.vertexAttribPointer(attribute.location,3,gl.FLOAT,false,24,attribute.offset);
+let color=part.color.match(/[a-f0-9]{2}/gi).map(v=>parseInt(v,16)/255);
+if(index===selected)color=color.map(v=>.6*v+.4);
+gl.uniform3fv(uniforms.color,color);gl.drawArrays(gl.TRIANGLES,0,part.count);}
+const count=visibleIndices().length;
+const status=count+" / "+parts.length+" components visible"+
+(count?"":". Use Show all to restore the assembly.")+".";
+if(el("status").textContent!==status)el("status").textContent=status;}
+function selection(index){
+selected=index;for(let i=0;i<parts.length;i++){
+parts[i].row.classList.toggle("selected",i===index);
+parts[i].button.setAttribute("aria-pressed",String(i===index));}
+if(index<0){el("selected").textContent="Select a filename to highlight a component.";return;}
+const part=parts[index],size=part.bounds[1].map((v,i)=>(v-part.bounds[0][i])*model.extent.reduce((a,b)=>Math.max(a,b)));
+el("selected").textContent=part.name+" | Size ("+(model.units||"unspecified units")+"): "+
+size.map(v=>v.toPrecision(6)).join(" x ")+(part.material?" | Material: "+part.material:"")+
+(part.notes?" | "+part.notes:"");}
+function select(index){selection(index);draw();}
+for(let index=0;index<parts.length;index++){
+const part=parts[index],row=document.createElement("div");row.className="part";
+const checkbox=document.createElement("input");checkbox.type="checkbox";checkbox.checked=true;
+checkbox.setAttribute("aria-label","Show "+part.name);
+checkbox.onchange=()=>{part.visible=checkbox.checked;draw();};
+const swatch=document.createElement("span");swatch.className="swatch";swatch.style.background=part.color;
+swatch.setAttribute("aria-hidden","true");
+const button=document.createElement("button");button.textContent=part.name;button.title=part.name;
+button.setAttribute("aria-pressed","false");
+button.onclick=()=>select(index);row.append(checkbox,swatch,button);el("components").append(row);
+part.row=row;part.checkbox=checkbox;part.button=button;}
+function setVisibility(test){for(let i=0;i<parts.length;i++){
+parts[i].visible=test(i);parts[i].checkbox.checked=parts[i].visible;}draw();}
+el("showAll").onclick=()=>{setVisibility(()=>true);fit(visibleIndices());};
+el("hideAll").onclick=()=>setVisibility(()=>false);
+el("isolate").onclick=()=>{if(selected<0){el("selected").textContent="Select a filename first.";return;}
+setVisibility(i=>i===selected);fit([selected]);};
+el("focus").onclick=()=>{if(selected<0){el("selected").textContent="Select a filename first.";return;}
+parts[selected].visible=true;parts[selected].checkbox.checked=true;fit([selected]);};
+el("fit").onclick=()=>fit(visibleIndices());
+for(const [id,a,b] of [["iso",Math.PI-.5,.85],["top",Math.PI,Math.PI/2],
+["front",Math.PI,0],["side",Math.PI/2,0],["under",Math.PI,-Math.PI/2]]){
+el(id).onclick=()=>{if(id==="iso")setVisibility(()=>true);yaw=a;pitch=b;fit(visibleIndices());};}
+el("search").oninput=()=>{
+const query=el("search").value.toLocaleLowerCase();let count=0;
+for(const part of parts){const match=part.name.toLocaleLowerCase().includes(query);
+part.row.hidden=!match;if(match)count++;}
+el("filterStatus").textContent=count+" filenames listed. Filtering does not hide geometry.";};
+canvas.oncontextmenu=event=>event.preventDefault();
+canvas.onpointerdown=event=>{
+if(event.button!==0&&event.button!==2)return;event.preventDefault();
+canvas.focus({preventScroll:true});
+drag={x:event.clientX,y:event.clientY,pan:event.shiftKey||event.button===2};
+canvas.setPointerCapture(event.pointerId);};
+canvas.onpointermove=event=>{
+if(!drag)return;const dx=event.clientX-drag.x,dy=event.clientY-drag.y;
+if(drag.pan){pan[0]+=dx;pan[1]+=dy;}else{yaw+=dx*.008;
+pitch=Math.max(-Math.PI/2,Math.min(Math.PI/2,pitch+dy*.008));}
+drag.x=event.clientX;drag.y=event.clientY;draw();};
+for(const event of ["pointerup","pointercancel","lostpointercapture"])
+canvas.addEventListener(event,()=>{drag=null;});
+canvas.addEventListener("wheel",event=>{event.preventDefault();
+zoom=Math.max(.02,Math.min(500,zoom*Math.exp(-event.deltaY*.001)));draw();},{passive:false});
+function moveCamera(action){
+const orbit={left:[-.15,0],right:[.15,0],up:[0,.15],down:[0,-.15]}[action];
+const shift={"pan-left":[-20,0],"pan-right":[20,0],"pan-up":[0,-20],"pan-down":[0,20]}[action];
+if(orbit){yaw+=orbit[0];pitch=Math.max(-Math.PI/2,Math.min(Math.PI/2,pitch+orbit[1]));}
+if(shift){pan[0]+=shift[0];pan[1]+=shift[1];}
+if(action==="in"||action==="out")zoom=Math.max(.02,Math.min(500,zoom*(action==="in"?1.2:1/1.2)));
+draw();}
+document.querySelectorAll("[data-camera]").forEach(button=>button.onclick=()=>moveCamera(button.dataset.camera));
+canvas.onkeydown=event=>{
+const direction={ArrowLeft:"left",ArrowRight:"right",ArrowUp:"up",ArrowDown:"down"}[event.key];
+if(direction){event.preventDefault();moveCamera((event.shiftKey?"pan-":"")+direction);}
+else if(["+","=","-","_"].includes(event.key)){event.preventDefault();moveCamera(["+","="].includes(event.key)?"in":"out");}
+else if(event.key==="Home"){event.preventDefault();fit(visibleIndices());}
+};
+el("summary").textContent=(model.title||"STL component viewer")+" / "+parts.length+" components / "+
+parts.reduce((sum,p)=>sum+p.triangles,0).toLocaleString()+" triangles. "+
+(model.explicitMetadata?"Colors and materials supplied by the assembly.":"Display colors are assigned; STL does not store colors.");
+document.title=model.title||"STL component viewer";
+el("conventions").textContent=model.coordinateSystem||"Original coordinates preserved; no unit conversion applied.";
+el("assumptions").textContent=(model.assumptions||[]).join(" | ");
+el("assumptions-section").hidden=!(model.assumptions||[]).length;
+el("search").dispatchEvent(new Event("input"));
+new ResizeObserver(draw).observe(canvas);fit(visibleIndices());
+</script></body></html>

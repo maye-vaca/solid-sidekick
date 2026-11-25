@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import re
 import shutil
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -17,6 +18,39 @@ SPEC.loader.exec_module(installer)
 
 
 class InstallerTests(unittest.TestCase):
+    @unittest.skipUnless(shutil.which("git"), "Git is required for checkout regression")
+    def test_fresh_checkouts_preserve_package_and_historical_hashes(self):
+        _, content = installer.verified_package(ROOT)
+        inventory = (ROOT / "file-hashes.json").read_bytes()
+        with tempfile.TemporaryDirectory() as directory:
+            repository = Path(directory) / "repository"
+            repository.mkdir()
+            for name, data in {**content, "file-hashes.json": inventory}.items():
+                target = repository / installer.relative_path(name)
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(data)
+            subprocess.run(["git", "init", "--quiet", str(repository)], check=True,
+                           capture_output=True, timeout=30)
+            for input_mode in ("true", "false"):
+                subprocess.run(
+                    ["git", "-c", f"core.autocrlf={input_mode}", "-c", "core.safecrlf=false",
+                     "add", "--all"], cwd=repository, check=True, capture_output=True, timeout=60)
+                for output_mode in ("true", "false"):
+                    with self.subTest(input_mode=input_mode, output_mode=output_mode):
+                        checkout = Path(directory) / f"checkout-{input_mode}-{output_mode}"
+                        checkout.mkdir()
+                        subprocess.run(
+                            ["git", "-c", f"core.autocrlf={output_mode}", "checkout-index",
+                             "--all", "--prefix=" + str(checkout) + os.sep],
+                            cwd=repository, check=True, capture_output=True, timeout=60)
+                        installer.verified_package(checkout)
+                        fixture = checkout / "examples" / "portable-review"
+                        hashes = json.loads((fixture / "file-hashes.json").read_bytes())
+                        for name, expected in hashes.items():
+                            self.assertEqual(
+                                hashlib.sha256((fixture / name).read_bytes()).hexdigest(),
+                                expected, name)
+
     def test_all_hosts_install_complete_identical_skill_and_resolve_profile_links(self):
         manifest, content = installer.verified_package(ROOT)
         for host, config in manifest["hosts"].items():

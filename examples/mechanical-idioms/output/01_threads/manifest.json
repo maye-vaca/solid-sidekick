@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "name": "01 Threads - internal-thread nut",
+  "geometry_units": "mm",
+  "stl_units": "mm",
+  "glb_units": "m",
+  "coordinate_system": "Millimetres; +Z up. Local part STLs are not an arranged print plate.",
+  "parameters": {
+    "major_mm": 10.0,
+    "pitch_mm": 1.5,
+    "radial_clearance_mm": 0.25,
+    "across_flats_mm": 16,
+    "height_mm": 6.0
+  },
+  "assumptions": [
+    "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+    "Simplified right-hand single-start internal thread, not a thread class or a qualified screw."
+  ],
+  "limitations": "Mesh geometry, not STEP/B-rep. Not a structural or fabrication certification.",
+  "parts": [
+    {
+      "id": "nut",
+      "name": "nut",
+      "material": "Unspecified prototype material",
+      "color": "#70c7d7",
+      "notes": "Simplified right-hand single-start internal thread, not a thread class or a qualified screw.",
+      "stl": "parts/nut.stl",
+      "bounds_mm": [
+        [
+          -8.000000000000002,
+          -9.237604307034013,
+          0.0
+        ],
+        [
+          8.000000000000002,
+          9.237604307034013,
+          6.0
+        ]
+      ],
+      "volume_mm3": 878.8315994534378
+    }
+  ],
+  "instances": [
+    {
+      "id": "nut",
+      "part_id": "nut",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/nut.stl",
+      "bounds_mm": [
+        [
+          -8.000000000000002,
+          -9.237604307034013,
+          0.0
+        ],
+        [
+          8.000000000000002,
+          9.237604307034013,
+          6.0
+        ]
+      ]
+    }
+  ]
+}

@@ -24,6 +24,8 @@ See [the operating model](references/operating-model.md).
 - [SKILL.md](SKILL.md): triggers, workflow, modeling/review gates and handoff rules.
 - [Design workflow](references/design-workflow.md): intake, evidence and revision stages.
 - [Physical-language examples](references/physical-language-examples.md): translate "flush", "higher" and similar corrections into geometric relationships.
+- [Mechanical idioms](references/mechanical-idioms.md): feature admission,
+  fit/motion/manufacturing checks and explicit unsupported-generator boundaries.
 - [Toolkit guide](references/toolkit-guide.md): environment setup and API/commands.
 - [Public API](references/public-api.md): compact modeling/checking contract; read first.
 - Threaded bores: `cadkit.geometry.internal_thread_tool` supplies a 64-bit,
@@ -41,7 +43,8 @@ See [the operating model](references/operating-model.md).
 - `scripts\foundation`: bundled milestone-1 Manifold3D/NumPy/Trimesh toolkit.
 - `scripts\new_project.py`: creates a self-contained project in a new folder.
 - `scripts\run_session.py`: supervised CLI execution without global configuration changes.
-- `templates`: a runnable, explicitly illustrative riser and a dimension brief.
+- `templates`: a runnable, explicitly illustrative riser, dimension brief and
+  loopback `serve_review.py` helper.
 - `tests`: package/starter checks; foundation tests are bundled separately.
 
 The workflow tracks measured, confirmed, assumed and estimated inputs; makes
@@ -110,6 +113,10 @@ Write only design-specific requirements in `checks.py`, then run `validate.py`.
 Full diagnostics stay in `output\validation.json`; browser omissions are explicit.
 For repeated failures, use the validation reference's bounded diagnosis recipe
 and preserve observations separately from hypotheses across compaction.
+Browser checks preflight the executable and Playwright before qualification or
+revision retirement; missing prerequisites leave the accepted handoff intact.
+If direct `file://` access is blocked by endpoint policy, run `python serve_review.py`
+to serve `output` on `127.0.0.1` instead of stripping DLP tags.
 See the public API rather than loading toolkit/renderer internals routinely.
 The starter also emits a fresh unvalidated-preview marker before deep checks.
 The optional supervised CLI gate lets the host open that viewer immediately

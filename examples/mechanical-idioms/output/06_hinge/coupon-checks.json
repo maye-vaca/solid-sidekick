@@ -1,0 +1,44 @@
+{
+  "status": "geometry_checks_passed",
+  "checks": [
+    "Coaxial bores",
+    "0.20 mm radial / 0.60 mm axial gaps",
+    "Pin spans both knuckles",
+    "Five sampled poses; no sweep claim"
+  ],
+  "interference": {
+    "pairs": 3,
+    "boolean_checks": 0,
+    "documented_overlaps": [],
+    "note": "Zero overlap does not establish clearance or physical fit."
+  },
+  "physical_acceptance": "not_performed",
+  "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+  "exports": {
+    "stls_reloaded": 6,
+    "glb_instances": 3,
+    "shared_geometries": 3,
+    "max_solid_difference_mm3": 0.0,
+    "glb": {
+      "parts_checked": 3,
+      "max_solid_difference_mm3": 6.100817519463986e-05
+    },
+    "revision": {
+      "status": "untracked"
+    },
+    "manifest_sha256": "20dd5887287b3b499a444dfb52a8129e106a65947e9ac106124648400b2d4ff5"
+  },
+  "browser": {
+    "status": "passed",
+    "raster_method": "rendered_vs_cleared_framebuffer",
+    "pixels_by_view": {
+      "top": 57632,
+      "under": 57632,
+      "front": 26881,
+      "side": 13710,
+      "iso": 59336
+    },
+    "errors": [],
+    "remote_requests": []
+  }
+}

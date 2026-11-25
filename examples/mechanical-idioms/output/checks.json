@@ -1,0 +1,608 @@
+{
+  "scope": "One bounded example per mechanical-idiom family; not every listed mechanism.",
+  "source_sha256": "c29d3b4cd5129d1bdd90175311db3a44b5a483ae8bbc4a8b4605b1d26907f566",
+  "coupons": {
+    "01_threads": {
+      "status": "geometry_checks_passed",
+      "checks": [
+        "Through-bore",
+        "Pitch 1.5 mm and right-hand progression",
+        "Retained wall and 16 mm AF"
+      ],
+      "interference": {
+        "pairs": 0,
+        "boolean_checks": 0,
+        "documented_overlaps": [],
+        "note": "Zero overlap does not establish clearance or physical fit."
+      },
+      "physical_acceptance": "not_performed",
+      "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+      "exports": {
+        "stls_reloaded": 2,
+        "glb_instances": 1,
+        "shared_geometries": 1,
+        "max_solid_difference_mm3": 0.0,
+        "glb": {
+          "parts_checked": 1,
+          "max_solid_difference_mm3": 8.241804393962658e-05
+        },
+        "revision": {
+          "status": "untracked"
+        },
+        "manifest_sha256": "b85003df7bec730f8ef50e3d334408cbffa03fd4b78e892dfa33312e3084a2b9"
+      },
+      "browser": {
+        "status": "passed",
+        "raster_method": "rendered_vs_cleared_framebuffer",
+        "pixels_by_view": {
+          "top": 121501,
+          "under": 121501,
+          "front": 72600,
+          "side": 83820,
+          "iso": 164476
+        },
+        "errors": [],
+        "remote_requests": []
+      }
+    },
+    "02_holes": {
+      "status": "geometry_checks_passed",
+      "checks": [
+        "Four through features",
+        "Stepped and conical seating sections",
+        "Both slot ends and bridge"
+      ],
+      "interference": {
+        "pairs": 0,
+        "boolean_checks": 0,
+        "documented_overlaps": [],
+        "note": "Zero overlap does not establish clearance or physical fit."
+      },
+      "physical_acceptance": "not_performed",
+      "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+      "exports": {
+        "stls_reloaded": 2,
+        "glb_instances": 1,
+        "shared_geometries": 1,
+        "max_solid_difference_mm3": 0.0,
+        "glb": {
+          "parts_checked": 1,
+          "max_solid_difference_mm3": 0.0012399778016598658
+        },
+        "revision": {
+          "status": "untracked"
+        },
+        "manifest_sha256": "05cdb37e31f09fde1ed51dbfcd7020d6ea61b2401065d70e439fcb6ba7f1058a"
+      },
+      "browser": {
+        "status": "passed",
+        "raster_method": "rendered_vs_cleared_framebuffer",
+        "pixels_by_view": {
+          "top": 115756,
+          "under": 115756,
+          "front": 44488,
+          "side": 12328,
+          "iso": 121054
+        },
+        "errors": [],
+        "remote_requests": []
+      }
+    },
+    "03_fits": {
+      "status": "geometry_checks_passed",
+      "checks": [
+        "Actual 0.10/0.20/0.30 mm radial gaps",
+        "6 mm plug section"
+      ],
+      "interference": {
+        "pairs": 1,
+        "boolean_checks": 0,
+        "documented_overlaps": [],
+        "note": "Zero overlap does not establish clearance or physical fit."
+      },
+      "physical_acceptance": "not_performed",
+      "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+      "exports": {
+        "stls_reloaded": 4,
+        "glb_instances": 2,
+        "shared_geometries": 2,
+        "max_solid_difference_mm3": 0.0,
+        "glb": {
+          "parts_checked": 2,
+          "max_solid_difference_mm3": 0.00076563945557591
+        },
+        "revision": {
+          "status": "untracked"
+        },
+        "manifest_sha256": "f25faf10f4337b77de6b0fde10f3eb4debe082171f1688d707f97c4f18d0199b"
+      },
+      "browser": {
+        "status": "passed",
+        "raster_method": "rendered_vs_cleared_framebuffer",
+        "pixels_by_view": {
+          "top": 92520,
+          "under": 92520,
+          "front": 54800,
+          "side": 25186,
+          "iso": 118006
+        },
+        "errors": [],
+        "remote_requests": []
+      }
+    },
+    "04_sockets": {
+      "status": "geometry_checks_passed",
+      "checks": [
+        "Connected rib and boss",
+        "Blind bottom retained",
+        "Socket and pin sections",
+        "Seated shoulder pose"
+      ],
+      "interference": {
+        "pairs": 1,
+        "boolean_checks": 0,
+        "documented_overlaps": [],
+        "note": "Zero overlap does not establish clearance or physical fit."
+      },
+      "physical_acceptance": "not_performed",
+      "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+      "exports": {
+        "stls_reloaded": 4,
+        "glb_instances": 2,
+        "shared_geometries": 2,
+        "max_solid_difference_mm3": 0.0,
+        "glb": {
+          "parts_checked": 2,
+          "max_solid_difference_mm3": 0.0002228167832946913
+        },
+        "revision": {
+          "status": "untracked"
+        },
+        "manifest_sha256": "9971137fb79d701b94c7cccc14303af6c5abe12cfbcdadfa3ea780b7af138428"
+      },
+      "browser": {
+        "status": "passed",
+        "raster_method": "rendered_vs_cleared_framebuffer",
+        "pixels_by_view": {
+          "top": 139288,
+          "under": 139288,
+          "front": 58696,
+          "side": 51799,
+          "iso": 128808
+        },
+        "errors": [],
+        "remote_requests": []
+      }
+    },
+    "05_bushings": {
+      "status": "geometry_checks_passed",
+      "checks": [
+        "Seat shoulder and sleeve bore",
+        "0.20 mm shaft radial gap",
+        "8 mm sleeve / 2 mm floor stack"
+      ],
+      "interference": {
+        "pairs": 3,
+        "boolean_checks": 0,
+        "documented_overlaps": [],
+        "note": "Zero overlap does not establish clearance or physical fit."
+      },
+      "physical_acceptance": "not_performed",
+      "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+      "exports": {
+        "stls_reloaded": 6,
+        "glb_instances": 3,
+        "shared_geometries": 3,
+        "max_solid_difference_mm3": 0.0,
+        "glb": {
+          "parts_checked": 3,
+          "max_solid_difference_mm3": 0.00021687328838561695
+        },
+        "revision": {
+          "status": "untracked"
+        },
+        "manifest_sha256": "cacc7fced16765d98eb20d9c7e378ec8990fbefacb66fdda0321ada65f2013f5"
+      },
+      "browser": {
+        "status": "passed",
+        "raster_method": "rendered_vs_cleared_framebuffer",
+        "pixels_by_view": {
+          "top": 88898,
+          "under": 88898,
+          "front": 60802,
+          "side": 36322,
+          "iso": 120315
+        },
+        "errors": [],
+        "remote_requests": []
+      }
+    },
+    "06_hinge": {
+      "status": "geometry_checks_passed",
+      "checks": [
+        "Coaxial bores",
+        "0.20 mm radial / 0.60 mm axial gaps",
+        "Pin spans both knuckles",
+        "Five sampled poses; no sweep claim"
+      ],
+      "interference": {
+        "pairs": 3,
+        "boolean_checks": 0,
+        "documented_overlaps": [],
+        "note": "Zero overlap does not establish clearance or physical fit."
+      },
+      "physical_acceptance": "not_performed",
+      "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+      "exports": {
+        "stls_reloaded": 6,
+        "glb_instances": 3,
+        "shared_geometries": 3,
+        "max_solid_difference_mm3": 0.0,
+        "glb": {
+          "parts_checked": 3,
+          "max_solid_difference_mm3": 6.100817519463986e-05
+        },
+        "revision": {
+          "status": "untracked"
+        },
+        "manifest_sha256": "20dd5887287b3b499a444dfb52a8129e106a65947e9ac106124648400b2d4ff5"
+      },
+      "browser": {
+        "status": "passed",
+        "raster_method": "rendered_vs_cleared_framebuffer",
+        "pixels_by_view": {
+          "top": 57632,
+          "under": 57632,
+          "front": 26881,
+          "side": 13710,
+          "iso": 59336
+        },
+        "errors": [],
+        "remote_requests": []
+      }
+    },
+    "07_snap_fit": {
+      "status": "geometry_checks_passed",
+      "checks": [
+        "1.6 x 3 mm beam section",
+        "Finite root and hook connectivity"
+      ],
+      "interference": {
+        "pairs": 0,
+        "boolean_checks": 0,
+        "documented_overlaps": [],
+        "note": "Zero overlap does not establish clearance or physical fit."
+      },
+      "physical_acceptance": "not_performed",
+      "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+      "exports": {
+        "stls_reloaded": 2,
+        "glb_instances": 1,
+        "shared_geometries": 1,
+        "max_solid_difference_mm3": 0.0,
+        "glb": {
+          "parts_checked": 1,
+          "max_solid_difference_mm3": 3.5495768310798586e-05
+        },
+        "revision": {
+          "status": "untracked"
+        },
+        "manifest_sha256": "2275b4943d59b16edd523e5d8b58344a2f76f2c0f8b3fbbc5045f48a3e147fb3"
+      },
+      "browser": {
+        "status": "passed",
+        "raster_method": "rendered_vs_cleared_framebuffer",
+        "pixels_by_view": {
+          "top": 40584,
+          "under": 40581,
+          "front": 39784,
+          "side": 19838,
+          "iso": 58946
+        },
+        "errors": [],
+        "remote_requests": []
+      }
+    },
+    "08_cam": {
+      "status": "geometry_checks_passed",
+      "checks": [
+        "Pivot bore",
+        "Eccentric outer bounds: -10 to +14 mm from pivot"
+      ],
+      "interference": {
+        "pairs": 0,
+        "boolean_checks": 0,
+        "documented_overlaps": [],
+        "note": "Zero overlap does not establish clearance or physical fit."
+      },
+      "physical_acceptance": "not_performed",
+      "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+      "exports": {
+        "stls_reloaded": 2,
+        "glb_instances": 1,
+        "shared_geometries": 1,
+        "max_solid_difference_mm3": 0.0,
+        "glb": {
+          "parts_checked": 1,
+          "max_solid_difference_mm3": 0.00013435814970655504
+        },
+        "revision": {
+          "status": "untracked"
+        },
+        "manifest_sha256": "f6fbbac12568ed5b4825e0dd0a8c64bf9a06c40461d4cb17f6809aae2250fda3"
+      },
+      "browser": {
+        "status": "passed",
+        "raster_method": "rendered_vs_cleared_framebuffer",
+        "pixels_by_view": {
+          "top": 179750,
+          "under": 179750,
+          "front": 39366,
+          "side": 39366,
+          "iso": 165248
+        },
+        "errors": [],
+        "remote_requests": []
+      }
+    },
+    "09_compliance": {
+      "status": "geometry_checks_passed",
+      "checks": [
+        "Two 1.6 x 3 mm beams",
+        "Open flexure window and two fixture holes"
+      ],
+      "interference": {
+        "pairs": 0,
+        "boolean_checks": 0,
+        "documented_overlaps": [],
+        "note": "Zero overlap does not establish clearance or physical fit."
+      },
+      "physical_acceptance": "not_performed",
+      "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+      "exports": {
+        "stls_reloaded": 2,
+        "glb_instances": 1,
+        "shared_geometries": 1,
+        "max_solid_difference_mm3": 0.0,
+        "glb": {
+          "parts_checked": 1,
+          "max_solid_difference_mm3": 0.0002419566902053797
+        },
+        "revision": {
+          "status": "untracked"
+        },
+        "manifest_sha256": "f0bb7190328f0d4f528c757cb314d6472fd367e5bddb61360367b0be5eb36bcd"
+      },
+      "browser": {
+        "status": "passed",
+        "raster_method": "rendered_vs_cleared_framebuffer",
+        "pixels_by_view": {
+          "top": 68974,
+          "under": 68974,
+          "front": 29046,
+          "side": 14570,
+          "iso": 90665
+        },
+        "errors": [],
+        "remote_requests": []
+      }
+    },
+    "10_enclosure": {
+      "status": "geometry_checks_passed",
+      "checks": [
+        "2 mm wall/floor sections",
+        "0.30 mm lip envelope clearance",
+        "Noninterfering closed pose"
+      ],
+      "interference": {
+        "pairs": 1,
+        "boolean_checks": 0,
+        "documented_overlaps": [],
+        "note": "Zero overlap does not establish clearance or physical fit."
+      },
+      "physical_acceptance": "not_performed",
+      "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+      "exports": {
+        "stls_reloaded": 4,
+        "glb_instances": 2,
+        "shared_geometries": 2,
+        "max_solid_difference_mm3": 0.0,
+        "glb": {
+          "parts_checked": 2,
+          "max_solid_difference_mm3": 0.0016603767652534837
+        },
+        "revision": {
+          "status": "untracked"
+        },
+        "manifest_sha256": "3f8171f96df039a9460bed021f57d1196607ca6579e4ee01f164f1ec9f12ef7e"
+      },
+      "browser": {
+        "status": "passed",
+        "raster_method": "rendered_vs_cleared_framebuffer",
+        "pixels_by_view": {
+          "top": 167280,
+          "under": 167280,
+          "front": 35752,
+          "side": 37923,
+          "iso": 160196
+        },
+        "errors": [],
+        "remote_requests": []
+      }
+    },
+    "11_edge_profiles": {
+      "status": "geometry_checks_passed",
+      "checks": [
+        "Distinct rounded and straight-bevel sections",
+        "Preserved 24 x 18 mm outer envelopes"
+      ],
+      "interference": {
+        "pairs": 1,
+        "boolean_checks": 0,
+        "documented_overlaps": [],
+        "note": "Zero overlap does not establish clearance or physical fit."
+      },
+      "physical_acceptance": "not_performed",
+      "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+      "exports": {
+        "stls_reloaded": 4,
+        "glb_instances": 2,
+        "shared_geometries": 2,
+        "max_solid_difference_mm3": 0.0,
+        "glb": {
+          "parts_checked": 2,
+          "max_solid_difference_mm3": 0.00016628243017406384
+        },
+        "revision": {
+          "status": "untracked"
+        },
+        "manifest_sha256": "445e1cbf3016ea22e98e4de12346a1e3827dd25e7fa5d1553f9f8f61a254227c"
+      },
+      "browser": {
+        "status": "passed",
+        "raster_method": "rendered_vs_cleared_framebuffer",
+        "pixels_by_view": {
+          "top": 111071,
+          "under": 111073,
+          "front": 25707,
+          "side": 9678,
+          "iso": 102998
+        },
+        "errors": [],
+        "remote_requests": []
+      }
+    },
+    "12_bent_sheet": {
+      "status": "geometry_checks_passed",
+      "checks": [
+        "2 mm thickness and R6 inner/R8 outer bend",
+        "Constant-thickness section volume",
+        "No flat-pattern claim"
+      ],
+      "interference": {
+        "pairs": 0,
+        "boolean_checks": 0,
+        "documented_overlaps": [],
+        "note": "Zero overlap does not establish clearance or physical fit."
+      },
+      "physical_acceptance": "not_performed",
+      "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+      "exports": {
+        "stls_reloaded": 2,
+        "glb_instances": 1,
+        "shared_geometries": 1,
+        "max_solid_difference_mm3": 0.0,
+        "glb": {
+          "parts_checked": 1,
+          "max_solid_difference_mm3": 0.00018386398327565796
+        },
+        "revision": {
+          "status": "untracked"
+        },
+        "manifest_sha256": "fbc77fc173ab882169de8d3b874f37ab16eaba08bd7e6ee8e2a9afc3ea95205e"
+      },
+      "browser": {
+        "status": "passed",
+        "raster_method": "rendered_vs_cleared_framebuffer",
+        "pixels_by_view": {
+          "top": 146482,
+          "under": 146482,
+          "front": 25391,
+          "side": 126360,
+          "iso": 163993
+        },
+        "errors": [],
+        "remote_requests": []
+      }
+    },
+    "13_captive_nut": {
+      "status": "geometry_checks_passed",
+      "checks": [
+        "Hex pocket section",
+        "Gauge seating",
+        "Through-hole and retained shoulder"
+      ],
+      "interference": {
+        "pairs": 1,
+        "boolean_checks": 0,
+        "documented_overlaps": [],
+        "note": "Zero overlap does not establish clearance or physical fit."
+      },
+      "physical_acceptance": "not_performed",
+      "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+      "exports": {
+        "stls_reloaded": 4,
+        "glb_instances": 2,
+        "shared_geometries": 2,
+        "max_solid_difference_mm3": 0.0,
+        "glb": {
+          "parts_checked": 2,
+          "max_solid_difference_mm3": 0.00028127703297234905
+        },
+        "revision": {
+          "status": "untracked"
+        },
+        "manifest_sha256": "f451618a211c64b2a8e765db861b4ed80cd76eeeef2f3b4da709697430209d2e"
+      },
+      "browser": {
+        "status": "passed",
+        "raster_method": "rendered_vs_cleared_framebuffer",
+        "pixels_by_view": {
+          "top": 133814,
+          "under": 133814,
+          "front": 52500,
+          "side": 42750,
+          "iso": 150033
+        },
+        "errors": [],
+        "remote_requests": []
+      }
+    },
+    "14_pattern": {
+      "status": "geometry_checks_passed",
+      "checks": [
+        "18 positioned through-holes",
+        "3 mm actual hole diameter/depth envelopes",
+        "Retained ligaments",
+        "Preserved card envelope"
+      ],
+      "interference": {
+        "pairs": 0,
+        "boolean_checks": 0,
+        "documented_overlaps": [],
+        "note": "Zero overlap does not establish clearance or physical fit."
+      },
+      "physical_acceptance": "not_performed",
+      "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+      "exports": {
+        "stls_reloaded": 2,
+        "glb_instances": 1,
+        "shared_geometries": 1,
+        "max_solid_difference_mm3": 0.0,
+        "glb": {
+          "parts_checked": 1,
+          "max_solid_difference_mm3": 0.000386027849033299
+        },
+        "revision": {
+          "status": "untracked"
+        },
+        "manifest_sha256": "9ff47c5f4287a676035688f1befe7662e1b53285c982225184ba941b83b6b46e"
+      },
+      "browser": {
+        "status": "passed",
+        "raster_method": "rendered_vs_cleared_framebuffer",
+        "pixels_by_view": {
+          "top": 194921,
+          "under": 194921,
+          "front": 21974,
+          "side": 13172,
+          "iso": 174574
+        },
+        "errors": [],
+        "remote_requests": []
+      }
+    }
+  },
+  "physical_acceptance": "not_performed",
+  "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified."
+}

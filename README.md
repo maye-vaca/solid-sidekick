@@ -1,17 +1,26 @@
 # Mechanical Design Toolkit
 
-Construction-workflow alpha 0.1.0-alpha.8: one CAD skill/runtime with project-local host
+Construction-workflow alpha 0.1.0-alpha.9: one CAD skill/runtime with project-local host
 adapters. This is not a CAD application, bundled LLM or universal chat plugin.
-New projects include `cadkit.construction`: bounded assembly-access checks
+This repair release keeps generated files inheriting the project folder's ACL,
+preflights browser executable/Playwright before qualification or revision
+retirement, publishes browser evidence only after every check passes, writes
+`validation.json` atomically, and adds a loopback `serve_review.py` fallback
+for `file://`/DLP blocks. No account name is hardcoded and DLP tags are not
+stripped. New projects include `cadkit.construction`: bounded assembly-access checks
 before publishing revision-bound guides, quantities, storyboards and optional
 WebM videos. It checks declared straight translations with conservative convex
 swept envelopes and static interference, not arbitrary motion or safe fabrication.
 Stationary placement is explicitly not an insertion check. See
 [construction production](cad-design/references/construction-production.md).
-Assumptions / limitations now start collapsed behind a keyboard-accessible
-Read more / Collapse toggle in the lightweight viewer and current/prior review
-frames. All notes remain available; a short concept/fit/safety caveat stays
-visible. Existing trial runtimes and exported HTML are not changed.
+Review now starts with one full-width isometric current model; **Compare
+revisions** reveals the prior view and synchronized comparison presets.
+Verbose provenance and updates live under a disclosure, and model metadata and
+limitations start collapsed. All notes remain available; short unchecked-snapshot
+and concept/fit/safety caveats stay visible. Keyboard and click/tap controls
+provide orbit/pan/zoom alternatives. Focused source/browser contrast, keyboard
+and reflow checks are not a WCAG or assistive-technology certification.
+Existing trial runtimes and exported HTML are not changed.
 This release retains the shared repairs found in architecture trials:
 deterministic multi-fact/decision history for saved-JSON replay, two/four-choice
 checkpoints with unique labels, and responsive title wrapping/drawing alignment.
@@ -21,10 +30,26 @@ Apply remains a user action and retains camera/component visibility. Shared inst
 a host-neutral capability contract; installed guides map it to each host.
 Native qualification of the revised instructions remains separate work.
 
+The printed-nut follow-up adds a reusable 64-bit internal-thread cutter,
+clearance/pitch export regressions, actionable STL failure facts and bounded
+diagnosis/resume guidance. Earlier OpenCode trial repairs are retained.
+Thread sampling now adapts to profile depth, preventing the reproduced
+between-sample groove loss from an admitted coarse request. Export predicts
+GLB float32 precision loss before writing, then independently checks the
+serialized GLB while staged; existing files remain untouched on GLB failure.
+Valid nested/depth-staggered tangent cuts remain allowed; geometry is assessed
+in 3D, not rejected by a blanket sketch-tangency rule.
+See [trial findings](cad-design/references/improvement-actions.md#printed-nut-opencode-follow-up)
+for observed failures, source/copy boundaries and unverified behavior.
+
 Existing designs and installations are not changed by this archive. The
-included examples retain their original runtime and historical evidence,
+`portable-review` and `supported-revision` examples retain their runtime and historical evidence,
 including the earlier portable-review user report; they are not newly
-generated alpha.8 examples. New scaffolded projects use the updated runtime.
+generated alpha.9 examples. New scaffolded projects use the updated runtime.
+The new [mechanical-idiom test pieces](examples/mechanical-idioms/README.md)
+provide 14 checked specimens/sets (23 local-part STLs), individual offline
+viewers and a gallery. Their source uses the canonical runtime; physical fit,
+loads, fatigue, sealing and manufacturing suitability remain unverified.
 Already-open older review pages without `loadHandoff` retain the supported
 file-chooser path; do not reload their view just to gain the new API.
 
@@ -41,16 +66,34 @@ trials remain separate unfinished work; architecture trials do not replace them.
 
 ## Contents
 
+All host entry points require the shared
+[prototype and assembly evidence policy](cad-design/references/operating-model.md#prototype-and-assembly-evidence-policy):
+check what software can establish, disclose uncertainty and use useful physical
+trials rather than demanding guaranteed first-print fit. Known defects and
+contradictions are not waived by calling a design a prototype. This is portable
+guidance, not guaranteed model compliance; existing installations are unchanged.
+
 - `cad-design`: the one canonical skill, Python toolkit, templates and offline viewer generator.
 - `adapters`: thin Copilot/OpenCode profiles and OpenAI/manual startup and capability guides.
 - `install.py`: standard-library, no-network project-local installer.
 - `toolkit.json`, `VERSION`, `LICENSE`, `THIRD_PARTY_NOTICES`: release metadata and legal boundaries.
-- `examples`: the source-based supported-revision example and a browser-only portable-review example.
+- `examples`: historical supported-revision/portable-review examples and the new mechanical-idiom test-piece catalog.
 - `tests`: installer/packaging regressions; skill development tests remain with the skill.
-- `qualification.json`: bounded packaging/local CAD results, not native multi-host acceptance.
+- `qualification.json`: historical qualification plus bounded repair/thread follow-ups, not native multi-host acceptance.
 - `file-hashes.json`: per-file integrity inventory, not a publisher signature.
 
 ## Choose a host and inspect an installation
+
+The repository's `.gitattributes` fixes source/documentation line endings to LF
+and disables text conversion for generated exports and historical evidence.
+Keep those attributes when copying or distributing the package: exact-byte
+inventories are intentionally not normalized or regenerated by the installer.
+After intentional source changes, refresh the top-level inventory from the
+canonical package files; do not rewrite historical artifact inventories merely
+to hide a checkout mismatch. When adopting this policy in an existing checkout,
+include the original byte-preserved artifact files in the change as well as
+`.gitattributes`; attributes alone cannot restore bytes previously normalized
+in Git. Fresh-checkout regressions exercise both `core.autocrlf` settings.
 
 Use Python 3.10+ and an approved working folder. Run from this extracted folder
 in PowerShell (replace `python` with your chosen Python executable if needed):
@@ -155,6 +198,8 @@ Runtime notes:
   default browser. If `file://` navigation is denied (for example a managed
   device blocks browser reads of DLP-tagged files), the agent serves the output
   over `http://127.0.0.1:<port>` instead; that URL is local to your machine.
+  New projects include `serve_review.py` for this; the same helper is
+  `python -m cadkit.review_server`. Do not strip DLP tags.
 - OpenCode's own docs for providers, agents and skills:
   https://opencode.ai/docs/ , https://opencode.ai/docs/agents/ ,
   https://opencode.ai/docs/skills/ , and

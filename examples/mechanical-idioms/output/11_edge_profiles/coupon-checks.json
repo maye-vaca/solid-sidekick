@@ -1,0 +1,42 @@
+{
+  "status": "geometry_checks_passed",
+  "checks": [
+    "Distinct rounded and straight-bevel sections",
+    "Preserved 24 x 18 mm outer envelopes"
+  ],
+  "interference": {
+    "pairs": 1,
+    "boolean_checks": 0,
+    "documented_overlaps": [],
+    "note": "Zero overlap does not establish clearance or physical fit."
+  },
+  "physical_acceptance": "not_performed",
+  "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+  "exports": {
+    "stls_reloaded": 4,
+    "glb_instances": 2,
+    "shared_geometries": 2,
+    "max_solid_difference_mm3": 0.0,
+    "glb": {
+      "parts_checked": 2,
+      "max_solid_difference_mm3": 0.00016628243017406384
+    },
+    "revision": {
+      "status": "untracked"
+    },
+    "manifest_sha256": "445e1cbf3016ea22e98e4de12346a1e3827dd25e7fa5d1553f9f8f61a254227c"
+  },
+  "browser": {
+    "status": "passed",
+    "raster_method": "rendered_vs_cleared_framebuffer",
+    "pixels_by_view": {
+      "top": 111071,
+      "under": 111073,
+      "front": 25707,
+      "side": 9678,
+      "iso": 102998
+    },
+    "errors": [],
+    "remote_requests": []
+  }
+}

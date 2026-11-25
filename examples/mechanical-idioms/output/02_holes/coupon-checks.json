@@ -1,0 +1,43 @@
+{
+  "status": "geometry_checks_passed",
+  "checks": [
+    "Four through features",
+    "Stepped and conical seating sections",
+    "Both slot ends and bridge"
+  ],
+  "interference": {
+    "pairs": 0,
+    "boolean_checks": 0,
+    "documented_overlaps": [],
+    "note": "Zero overlap does not establish clearance or physical fit."
+  },
+  "physical_acceptance": "not_performed",
+  "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+  "exports": {
+    "stls_reloaded": 2,
+    "glb_instances": 1,
+    "shared_geometries": 1,
+    "max_solid_difference_mm3": 0.0,
+    "glb": {
+      "parts_checked": 1,
+      "max_solid_difference_mm3": 0.0012399778016598658
+    },
+    "revision": {
+      "status": "untracked"
+    },
+    "manifest_sha256": "05cdb37e31f09fde1ed51dbfcd7020d6ea61b2401065d70e439fcb6ba7f1058a"
+  },
+  "browser": {
+    "status": "passed",
+    "raster_method": "rendered_vs_cleared_framebuffer",
+    "pixels_by_view": {
+      "top": 115756,
+      "under": 115756,
+      "front": 44488,
+      "side": 12328,
+      "iso": 121054
+    },
+    "errors": [],
+    "remote_requests": []
+  }
+}

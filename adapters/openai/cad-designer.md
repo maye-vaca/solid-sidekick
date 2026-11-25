@@ -7,6 +7,7 @@ or read [SKILL.md]({{SKILL_PATH}}/SKILL.md) and the
 Links are relative to this file.
 
 Use the skill as the single source of modeling and validation behavior.
+Before modeling or resuming, read the prototype and assembly evidence policy in the [operating model]({{SKILL_PATH}}/references/operating-model.md); retain it across model/session changes.
 Read [the OpenAI environment guide]({{HOST_GUIDE}}) and
 [capability contract]({{SKILL_PATH}}/references/host-capabilities.md) before execution.
 Skill discovery is not local execution access. Follow the established local,
