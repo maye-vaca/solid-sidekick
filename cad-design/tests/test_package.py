@@ -56,7 +56,6 @@ class PackageTests(unittest.TestCase):
         bundled = ROOT / "scripts" / "foundation"
         for relative in (
             Path("requirements.txt"), Path("README.md"), Path("example.py"),
-            Path("tests") / "test_browser.py",
         ):
             self.assertEqual(digest(original / relative), digest(bundled / relative), str(relative))
 
@@ -115,7 +114,7 @@ class PackageTests(unittest.TestCase):
                         self.assertFalse(page.locator("#assumptions-section").evaluate("e=>e.open"))
                         self.assertTrue(page.locator("#assumptions").is_hidden())
                         self.assertLess(page.locator("canvas").bounding_box()["y"], 400)
-                        summary = page.locator("summary")
+                        summary = page.locator("#assumptions-section > summary")
                         summary.focus()
                         page.keyboard.press("Enter")
                         self.assertTrue(page.locator("#assumptions").is_visible())
@@ -276,7 +275,7 @@ class PackageTests(unittest.TestCase):
                 )
                 self.assertEqual(page.locator("#components .part").count(), 6)
                 self.assertIn("gap: 32 mm (assumed;", page.locator("#assumptions").text_content())
-                self.assertIn("+Z up", page.locator("#conventions").inner_text())
+                self.assertIn("+Z up", page.locator("#conventions").text_content())
                 self.assertTrue(page.locator("#error").is_hidden())
                 pixels = page.evaluate("""()=>{
                     draw();

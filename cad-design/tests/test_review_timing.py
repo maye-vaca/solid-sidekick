@@ -107,6 +107,140 @@ class TimingTests(unittest.TestCase):
 
 
 class ReviewTests(unittest.TestCase):
+    @unittest.skipUnless(os.environ.get("CADKIT_BROWSER"), "Set CADKIT_BROWSER for accessible review checks")
+    def test_single_view_comparison_keyboard_controls_and_narrow_reflow(self):
+        from playwright.sync_api import sync_playwright
+
+        with tempfile.TemporaryDirectory() as directory, sync_playwright() as pw:
+            _, _, _, before, after, last = self.revisions(Path(directory))
+            packet = json.loads((last / "review-state.json").read_text())
+            final_hash = json.loads(packet["payload"])["current"]["snapshot"]["identity"]["brief_sha256"]
+            browser = pw.chromium.launch(executable_path=os.environ["CADKIT_BROWSER"], headless=True,
+                                        args=["--use-angle=swiftshader", "--enable-unsafe-swiftshader"])
+            try:
+                page = browser.new_page(viewport={"width": 1600, "height": 1000})
+                errors = []
+                page.on("pageerror", lambda error: errors.append(str(error)))
+                page.goto((after / "review.html").as_uri())
+                page.wait_for_function("cadReview.getState().view && !cadReview.getState().blocked")
+                current = page.frame(name="current")
+                current.wait_for_function("typeof initialized!=='undefined' && initialized")
+                self.assertFalse(page.locator("#review-details").evaluate("e=>e.open"))
+                self.assertTrue(page.locator("#identity").is_hidden())
+                self.assertTrue(page.locator("#comparison-controls").is_hidden())
+                self.assertTrue(page.locator("#previous-panel").is_hidden())
+                full_width = page.locator("#current").bounding_box()["width"]
+                self.assertGreater(full_width, 1500)
+                self.assertLessEqual(current.locator("header h1").bounding_box()["height"], 1)
+                self.assertTrue(current.locator("#model-details").evaluate("e=>!e.open"))
+
+                canvas = current.locator("#view")
+                canvas.focus()
+                yaw = current.evaluate("yaw")
+                page.keyboard.press("ArrowRight")
+                current.wait_for_function("(old)=>yaw>old", arg=yaw)
+                page.keyboard.press("Shift+ArrowUp")
+                self.assertLess(current.evaluate("pan[1]"), 0)
+                page.keyboard.press("+")
+                self.assertGreater(current.evaluate("zoom"), 1)
+                page.keyboard.press("Tab")
+                self.assertFalse(canvas.evaluate("e=>e===document.activeElement"))
+                current.locator("#navigation-controls > summary").click()
+                current.locator('[data-camera="pan-right"]').click()
+                self.assertGreater(current.evaluate("pan[0]"), 0)
+                current.locator('#components button').first.click()
+                self.assertEqual(current.locator('#components button').first.get_attribute("aria-pressed"), "true")
+                page.wait_for_function("cadReview.getState().view.selected==='plate'")
+                state = page.evaluate("cadReview.getState()")
+                compare = page.locator("#show-comparison")
+                compare.focus()
+                page.keyboard.press("Space")
+                self.assertTrue(compare.is_checked())
+                self.assertTrue(page.locator("#previous-panel").is_visible())
+                self.assertTrue(page.locator("#front").is_visible())
+                self.assertLess(page.locator("#current").bounding_box()["width"], full_width * .55)
+                previous = page.frame(name="previous")
+                previous.wait_for_function("typeof initialized!=='undefined' && initialized && selected===0")
+                self.assertEqual(previous.locator('#components button').first.get_attribute("aria-pressed"), "true")
+                self.assertIn("plate | Size", previous.locator("#selected").text_content())
+                self.assertEqual(page.evaluate("cadReview.getState()"), state)
+                page.keyboard.press("Space")
+                self.assertTrue(page.locator("#previous-panel").is_hidden())
+                self.assertEqual(page.evaluate("cadReview.getState()"), state)
+
+                page.evaluate("p=>cadReview.load(p)", packet)
+                self.assertTrue(page.locator("#review-details").evaluate("e=>e.open"))
+                self.assertTrue(page.locator("#previous-panel").is_hidden())
+                page.locator("#apply").click()
+                current.wait_for_function("(hash)=>typeof initialized!=='undefined' && initialized && model.reviewIdentity===hash", arg=final_hash)
+                self.assertTrue(page.locator("#previous-panel").is_hidden())
+                self.assertEqual(page.evaluate("cadReview.getState().view"), state["view"])
+                compare.check()
+                page.reload()
+                page.wait_for_function("cadReview.getState().blocked")
+                self.assertTrue(page.locator("#previous-panel").is_hidden())
+                page.evaluate("p=>cadReview.load(p)", packet)
+                page.locator("#apply").click()
+                current = page.frame(name="current")
+                current.wait_for_function("(hash)=>typeof initialized!=='undefined' && initialized && model.reviewIdentity===hash", arg=final_hash)
+                page.frame(name="previous").wait_for_function("typeof initialized!=='undefined' && initialized")
+                self.assertTrue(compare.is_checked())
+                self.assertTrue(page.locator("#previous-panel").is_visible())
+
+                def contrast(foreground, background):
+                    def luminance(color):
+                        channels = [int(value) / 255 for value in re.findall(r"\d+", color)[:3]]
+                        linear = [value / 12.92 if value <= .04045 else ((value + .055) / 1.055) ** 2.4
+                                  for value in channels]
+                        return sum(weight * value for weight, value in zip((.2126, .7152, .0722), linear))
+                    low, high = sorted((luminance(foreground), luminance(background)))
+                    return (high + .05) / (low + .05)
+
+                for frame in (page.main_frame, current, page.frame(name="previous")):
+                    colors = frame.evaluate("""()=>[...document.body.querySelectorAll("*")]
+                        .filter(e=>e.getClientRects().length && !e.closest("button:disabled") &&
+                            [...e.childNodes].some(n=>n.nodeType===3&&n.textContent.trim()))
+                        .map(e=>{
+                            const s=getComputedStyle(e);let parent=e,bg="rgba(0, 0, 0, 0)";
+                            while(parent&&bg==="rgba(0, 0, 0, 0)"){
+                                bg=getComputedStyle(parent).backgroundColor;parent=parent.parentElement;}
+                            return {tag:e.tagName,id:e.id,color:s.color,background:bg,
+                                large:parseFloat(s.fontSize)>=24||
+                                    (parseFloat(s.fontSize)>=18.66&&parseInt(s.fontWeight)>=700)};
+                        })""")
+                    for color in colors:
+                        if color["tag"] in ("SCRIPT", "STYLE"):
+                            continue
+                        self.assertGreaterEqual(contrast(color["color"], color["background"]),
+                                                3 if color["large"] else 4.5, color)
+                    for control in frame.locator("button:visible,input[type=checkbox]:visible,summary:visible").all():
+                        self.assertGreaterEqual(control.bounding_box()["height"], 24)
+                placeholder = current.locator("#search").evaluate(
+                    "e=>[getComputedStyle(e,'::placeholder').color,getComputedStyle(e).backgroundColor]")
+                self.assertGreaterEqual(contrast(*placeholder), 4.5)
+
+                for width in (1600, 320):
+                    page.set_viewport_size({"width": width, "height": 1000})
+                    for frame in (page.main_frame, current, page.frame(name="previous")):
+                        self.assertTrue(frame.evaluate("document.documentElement.scrollWidth<=innerWidth"),
+                                        (width, frame.name, frame.evaluate(
+                                            "()=>({width:innerWidth,scroll:document.documentElement.scrollWidth})")))
+                        # Exercise the text-spacing override on expanded and collapsed content.
+                        frame.add_style_tag(content="*{line-height:1.5!important;letter-spacing:.12em!important;"
+                                                   "word-spacing:.16em!important}p{margin-bottom:2em!important}")
+                        self.assertTrue(frame.evaluate("document.documentElement.scrollWidth<=innerWidth"))
+                    compare.uncheck()
+                    self.assertTrue(page.locator("#previous-panel").is_hidden())
+                    compare.check()
+                page.goto((before / "review.html").as_uri())
+                page.wait_for_function("cadReview.getState().view")
+                self.assertTrue(compare.is_disabled())
+                self.assertIn("No prior revision", page.locator("#comparison-hint").inner_text())
+                self.assertTrue(page.locator("#previous-panel").is_hidden())
+                self.assertFalse(errors, errors)
+            finally:
+                browser.close()
+
     @unittest.skipUnless(os.environ.get("CADKIT_BROWSER"), "Set CADKIT_BROWSER for review interaction checks")
     def test_review_notes_collapse_without_changing_pending_revision_or_camera(self):
         from playwright.sync_api import sync_playwright
@@ -133,11 +267,11 @@ class ReviewTests(unittest.TestCase):
                 self.assertFalse(current.locator("#assumptions-section").evaluate("e=>e.open"))
                 page.evaluate("p=>cadReview.load(p)", packet)
                 state = page.evaluate("cadReview.getState()")
-                current.locator("summary").click()
+                current.locator("#assumptions-section > summary").click()
                 current.wait_for_function("document.getElementById('assumptions-section').open")
                 self.assertEqual(current.locator("#assumptions").inner_text(), first.assumptions[0].strip())
                 self.assertEqual(page.evaluate("cadReview.getState()"), state)
-                current.locator("summary").click()
+                current.locator("#assumptions-section > summary").click()
                 current.wait_for_function("!document.getElementById('assumptions-section').open")
                 page.locator("#apply").click()
                 current.wait_for_function("initialized && model.assumptions[0].startsWith('Current')")
@@ -145,7 +279,7 @@ class ReviewTests(unittest.TestCase):
                 self.assertEqual(page.evaluate("cadReview.getState().revision.id"), "next")
                 self.assertIsNone(page.evaluate("cadReview.getState().pending"))
                 self.assertEqual(page.evaluate("cadReview.getState().view"), state["view"])
-                current.locator("summary").click()
+                current.locator("#assumptions-section > summary").click()
                 current.wait_for_function("document.getElementById('assumptions-section').open")
                 self.assertEqual(current.locator("#assumptions").inner_text(), second.assumptions[0].strip())
             finally:
@@ -263,6 +397,7 @@ class ReviewTests(unittest.TestCase):
                 page.on("request", lambda r: remote.append(r.url) if r.url.startswith(("http:", "https:")) else None)
                 page.goto((after / "review.html").as_uri())
                 page.wait_for_function("cadReview.getState().view && !cadReview.getState().blocked")
+                page.locator("#show-comparison").check()
                 current, previous = page.frame(name="current"), page.frame(name="previous")
                 for frame in (current, previous):
                     frame.wait_for_function("typeof initialized!=='undefined' && initialized")
@@ -286,7 +421,7 @@ class ReviewTests(unittest.TestCase):
                                         sha256=hashlib.sha256(payload.encode()).hexdigest())
                     with self.assertRaises(Error):
                         page.evaluate("p=>cadReview.load(p)", inconsistent)
-                    self.assertIn("wider", page.locator("#identity").inner_text())
+                    self.assertIn("wider", page.locator("#identity").text_content())
                 current.locator("#components input").first.uncheck()
                 previous.wait_for_function("parts[0].visible===false")
                 current.evaluate("yaw+=.2;zoom=1.3;pan=[14,8];draw()")
@@ -310,8 +445,8 @@ class ReviewTests(unittest.TestCase):
                 self.assertIn("rejected", page.locator("#message").inner_text())
                 page.reload()
                 page.wait_for_function("cadReview.getState().blocked")
-                self.assertIn("Blocked stale", page.locator("#identity").inner_text())
-                page.locator("#front").click()
+                self.assertIn("Blocked stale", page.locator("#identity").text_content())
+                page.evaluate("cadReview.preset('front')")
                 page.reload()
                 page.wait_for_function("cadReview.getState().blocked")
                 self.assertEqual(page.frame(name="current").locator("canvas").count(), 0)

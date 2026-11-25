@@ -16,15 +16,21 @@ from .viewer import HTML
 
 BRIDGE = r'''
 <script>
-let quiet=false,initialized=false;
+let quiet=false,initialized=false,lastAnnounced=null;
 function reviewState(){const f=model.reviewFrame;return {
  camera:{yaw,pitch,center_mm:center.map((v,i)=>v*f.scale_mm+f.origin_mm[i]),
  span_mm:span*f.scale_mm,zoom,pan:[...pan]},
  visibility:Object.fromEntries(parts.map(p=>[p.name,p.visible])),
  selected:selected<0?null:parts[selected].name,interacting:!!drag};}
 const originalDraw=draw;
-draw=function(){originalDraw();if(initialized&&!quiet)parent.postMessage({
- kind:"cad-review-state",revision:model.reviewIdentity,state:reviewState()},"*");};
+function announce(){
+ if(!initialized||quiet)return;
+ const state=reviewState(),serialized=JSON.stringify(state);
+ if(serialized===lastAnnounced)return;
+ lastAnnounced=serialized;
+ parent.postMessage({kind:"cad-review-state",revision:model.reviewIdentity,state},"*");
+}
+draw=function(){originalDraw();announce();};
 window.addEventListener("message",e=>{
  if(e.source!==parent||e.data?.kind!=="cad-review-apply"||e.data.revision!==model.reviewIdentity)return;
  const s=e.data.state,f=model.reviewFrame;quiet=true;
@@ -33,48 +39,84 @@ window.addEventListener("message",e=>{
  span=c.span_mm/f.scale_mm;zoom=c.zoom;pan=[...c.pan];}
  for(let i=0;i<parts.length;i++){
  parts[i].visible=s.visibility?.[parts[i].name]??true;
- parts[i].checkbox.checked=parts[i].visible;
- parts[i].row.classList.toggle("selected",s.selected===parts[i].name);}
- selected=parts.findIndex(p=>p.name===s.selected);draw();initialized=true;
+ parts[i].checkbox.checked=parts[i].visible;}
+ selection(parts.findIndex(p=>p.name===s.selected));draw();initialized=true;
+ lastAnnounced=JSON.stringify(reviewState());
  }finally{quiet=false;}
 });
 for(const name of ["pointerdown","pointerup","pointercancel","lostpointercapture"])
- canvas.addEventListener(name,()=>{if(initialized)parent.postMessage({
- kind:"cad-review-state",revision:model.reviewIdentity,state:reviewState()},"*");});
+ canvas.addEventListener(name,announce);
 parent.postMessage({kind:"cad-review-ready",revision:model.reviewIdentity},"*");
 </script>
 '''
 
 
-PAGE = r'''<!doctype html><html lang="en"><meta charset="utf-8">
+PAGE = r'''<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>CAD revision review</title>
 <style>
-body{margin:0;background:#101923;color:#edf3f7;font:14px system-ui}header{padding:14px}
-button,input{font:inherit;margin:4px;padding:7px}#message{color:#ffd080;white-space:pre-wrap}
-.views{display:grid;grid-template-columns:1fr 1fr}iframe{width:100%;height:800px;border:1px solid #58758b}
-h2{font-size:16px;padding:8px;margin:0}p{margin:6px 0}
-@media(max-width:900px){.views{grid-template-columns:1fr}}
-</style><header><h1>CAD revision review</h1><p id="identity"></p><p id="deliverable"></p>
-<p>Snapshot review in mm, not live validation or fabrication approval.
-Current is unchecked at export. Load a newer review-state.json, then choose Apply.
-No server or local-file fetching is needed.</p>
+*{box-sizing:border-box}[hidden]{display:none!important}
+html{color-scheme:dark}
+body{margin:0;background:#101923;color:#edf3f7;font:14px/1.5 system-ui}
+header{padding:20px 24px 12px;border-bottom:1px solid #354b5b}
+h1{font-size:clamp(20px,3vw,28px);line-height:1.25;margin:0;overflow-wrap:anywhere}
+p{margin:8px 0;overflow-wrap:anywhere}.muted{color:#b9c9d3}
+.heading,.toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.heading{justify-content:space-between}.toolbar{margin-top:12px}
+button,input,summary{font:inherit}button,summary,.compare-option{min-height:36px}
+button{background:#263e50;color:#edf3f7;border:1px solid #8da7b8;border-radius:6px;
+padding:7px 12px;cursor:pointer}button:hover{background:#36536a}
+button:disabled{opacity:.55;cursor:not-allowed}
+:focus-visible{outline:3px solid #70d7e9;outline-offset:3px}
+summary{cursor:pointer;padding:7px 0;width:fit-content}
+details{min-width:0}details[open]{margin-bottom:8px}
+.compare-option{display:inline-flex;align-items:center;gap:8px}
+input[type=checkbox]{width:24px;height:24px;accent-color:#70d7e9}
+input[type=file]{display:block;width:100%;max-width:100%;padding:8px 0}
+.update-actions label{min-width:0;max-width:100%}
+.update-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.badge{font-size:12px;color:#b9c9d3;border:1px solid #8da7b8;border-radius:99px;padding:4px 10px}
+#message{color:#ffd080;white-space:pre-wrap}#message:empty{margin:0}
+.views{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;padding:12px 16px}
+.views.comparing{grid-template-columns:repeat(2,minmax(0,1fr))}
+.views section{min-width:0}iframe{display:block;width:100%;height:max(620px,calc(100dvh - 190px));
+border:1px solid #58758b;border-radius:10px;background:#101923}
+h2{font-size:13px;font-weight:600;color:#b9c9d3;margin:0 0 8px}
+.skip{position:absolute;top:-100px;left:12px;background:#edf3f7;color:#101923;padding:10px;z-index:2}
+.skip:focus{top:8px}
+@media(max-width:900px){.views.comparing{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:480px){header{padding:16px 12px 10px}.views{padding:10px 8px}}
+@media(forced-colors:active){button,iframe,.badge{border-color:CanvasText}:focus-visible{outline-color:Highlight}}
+</style></head><body><a class="skip" href="#model-views">Skip to model</a>
+<header><div class="heading"><h1 id="review-title">CAD revision review</h1>
+<span class="badge">Unchecked snapshot / mm</span></div>
+<p class="muted">Concept preview. Fit and fabrication safety are not verified.</p>
+<div class="toolbar"><label class="compare-option">
+<input id="show-comparison" type="checkbox" aria-controls="comparison-controls previous-panel" disabled>
+Compare revisions</label><span id="comparison-hint" class="muted"></span></div>
+<div id="comparison-controls" class="toolbar" role="group" aria-label="Comparison views" hidden>
 <button id="front">Compare front</button><button id="top">Compare top</button>
 <button id="side">Compare side</button><button id="iso">Compare isometric</button>
-<label>Load newer review <input id="load" type="file" accept=".json"></label>
-<button id="apply" disabled>Apply newer revision</button>
+</div>
+<details id="review-details"><summary>Review details and updates</summary>
+<p id="identity"></p><p id="prior-identity"></p><p id="deliverable"></p>
+<p class="muted">This is an exported snapshot, not live validation or fabrication approval.
+Load a newer review-state.json, then choose Apply. Loading alone does not change the model.</p>
+<div class="update-actions"><label>Load newer review
+<input id="load" type="file" accept=".json"></label>
+<button id="apply" disabled>Apply newer revision</button></div></details>
 <p id="message" role="status"></p></header>
-<div class="views"><section><h2 id="current-label"></h2>
+<main id="model-views" class="views" tabindex="-1"><section aria-labelledby="current-label"><h2 id="current-label">Current model</h2>
 <iframe id="current" name="current" sandbox="allow-scripts" title="Current revision"></iframe></section>
-<section><h2 id="previous-label"></h2>
-<iframe id="previous" name="previous" sandbox="allow-scripts" title="Prior revision"></iframe></section></div>
+<section id="previous-panel" aria-labelledby="previous-label" hidden><h2 id="previous-label">Prior reference</h2>
+<iframe id="previous" name="previous" sandbox="allow-scripts" title="Prior revision"></iframe></section></main>
 <script id="review-data" type="application/json">__PACKET__</script>
 <script id="renderer" type="application/json">__RENDERER__</script>
 <script id="bridge" type="application/json">__BRIDGE__</script>
 <script>
 "use strict";
 const el=id=>document.getElementById(id),frames=["current","previous"];
-let active=null,pending=null,view=null,interacting=new Set(),blocked=false,lastSeen=null;
+let active=null,pending=null,view=null,interacting=new Set(),blocked=false,lastSeen=null,comparing=false;
 const key="cad-review-ui:"+location.href.split("#")[0];
 function notice(s){el("message").textContent=s;}
 const safeJSON=x=>JSON.stringify(x).replaceAll("<","\\u003c").replaceAll(">","\\u003e").replaceAll("&","\\u0026");
@@ -118,11 +160,21 @@ async function decode(packet){
 }
 function persist(){
  try{sessionStorage.setItem(key,JSON.stringify({view,identity:active.current.snapshot.identity,
- ancestors:active.current.snapshot.brief.revision.ancestors}));}
+ ancestors:active.current.snapshot.brief.revision.ancestors,comparing}));}
  catch(e){notice("UI state could not be saved: "+e.message);}
 }
 function send(id){if(view&&active[id])el(id).contentWindow.postMessage({
  kind:"cad-review-apply",revision:active[id].snapshot.identity.brief_sha256,state:view},"*");}
+function comparisonLayout(){
+ const available=!!active?.previous&&!blocked;
+ el("show-comparison").disabled=!available;
+ el("show-comparison").checked=available&&comparing;
+ el("comparison-hint").textContent=available?"":"No prior revision available";
+ const visible=available&&comparing;
+ el("model-views").classList.toggle("comparing",visible);
+ el("previous-panel").hidden=!visible;
+ el("comparison-controls").hidden=!visible;
+}
 function modelFor(d,frame){
  const s=d.scene;
  const parts=s.parts.map(p=>{
@@ -136,7 +188,7 @@ function modelFor(d,frame){
  coordinateSystem:s.coordinate_system,assumptions:s.assumptions,explicitMetadata:true,reviewFrame:frame,
  reviewIdentity:d.snapshot.identity.brief_sha256};
 }
-function resetCamera(preset="front"){
+function resetCamera(preset="iso"){
  if(blocked){notice("Older snapshot remains blocked. Load a newer descendant review first.");return;}
  const [yaw,pitch]=({front:[Math.PI,0],top:[Math.PI,Math.PI/2],side:[Math.PI/2,0],iso:[Math.PI-.5,.85]})[preset];
  view={...(view||{}),camera:{yaw,pitch,center_mm:[...active.frame.origin_mm],
@@ -148,7 +200,12 @@ function render(data){
  active=data;blocked=false;interacting.clear();
  const identity=data.current.snapshot.identity;
  lastSeen=identity;
+ el("review-title").textContent=data.current.scene.title;
+ document.title=data.current.scene.title+" / CAD review";
  el("identity").textContent="Current revision: "+identity.id+" / "+identity.brief_sha256.slice(0,12)+" / unchecked at export";
+ const prior=data.previous;
+ el("prior-identity").textContent=prior?"Prior reference: "+prior.snapshot.identity.id+" / "+
+ prior.snapshot.identity.brief_sha256.slice(0,12)+" / "+prior.validation:"No prior revision supplied.";
  const deliverable=data.current.snapshot.brief.deliverable;
  el("deliverable").textContent=deliverable?"Immediate deliverable: "+deliverable.target+
  " | Outputs: "+deliverable.outputs.join(", ")+" | Sequence: "+deliverable.sequence.join(" -> "):"";
@@ -156,11 +213,11 @@ function render(data){
  const renderer=JSON.parse(el("renderer").textContent),bridge=JSON.parse(el("bridge").textContent);
  for(const id of frames){
  const d=data[id];
- el(id+"-label").textContent=d?(id==="current"?"Current: ":"Prior reference: ")+d.snapshot.identity.id+" / "+d.validation:"Prior reference unavailable";
+ el(id+"-label").textContent=d?(id==="current"?"Current model":"Prior reference: "+d.snapshot.identity.id):"Prior reference unavailable";
  if(d)el(id).srcdoc=renderer.replace("__MODEL__",safeJSON(modelFor(d,data.frame))).replace("</body>",bridge+"</body>");
  else el(id).srcdoc="<p style='font:16px system-ui'>No prior tracked revision supplied.</p>";
  }
- persist();
+ comparisonLayout();persist();
 }
 window.addEventListener("message",e=>{
  const id=frames.find(id=>el(id).contentWindow===e.source);if(!id||!active||blocked)return;
@@ -183,7 +240,8 @@ function admit(data){
 function stage(data){
  const newId=data.current.snapshot.identity;
  admit(data);
- pending=data;el("apply").disabled=false;notice("New revision "+newId.id+" is waiting. Apply when ready; the displayed snapshot has not changed.");
+ pending=data;el("apply").disabled=false;el("review-details").open=true;
+ notice("New revision "+newId.id+" is waiting. Apply when ready; the displayed snapshot has not changed.");
  return {status:"pending",revision:newId};
 }
 async function load(packet){
@@ -215,6 +273,7 @@ function apply(){
 }
 window.cadReview={load,loadHandoff,apply,preset:resetCamera,getState:()=>({revision:active?.current.snapshot.identity,
  view,pending:pending?.current.snapshot.identity,blocked,interacting:[...interacting]})};
+el("show-comparison").onchange=()=>{comparing=el("show-comparison").checked;comparisonLayout();persist();};
 el("apply").onclick=apply;
 el("load").onchange=async()=>{
  try{await load(JSON.parse(await el("load").files[0].text()));}catch(e){notice("Review load failed: "+e.message);}
@@ -227,6 +286,7 @@ for(const id of ["front","top","side","iso"])el(id).onclick=()=>resetCamera(id);
  if(saved){
  lastSeen=saved.identity;
  view=saved.view;
+ comparing=saved.comparing===true;
  if(saved.identity.brief_sha256!==data.current.snapshot.identity.brief_sha256){
  if(!data.current.snapshot.brief.revision.ancestors.includes(saved.identity.id)){
  blocked=true;el("identity").textContent="Blocked stale/unrelated snapshot "+data.current.snapshot.identity.id+"; last shown "+saved.identity.id;
@@ -236,7 +296,7 @@ for(const id of ["front","top","side","iso"])el(id).onclick=()=>resetCamera(id);
  render(data);
  }catch(e){blocked=true;notice("Review could not be opened: "+e.message);}
 })();
-</script></html>'''
+</script></body></html>'''
 
 
 def read_packet(path):

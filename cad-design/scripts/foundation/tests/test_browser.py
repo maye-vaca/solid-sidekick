@@ -54,7 +54,7 @@ class BrowserTests(unittest.TestCase):
                 page.goto(Path(path).as_uri(), wait_until="load")
                 page.wait_for_function("document.getElementById('status').textContent.startsWith('6 / 6')")
                 self.assertEqual(page.locator("#components .part").count(), 6)
-                self.assertIn("Millimetres", page.locator("#conventions").inner_text())
+                self.assertIn("Millimetres", page.locator("#conventions").text_content())
                 self.assertIn("no load rating", page.locator("#assumptions").text_content())
                 self.assertTrue(page.locator("#error").is_hidden())
                 for preset in ("top", "under", "front", "side", "iso"):

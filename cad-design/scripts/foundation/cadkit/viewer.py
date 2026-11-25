@@ -61,22 +61,38 @@ HTML = r'''<!doctype html>
 <title>STL component viewer</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#101923;color:#edf3f7;font:14px system-ui}
+html{color-scheme:dark}
 header{padding:16px 20px}h1{font-size:22px;margin:0 0 6px}p{margin:6px 0;color:#b9c9d3}
 button,input{font:inherit}button{background:#263e50;color:#edf3f7;border:1px solid #58758b;
 border-radius:5px;padding:7px 10px;cursor:pointer}button:hover{background:#36536a}
-button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid #70d7e9;outline-offset:2px}
+:focus-visible{outline:3px solid #70d7e9;outline-offset:3px}
+button{min-height:36px;border-color:#8da7b8}
+input[type=checkbox]{width:24px;height:24px;accent-color:#70d7e9}
 summary{cursor:pointer}details{margin-top:8px}#assumptions{overflow-wrap:anywhere}
+summary{min-height:36px;padding:7px 0;width:fit-content}
+header h1{overflow-wrap:anywhere}.embedded header{padding:8px 16px;display:flex;
+flex-wrap:wrap;gap:4px 20px;align-items:flex-start}
+.embedded header details{margin:0;min-width:0}.embedded header details[open]{flex-basis:100%}
+.embedded .caveat{display:none}
+.embedded .viewport{height:68vh;min-height:400px}.embedded aside{height:68vh}
+#model-details p{overflow-wrap:anywhere}#navigation-controls{margin:0}
+#navigation-controls .actions{max-width:650px}
+.skip{position:absolute;top:-100px;left:12px;background:#edf3f7;color:#101923;padding:10px;z-index:2}
+.skip:focus{top:8px}.sr-only,.embedded header h1{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
 details .collapse-label{display:none}details[open] .expand-label{display:none}
 details[open] .collapse-label{display:inline}
 .toolbar{display:flex;flex-wrap:wrap;gap:7px;padding:0 20px 12px}
 main{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:12px;padding:0 20px 20px}
-.viewport{height:74vh;min-height:450px;background:#101923;border:1px solid #354b5b;
+.viewport{height:74vh;min-height:450px;background:#101923;border:1px solid #8da7b8;
 border-radius:8px;overflow:hidden}canvas{width:100%;height:100%;display:block;touch-action:none}
+.viewport:focus-within{outline:3px solid #70d7e9;outline-offset:3px}
 aside{display:flex;flex-direction:column;min-height:0;height:74vh;min-width:0;background:#172634;
 border:1px solid #354b5b;border-radius:8px;padding:12px}aside h2{font-size:16px;margin:0 0 8px}
-#search{background:#101923;color:#edf3f7;border:1px solid #58758b;border-radius:4px;
+#search{background:#101923;color:#edf3f7;border:1px solid #8da7b8;border-radius:4px;
 padding:8px;width:100%}.actions{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0}
-.actions button{padding:6px;font-size:12px}#components{overflow:auto;flex:1}
+#search::placeholder{color:#b9c9d3;opacity:1}
+.actions button{padding:6px;font-size:13px}#components{overflow:auto;flex:1}
 .part{display:flex;align-items:center;gap:7px;border-radius:4px;padding:3px}
 .part[hidden]{display:none}.part.selected{background:#305467}.part input{flex:none}.part button{border:0;background:none;
 padding:6px 2px;text-align:left;overflow-wrap:anywhere;min-width:0;flex:1}
@@ -84,13 +100,17 @@ padding:6px 2px;text-align:left;overflow-wrap:anywhere;min-width:0;flex:1}
 #selected,#status,#filterStatus{font-size:12px;overflow-wrap:anywhere}#selected{margin:10px 0 0}
 #error{background:#5e2027;color:#fff;padding:14px 20px;white-space:pre-wrap}
 @media(max-width:850px){main{grid-template-columns:minmax(0,1fr);padding:0 10px 10px}
-.viewport{height:60vh;min-height:350px}aside{height:320px}.toolbar{padding:0 10px 10px}}
+.viewport,.embedded .viewport{height:60vh;min-height:300px}aside,.embedded aside{height:320px}
+.toolbar{padding:0 10px 10px}}
+@media(forced-colors:active){button,#search,.viewport,aside{border-color:CanvasText}
+:focus-visible{outline-color:Highlight}.part.selected{outline:2px solid Highlight}}
 </style></head><body>
-<header><h1>STL component viewer</h1>
+<a class="skip" href="#model-main">Skip to model</a>
+<header><h1 id="model-title">Model viewer</h1>
+<p class="caveat">Concept preview only; physical fit and fabrication safety are not verified.</p>
+<details id="model-details"><summary>Model details</summary>
 <p id="summary">Loading meshes...</p>
-<p>Drag to orbit; scroll to zoom; Shift-drag or right-drag to pan.
-<span id="conventions"></span></p>
-<p>Concept preview only; physical fit and fabrication safety are not verified.</p>
+<p id="conventions"></p></details>
 <details id="assumptions-section" hidden><summary>Assumptions / limitations
 <span class="expand-label"> - Read more</span><span class="collapse-label"> - Collapse</span></summary>
 <p id="assumptions"></p></details></header>
@@ -99,14 +119,28 @@ padding:6px 2px;text-align:left;overflow-wrap:anywhere;min-width:0;flex:1}
 <button id="iso">Assembly / isometric</button><button id="top">Top</button>
 <button id="front">Front</button><button id="side">Side</button>
 <button id="under">Underside</button><button id="fit">Fit visible</button>
+<details id="navigation-controls"><summary>Move / zoom</summary>
+<p id="view-help">Drag to orbit, Shift-drag to pan, or use these buttons.
+On the model, arrow keys orbit, Shift + arrows pan, + / - zoom, and Home fits.</p>
+<div class="actions" role="group" aria-label="Move and zoom model">
+<button data-camera="left">Orbit left</button><button data-camera="right">Orbit right</button>
+<button data-camera="up">Orbit up</button><button data-camera="down">Orbit down</button>
+<button data-camera="pan-left">Pan left</button><button data-camera="pan-right">Pan right</button>
+<button data-camera="pan-up">Pan up</button><button data-camera="pan-down">Pan down</button>
+<button data-camera="in">Zoom in</button><button data-camera="out">Zoom out</button>
+</div></details>
 </div>
-<main><div class="viewport"><canvas id="view" aria-label="Interactive STL assembly"></canvas></div>
+<main id="model-main" tabindex="-1"><div class="viewport"><canvas id="view" tabindex="0" role="img"
+aria-label="Interactive 3D model" aria-describedby="canvas-help">3D model preview.
+Component names, dimensions and materials are available in the Components panel.</canvas></div>
+<p id="canvas-help" class="sr-only">Arrow keys orbit. Shift and arrows pan. Plus and minus zoom.
+Home fits visible components. Equivalent buttons are under Move / zoom.</p>
 <aside><h2>Components</h2><input id="search" type="search" placeholder="Filter filenames"
 aria-label="Filter component filenames">
 <div class="actions"><button id="showAll">Show all</button><button id="hideAll">Hide all</button>
 <button id="isolate">Isolate selected</button><button id="focus">Fit selected</button></div>
 <p id="filterStatus"></p><div id="components"></div>
-<p id="selected">Select a filename to highlight a component.</p>
+<p id="selected" role="status">Select a filename to highlight a component.</p>
 <p id="status" role="status"></p></aside></main>
 <script id="model" type="application/json">__MODEL__</script>
 <script>
@@ -115,6 +149,8 @@ const el=id=>document.getElementById(id);
 function showError(message){el("error").hidden=false;el("error").textContent=message;}
 window.addEventListener("error",event=>showError(event.message));
 const model=JSON.parse(el("model").textContent);
+document.body.classList.toggle("embedded",!!model.reviewFrame);
+el("model-title").textContent=model.title||"Model viewer";
 const parts=model.parts.map(part=>({...part,visible:true}));
 const canvas=el("view"),gl=canvas.getContext("webgl",{antialias:true});
 if(!gl){showError("WebGL is unavailable. Open this HTML in Edge or Chrome with hardware graphics enabled.");
@@ -188,24 +224,30 @@ let color=part.color.match(/[a-f0-9]{2}/gi).map(v=>parseInt(v,16)/255);
 if(index===selected)color=color.map(v=>.6*v+.4);
 gl.uniform3fv(uniforms.color,color);gl.drawArrays(gl.TRIANGLES,0,part.count);}
 const count=visibleIndices().length;
-el("status").textContent=count+" / "+parts.length+" components visible"+
-(count?"":". Use Show all to restore the assembly.")+".";}
-function select(index){
-selected=index;for(let i=0;i<parts.length;i++)parts[i].row.classList.toggle("selected",i===index);
+const status=count+" / "+parts.length+" components visible"+
+(count?"":". Use Show all to restore the assembly.")+".";
+if(el("status").textContent!==status)el("status").textContent=status;}
+function selection(index){
+selected=index;for(let i=0;i<parts.length;i++){
+parts[i].row.classList.toggle("selected",i===index);
+parts[i].button.setAttribute("aria-pressed",String(i===index));}
+if(index<0){el("selected").textContent="Select a filename to highlight a component.";return;}
 const part=parts[index],size=part.bounds[1].map((v,i)=>(v-part.bounds[0][i])*model.extent.reduce((a,b)=>Math.max(a,b)));
 el("selected").textContent=part.name+" | Size ("+(model.units||"unspecified units")+"): "+
 size.map(v=>v.toPrecision(6)).join(" x ")+(part.material?" | Material: "+part.material:"")+
-(part.notes?" | "+part.notes:"");
-draw();}
+(part.notes?" | "+part.notes:"");}
+function select(index){selection(index);draw();}
 for(let index=0;index<parts.length;index++){
 const part=parts[index],row=document.createElement("div");row.className="part";
 const checkbox=document.createElement("input");checkbox.type="checkbox";checkbox.checked=true;
 checkbox.setAttribute("aria-label","Show "+part.name);
 checkbox.onchange=()=>{part.visible=checkbox.checked;draw();};
 const swatch=document.createElement("span");swatch.className="swatch";swatch.style.background=part.color;
+swatch.setAttribute("aria-hidden","true");
 const button=document.createElement("button");button.textContent=part.name;button.title=part.name;
+button.setAttribute("aria-pressed","false");
 button.onclick=()=>select(index);row.append(checkbox,swatch,button);el("components").append(row);
-part.row=row;part.checkbox=checkbox;}
+part.row=row;part.checkbox=checkbox;part.button=button;}
 function setVisibility(test){for(let i=0;i<parts.length;i++){
 parts[i].visible=test(i);parts[i].checkbox.checked=parts[i].visible;}draw();}
 el("showAll").onclick=()=>{setVisibility(()=>true);fit(visibleIndices());};
@@ -226,6 +268,7 @@ el("filterStatus").textContent=count+" filenames listed. Filtering does not hide
 canvas.oncontextmenu=event=>event.preventDefault();
 canvas.onpointerdown=event=>{
 if(event.button!==0&&event.button!==2)return;event.preventDefault();
+canvas.focus({preventScroll:true});
 drag={x:event.clientX,y:event.clientY,pan:event.shiftKey||event.button===2};
 canvas.setPointerCapture(event.pointerId);};
 canvas.onpointermove=event=>{
@@ -237,6 +280,20 @@ for(const event of ["pointerup","pointercancel","lostpointercapture"])
 canvas.addEventListener(event,()=>{drag=null;});
 canvas.addEventListener("wheel",event=>{event.preventDefault();
 zoom=Math.max(.02,Math.min(500,zoom*Math.exp(-event.deltaY*.001)));draw();},{passive:false});
+function moveCamera(action){
+const orbit={left:[-.15,0],right:[.15,0],up:[0,.15],down:[0,-.15]}[action];
+const shift={"pan-left":[-20,0],"pan-right":[20,0],"pan-up":[0,-20],"pan-down":[0,20]}[action];
+if(orbit){yaw+=orbit[0];pitch=Math.max(-Math.PI/2,Math.min(Math.PI/2,pitch+orbit[1]));}
+if(shift){pan[0]+=shift[0];pan[1]+=shift[1];}
+if(action==="in"||action==="out")zoom=Math.max(.02,Math.min(500,zoom*(action==="in"?1.2:1/1.2)));
+draw();}
+document.querySelectorAll("[data-camera]").forEach(button=>button.onclick=()=>moveCamera(button.dataset.camera));
+canvas.onkeydown=event=>{
+const direction={ArrowLeft:"left",ArrowRight:"right",ArrowUp:"up",ArrowDown:"down"}[event.key];
+if(direction){event.preventDefault();moveCamera((event.shiftKey?"pan-":"")+direction);}
+else if(["+","=","-","_"].includes(event.key)){event.preventDefault();moveCamera(["+","="].includes(event.key)?"in":"out");}
+else if(event.key==="Home"){event.preventDefault();fit(visibleIndices());}
+};
 el("summary").textContent=(model.title||"STL component viewer")+" / "+parts.length+" components / "+
 parts.reduce((sum,p)=>sum+p.triangles,0).toLocaleString()+" triangles. "+
 (model.explicitMetadata?"Colors and materials supplied by the assembly.":"Display colors are assigned; STL does not store colors.");
