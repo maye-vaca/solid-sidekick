@@ -61,12 +61,13 @@ Old `first_preview_seconds` retains its cumulative-attempt clock for compatibili
 
 Tracked exports add `review.html` and `review-state.json`, both hashed by the
 manifest. Preview notifications and starter `--open` use `review.html`.
-Untracked legacy exports and the existing `viewer.html` stay unchanged.
+Untracked legacy exports still use `viewer.html`. Its model metadata and
+limitations start collapsed as well; existing exported files are not rewritten.
 The read-only review shell reuses the established lightweight renderer for
 both views, including when primary exports use the optional embedded backend;
 it does not alter the private SDK's public API or require new runtime assets.
 
-By default, reusing an output compares the last tracked revision. For new
+By default, reusing an output records the last tracked revision as a reference. For new
 output folders, name an existing ancestor explicitly:
 
 ```powershell
@@ -78,9 +79,30 @@ keeps only current/prior geometry, not an ever-growing history. An unchanged-ID
 re-export retains the same prior reference. Unrelated lineage, altered prior
 files and incompatible coordinate conventions are rejected.
 
-Both views start in one physical-mm orthographic frame, not independently
+The page opens with one full-width isometric **Current model**. **Compare revisions**
+reveals the prior reference and synchronized comparison presets; it is disabled
+when no prior reference exists. Turning comparison on or off preserves the
+camera, selection, visibility and pending update. The preference is stored
+with that page's browser-session UI state. Narrow layouts stack the two views.
+Revision IDs/hashes, captured prior validation status, the deliverable and
+file-loading controls remain available under **Review details and updates**.
+Staging an update opens that disclosure but does not apply the revision.
+The short unchecked-snapshot and concept/fit/safety caveats remain visible.
+
+Both views use one physical-mm orthographic frame, not independently
 normalized fits. Camera, zoom, pan and component-ID visibility synchronize.
 Presets deliberately reset the shared camera. Ordinary interaction does not.
+Resizing or revealing a hidden frame does not broadcast unchanged camera state
+back over a newer interaction. The embedded renderer avoids duplicating the
+page title and caveat; standalone viewers retain both.
+
+The focusable canvas supports arrow-key orbit, Shift + arrow pan, + / - zoom
+and Home to fit visible geometry. **Move / zoom** also exposes click/tap
+alternatives to dragging and scrolling. Components have named visibility
+checkboxes, selection buttons with pressed states, dimensions and materials.
+Model metadata and assumptions remain in keyboard-operable disclosures.
+These controls and source/DOM checks are accessibility improvements, not a
+claim of WCAG conformance or screen-reader/assistive-technology certification.
 
 In the same panel use **Load newer review** with the newer `review-state.json`.
 The packet and brief hashes are checked before staging an update. **Apply newer

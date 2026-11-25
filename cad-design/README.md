@@ -33,7 +33,7 @@ See [the operating model](references/operating-model.md).
 - [Revision evaluation](references/revision-evaluation.md): real multi-turn scenarios, findings and limits.
 - [Improvement actions](references/improvement-actions.md): Nuvi lessons, implemented guidance/runner changes, prioritized engineering actions and fresh behavioural acceptance cases.
 - [Revision state](references/revision-state.md): validated brief revisions, correction history, explicit approval provenance and stale-export/handoff guards.
-- [Timing and review](references/timing-and-review.md): observed stage evidence and current/prior review with shared framing, pending updates and stale-page protection.
+- [Timing and review](references/timing-and-review.md): current-model-first review, opt-in comparison, keyboard/click camera controls, pending updates and stale-page protection.
 - [Regions and incremental handoff](references/regions-and-incremental.md): finish colours within physical parts and checked scalar/topology/final revision commands without routine packaging.
 - [Operating model](references/operating-model.md): model/execution location and approval boundaries.
 - [Host capabilities](references/host-capabilities.md): shared operation mappings and local/remote/manual execution.
