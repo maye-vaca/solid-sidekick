@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "name": "12 Sheet shapes - constant-thickness bent bracket",
+  "geometry_units": "mm",
+  "stl_units": "mm",
+  "glb_units": "m",
+  "coordinate_system": "Millimetres; +Z up. Local part STLs are not an arranged print plate.",
+  "parameters": {
+    "thickness_mm": 2,
+    "inner_bend_radius_mm": 6,
+    "width_mm": 20
+  },
+  "assumptions": [
+    "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+    "2 mm folded display geometry with R6 inner bend. NOT an unfolded blank, bend allowance, kerf or tooling specification."
+  ],
+  "limitations": "Mesh geometry, not STEP/B-rep. Not a structural or fabrication certification.",
+  "parts": [
+    {
+      "id": "bent_bracket",
+      "name": "bent bracket",
+      "material": "Unspecified prototype material",
+      "color": "#70c7d7",
+      "notes": "2 mm folded display geometry with R6 inner bend. NOT an unfolded blank, bend allowance, kerf or tooling specification.",
+      "stl": "parts/bent_bracket.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          30.0,
+          20.0,
+          26.0
+        ]
+      ],
+      "volume_mm3": 2039.5090282234278
+    }
+  ],
+  "instances": [
+    {
+      "id": "bent_bracket",
+      "part_id": "bent_bracket",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/bent_bracket.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          30.0,
+          20.0,
+          26.0
+        ]
+      ]
+    }
+  ]
+}

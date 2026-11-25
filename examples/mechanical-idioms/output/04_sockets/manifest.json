@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "name": "04 Sockets - blind boss, rib and pin",
+  "geometry_units": "mm",
+  "stl_units": "mm",
+  "glb_units": "m",
+  "coordinate_system": "Millimetres; +Z up. Local part STLs are not an arranged print plate.",
+  "parameters": {
+    "socket_depth_mm": 7,
+    "pin_insertion_mm": 6,
+    "boss_floor_z_mm": 5.8,
+    "radial_clearance_mm": 0.2
+  },
+  "assumptions": [
+    "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+    "7 mm blind socket, 6 mm pin shaft: 1 mm nominal bottom clearance; 0.20 mm radial clearance."
+  ],
+  "limitations": "Mesh geometry, not STEP/B-rep. Not a structural or fabrication certification.",
+  "parts": [
+    {
+      "id": "ribbed_socket",
+      "name": "ribbed socket",
+      "material": "Unspecified prototype material",
+      "color": "#70c7d7",
+      "notes": "7 mm blind socket, 6 mm pin shaft: 1 mm nominal bottom clearance; 0.20 mm radial clearance.",
+      "stl": "parts/ribbed_socket.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          24.0,
+          24.0,
+          12.8
+        ]
+      ],
+      "volume_mm3": 2952.266166188167
+    },
+    {
+      "id": "pin",
+      "name": "pin",
+      "material": "Unspecified prototype material",
+      "color": "#e7b365",
+      "notes": "7 mm blind socket, 6 mm pin shaft: 1 mm nominal bottom clearance; 0.20 mm radial clearance.",
+      "stl": "parts/pin.stl",
+      "bounds_mm": [
+        [
+          -5.0,
+          -5.0,
+          0.0
+        ],
+        [
+          5.0,
+          5.0,
+          8.0
+        ]
+      ],
+      "volume_mm3": 428.96081174432385
+    }
+  ],
+  "instances": [
+    {
+      "id": "ribbed_socket",
+      "part_id": "ribbed_socket",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/ribbed_socket.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          24.0,
+          24.0,
+          12.8
+        ]
+      ]
+    },
+    {
+      "id": "pin",
+      "part_id": "pin",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          34.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          12.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/pin.stl",
+      "bounds_mm": [
+        [
+          29.0,
+          7.0,
+          0.0
+        ],
+        [
+          39.0,
+          17.0,
+          8.0
+        ]
+      ]
+    }
+  ]
+}

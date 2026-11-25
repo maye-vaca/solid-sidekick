@@ -1,0 +1,43 @@
+{
+  "status": "geometry_checks_passed",
+  "checks": [
+    "Hex pocket section",
+    "Gauge seating",
+    "Through-hole and retained shoulder"
+  ],
+  "interference": {
+    "pairs": 1,
+    "boolean_checks": 0,
+    "documented_overlaps": [],
+    "note": "Zero overlap does not establish clearance or physical fit."
+  },
+  "physical_acceptance": "not_performed",
+  "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+  "exports": {
+    "stls_reloaded": 4,
+    "glb_instances": 2,
+    "shared_geometries": 2,
+    "max_solid_difference_mm3": 0.0,
+    "glb": {
+      "parts_checked": 2,
+      "max_solid_difference_mm3": 0.00028127703297234905
+    },
+    "revision": {
+      "status": "untracked"
+    },
+    "manifest_sha256": "f451618a211c64b2a8e765db861b4ed80cd76eeeef2f3b4da709697430209d2e"
+  },
+  "browser": {
+    "status": "passed",
+    "raster_method": "rendered_vs_cleared_framebuffer",
+    "pixels_by_view": {
+      "top": 133814,
+      "under": 133814,
+      "front": 52500,
+      "side": 42750,
+      "iso": 150033
+    },
+    "errors": [],
+    "remote_requests": []
+  }
+}

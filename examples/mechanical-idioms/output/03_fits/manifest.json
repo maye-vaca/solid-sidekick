@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "name": "03 Fits - radial-clearance ladder",
+  "geometry_units": "mm",
+  "stl_units": "mm",
+  "glb_units": "m",
+  "coordinate_system": "Millimetres; +Z up. Local part STLs are not an arranged print plate.",
+  "parameters": {
+    "plug_diameter_mm": 6,
+    "radial_clearances_mm": [
+      0.1,
+      0.2,
+      0.3
+    ],
+    "hole_centers_mm": [
+      7,
+      18,
+      29
+    ]
+  },
+  "assumptions": [
+    "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+    "Left to right: 0.10, 0.20, 0.30 mm radial clearance around a 6 mm plug. Not a press-fit specification."
+  ],
+  "limitations": "Mesh geometry, not STEP/B-rep. Not a structural or fabrication certification.",
+  "parts": [
+    {
+      "id": "fit_block",
+      "name": "fit block",
+      "material": "Unspecified prototype material",
+      "color": "#70c7d7",
+      "notes": "Left to right: 0.10, 0.20, 0.30 mm radial clearance around a 6 mm plug. Not a press-fit specification.",
+      "stl": "parts/fit_block.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          36.0,
+          18.0,
+          8.0
+        ]
+      ],
+      "volume_mm3": 4411.970998066714
+    },
+    {
+      "id": "plug",
+      "name": "plug",
+      "material": "Unspecified prototype material",
+      "color": "#e7b365",
+      "notes": "Left to right: 0.10, 0.20, 0.30 mm radial clearance around a 6 mm plug. Not a press-fit specification.",
+      "stl": "parts/plug.stl",
+      "bounds_mm": [
+        [
+          -4.5,
+          -4.5,
+          0.0
+        ],
+        [
+          4.5,
+          4.5,
+          12.0
+        ]
+      ],
+      "volume_mm3": 409.68520149761616
+    }
+  ],
+  "instances": [
+    {
+      "id": "fit_block",
+      "part_id": "fit_block",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/fit_block.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          36.0,
+          18.0,
+          8.0
+        ]
+      ]
+    },
+    {
+      "id": "plug",
+      "part_id": "plug",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          48.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          9.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/plug.stl",
+      "bounds_mm": [
+        [
+          43.5,
+          4.5,
+          0.0
+        ],
+        [
+          52.5,
+          13.5,
+          12.0
+        ]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "name": "02 Holes - clearance, counterbore, countersink and slot",
+  "geometry_units": "mm",
+  "stl_units": "mm",
+  "glb_units": "m",
+  "coordinate_system": "Millimetres; +Z up. Local part STLs are not an arranged print plate.",
+  "parameters": {
+    "through_diameter_mm": 4.4,
+    "counterbore_diameter_mm": 8.4,
+    "counterbore_depth_mm": 3,
+    "countersink_top_diameter_mm": 10.4,
+    "slot_center_spacing_mm": 6
+  },
+  "assumptions": [
+    "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+    "Compare actual stepped/conical sections. Nominal 90-degree countersink; no fastener standard selected."
+  ],
+  "limitations": "Mesh geometry, not STEP/B-rep. Not a structural or fabrication certification.",
+  "parts": [
+    {
+      "id": "hole_card",
+      "name": "hole card",
+      "material": "Unspecified prototype material",
+      "color": "#70c7d7",
+      "notes": "Compare actual stepped/conical sections. Nominal 90-degree countersink; no fastener standard selected.",
+      "stl": "parts/hole_card.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          80.0,
+          22.0,
+          8.0
+        ]
+      ],
+      "volume_mm3": 13171.613106907353
+    }
+  ],
+  "instances": [
+    {
+      "id": "hole_card",
+      "part_id": "hole_card",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/hole_card.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          80.0,
+          22.0,
+          8.0
+        ]
+      ]
+    }
+  ]
+}

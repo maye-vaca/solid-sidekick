@@ -1,0 +1,42 @@
+{
+  "status": "geometry_checks_passed",
+  "checks": [
+    "Actual 0.10/0.20/0.30 mm radial gaps",
+    "6 mm plug section"
+  ],
+  "interference": {
+    "pairs": 1,
+    "boolean_checks": 0,
+    "documented_overlaps": [],
+    "note": "Zero overlap does not establish clearance or physical fit."
+  },
+  "physical_acceptance": "not_performed",
+  "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+  "exports": {
+    "stls_reloaded": 4,
+    "glb_instances": 2,
+    "shared_geometries": 2,
+    "max_solid_difference_mm3": 0.0,
+    "glb": {
+      "parts_checked": 2,
+      "max_solid_difference_mm3": 0.00076563945557591
+    },
+    "revision": {
+      "status": "untracked"
+    },
+    "manifest_sha256": "f25faf10f4337b77de6b0fde10f3eb4debe082171f1688d707f97c4f18d0199b"
+  },
+  "browser": {
+    "status": "passed",
+    "raster_method": "rendered_vs_cleared_framebuffer",
+    "pixels_by_view": {
+      "top": 92520,
+      "under": 92520,
+      "front": 54800,
+      "side": 25186,
+      "iso": 118006
+    },
+    "errors": [],
+    "remote_requests": []
+  }
+}

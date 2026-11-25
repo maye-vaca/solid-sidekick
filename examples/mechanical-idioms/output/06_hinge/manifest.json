@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "name": "06 Hinges - two leaves and pin",
+  "geometry_units": "mm",
+  "stl_units": "mm",
+  "glb_units": "m",
+  "coordinate_system": "Millimetres; +Z up. Local part STLs are not an arranged print plate.",
+  "parameters": {
+    "pin_diameter_mm": 4,
+    "bore_diameter_mm": 4.4,
+    "knuckle_height_mm": 4,
+    "axial_gap_mm": 0.6
+  },
+  "assumptions": [
+    "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+    "Z-axis joint. Leaves shown on-axis; pin exploded. Sampled poses only, not a swept-motion or retention qualification."
+  ],
+  "limitations": "Mesh geometry, not STEP/B-rep. Not a structural or fabrication certification.",
+  "parts": [
+    {
+      "id": "leaf_a",
+      "name": "leaf a",
+      "material": "Unspecified prototype material",
+      "color": "#70c7d7",
+      "notes": "Z-axis joint. Leaves shown on-axis; pin exploded. Sampled poses only, not a swept-motion or retention qualification.",
+      "stl": "parts/leaf_a.stl",
+      "bounds_mm": [
+        [
+          -20.0,
+          -5.5,
+          0.0
+        ],
+        [
+          5.5,
+          5.5,
+          4.0
+        ]
+      ],
+      "volume_mm3": 623.5500109323772
+    },
+    {
+      "id": "leaf_b",
+      "name": "leaf b",
+      "material": "Unspecified prototype material",
+      "color": "#e7b365",
+      "notes": "Z-axis joint. Leaves shown on-axis; pin exploded. Sampled poses only, not a swept-motion or retention qualification.",
+      "stl": "parts/leaf_b.stl",
+      "bounds_mm": [
+        [
+          -5.5,
+          -5.5,
+          0.0
+        ],
+        [
+          20.0,
+          5.5,
+          4.0
+        ]
+      ],
+      "volume_mm3": 623.5500109323772
+    },
+    {
+      "id": "hinge_pin",
+      "name": "hinge pin",
+      "material": "Unspecified prototype material",
+      "color": "#a9cd78",
+      "notes": "Z-axis joint. Leaves shown on-axis; pin exploded. Sampled poses only, not a swept-motion or retention qualification.",
+      "stl": "parts/hinge_pin.stl",
+      "bounds_mm": [
+        [
+          -3.5,
+          -3.5,
+          0.0
+        ],
+        [
+          3.5,
+          3.5,
+          11.0
+        ]
+      ],
+      "volume_mm3": 176.98086769676715
+    }
+  ],
+  "instances": [
+    {
+      "id": "leaf_a",
+      "part_id": "leaf_a",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/leaf_a.stl",
+      "bounds_mm": [
+        [
+          -20.0,
+          -5.5,
+          0.0
+        ],
+        [
+          5.5,
+          5.5,
+          4.0
+        ]
+      ]
+    },
+    {
+      "id": "leaf_b",
+      "part_id": "leaf_b",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          4.6
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/leaf_b.stl",
+      "bounds_mm": [
+        [
+          -5.5,
+          -5.5,
+          4.6
+        ],
+        [
+          20.0,
+          5.5,
+          8.6
+        ]
+      ]
+    },
+    {
+      "id": "hinge_pin",
+      "part_id": "hinge_pin",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          34.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/hinge_pin.stl",
+      "bounds_mm": [
+        [
+          30.5,
+          -3.5,
+          0.0
+        ],
+        [
+          37.5,
+          3.5,
+          11.0
+        ]
+      ]
+    }
+  ]
+}

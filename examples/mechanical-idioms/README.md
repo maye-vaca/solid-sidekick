@@ -4,6 +4,11 @@ One actual geometry specimen or mating set for each of the 14 families in
 `cad-design/references/mechanical-idioms.md`. This is a geometric regression and
 fit-trial catalog, **not** a library of qualified functional mechanisms.
 
+Open [the catalog](output/index.html) for individual viewers, local-part STLs and
+GLBs, or [the gallery](output/gallery.html) to inspect everything together.
+All viewers work offline. `output/checks.json` and each `coupon-checks.json`
+record the checks actually run. STL units are mm; GLBs are metres.
+
 | Family | Actual test piece | Main independent checks / boundary |
 |---|---|---|
 | 01 Threads | 16 mm AF, 6 mm thick nut; nominal 10 mm major, 1.5 mm pitch, 0.25 mm radial clearance | Through-bore, pitch, right-hand progression, retained wall, STL reload. Simplified internal thread, not a qualified male screw or thread class. |

@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "name": "11 Edge treatment - rounded versus beveled profile",
+  "geometry_units": "mm",
+  "stl_units": "mm",
+  "glb_units": "m",
+  "coordinate_system": "Millimetres; +Z up. Local part STLs are not an arranged print plate.",
+  "parameters": {
+    "corner_radius_mm": 4,
+    "bevel_legs_mm": 3,
+    "thickness_mm": 4
+  },
+  "assumptions": [
+    "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+    "Faceted R4 planar corner and 3 mm bevel, extruded 4 mm. Not a general B-rep fillet, blend or draft operation."
+  ],
+  "limitations": "Mesh geometry, not STEP/B-rep. Not a structural or fabrication certification.",
+  "parts": [
+    {
+      "id": "rounded_corner",
+      "name": "rounded corner",
+      "material": "Unspecified prototype material",
+      "color": "#70c7d7",
+      "notes": "Faceted R4 planar corner and 3 mm bevel, extruded 4 mm. Not a general B-rep fillet, blend or draft operation.",
+      "stl": "parts/rounded_corner.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          24.0,
+          18.0,
+          4.0
+        ]
+      ],
+      "volume_mm3": 1714.2296032275538
+    },
+    {
+      "id": "beveled_corner",
+      "name": "beveled corner",
+      "material": "Unspecified prototype material",
+      "color": "#e7b365",
+      "notes": "Faceted R4 planar corner and 3 mm bevel, extruded 4 mm. Not a general B-rep fillet, blend or draft operation.",
+      "stl": "parts/beveled_corner.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          24.0,
+          18.0,
+          4.0
+        ]
+      ],
+      "volume_mm3": 1710.0
+    }
+  ],
+  "instances": [
+    {
+      "id": "rounded_corner",
+      "part_id": "rounded_corner",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/rounded_corner.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          24.0,
+          18.0,
+          4.0
+        ]
+      ]
+    },
+    {
+      "id": "beveled_corner",
+      "part_id": "beveled_corner",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          34.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/beveled_corner.stl",
+      "bounds_mm": [
+        [
+          34.0,
+          0.0,
+          0.0
+        ],
+        [
+          58.0,
+          18.0,
+          4.0
+        ]
+      ]
+    }
+  ]
+}

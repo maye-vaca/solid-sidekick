@@ -1,0 +1,44 @@
+{
+  "status": "geometry_checks_passed",
+  "checks": [
+    "18 positioned through-holes",
+    "3 mm actual hole diameter/depth envelopes",
+    "Retained ligaments",
+    "Preserved card envelope"
+  ],
+  "interference": {
+    "pairs": 0,
+    "boolean_checks": 0,
+    "documented_overlaps": [],
+    "note": "Zero overlap does not establish clearance or physical fit."
+  },
+  "physical_acceptance": "not_performed",
+  "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+  "exports": {
+    "stls_reloaded": 2,
+    "glb_instances": 1,
+    "shared_geometries": 1,
+    "max_solid_difference_mm3": 0.0,
+    "glb": {
+      "parts_checked": 1,
+      "max_solid_difference_mm3": 0.000386027849033299
+    },
+    "revision": {
+      "status": "untracked"
+    },
+    "manifest_sha256": "9ff47c5f4287a676035688f1befe7662e1b53285c982225184ba941b83b6b46e"
+  },
+  "browser": {
+    "status": "passed",
+    "raster_method": "rendered_vs_cleared_framebuffer",
+    "pixels_by_view": {
+      "top": 194921,
+      "under": 194921,
+      "front": 21974,
+      "side": 13172,
+      "iso": 174574
+    },
+    "errors": [],
+    "remote_requests": []
+  }
+}

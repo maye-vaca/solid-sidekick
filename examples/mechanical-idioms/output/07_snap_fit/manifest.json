@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "name": "07 Snap fits - cantilever hook envelope",
+  "geometry_units": "mm",
+  "stl_units": "mm",
+  "glb_units": "m",
+  "coordinate_system": "Millimetres; +Z up. Local part STLs are not an arranged print plate.",
+  "parameters": {
+    "beam_thickness_mm": 1.6,
+    "beam_height_mm": 3
+  },
+  "assumptions": [
+    "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+    "Geometry-only 1.6 mm flexure with finite root overlap. No latch mate, insertion force, safe strain or cycle claim."
+  ],
+  "limitations": "Mesh geometry, not STEP/B-rep. Not a structural or fabrication certification.",
+  "parts": [
+    {
+      "id": "snap_envelope",
+      "name": "snap envelope",
+      "material": "Unspecified prototype material",
+      "color": "#70c7d7",
+      "notes": "Geometry-only 1.6 mm flexure with finite root overlap. No latch mate, insertion force, safe strain or cycle claim.",
+      "stl": "parts/snap_envelope.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          36.0,
+          12.0,
+          5.0
+        ]
+      ],
+      "volume_mm3": 514.6499995216727
+    }
+  ],
+  "instances": [
+    {
+      "id": "snap_envelope",
+      "part_id": "snap_envelope",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/snap_envelope.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          36.0,
+          12.0,
+          5.0
+        ]
+      ]
+    }
+  ]
+}

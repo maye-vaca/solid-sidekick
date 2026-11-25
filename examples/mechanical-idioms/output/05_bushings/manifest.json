@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "name": "05 Bushings - seat, sleeve and shouldered shaft",
+  "geometry_units": "mm",
+  "stl_units": "mm",
+  "glb_units": "m",
+  "coordinate_system": "Millimetres; +Z up. Local part STLs are not an arranged print plate.",
+  "parameters": {
+    "housing_height_mm": 10,
+    "seat_floor_mm": 2,
+    "bushing_height_mm": 8,
+    "shaft_diameter_mm": 6
+  },
+  "assumptions": [
+    "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+    "Idealized sleeve, not purchased bearing internals. 0.20 mm radial seat and shaft clearances; 2 mm seat floor."
+  ],
+  "limitations": "Mesh geometry, not STEP/B-rep. Not a structural or fabrication certification.",
+  "parts": [
+    {
+      "id": "housing",
+      "name": "housing",
+      "material": "Unspecified prototype material",
+      "color": "#70c7d7",
+      "notes": "Idealized sleeve, not purchased bearing internals. 0.20 mm radial seat and shaft clearances; 2 mm seat floor.",
+      "stl": "parts/housing.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          22.0,
+          22.0,
+          10.0
+        ]
+      ],
+      "volume_mm3": 3802.005248864584
+    },
+    {
+      "id": "bushing",
+      "name": "bushing",
+      "material": "Unspecified prototype material",
+      "color": "#e7b365",
+      "notes": "Idealized sleeve, not purchased bearing internals. 0.20 mm radial seat and shaft clearances; 2 mm seat floor.",
+      "stl": "parts/bushing.stl",
+      "bounds_mm": [
+        [
+          -6.0,
+          -6.0,
+          0.0
+        ],
+        [
+          6.0,
+          6.0,
+          8.0
+        ]
+      ],
+      "volume_mm3": 646.9572898438984
+    },
+    {
+      "id": "shaft",
+      "name": "shaft",
+      "material": "Unspecified prototype material",
+      "color": "#a9cd78",
+      "notes": "Idealized sleeve, not purchased bearing internals. 0.20 mm radial seat and shaft clearances; 2 mm seat floor.",
+      "stl": "parts/shaft.stl",
+      "bounds_mm": [
+        [
+          -4.5,
+          -4.5,
+          0.0
+        ],
+        [
+          4.5,
+          4.5,
+          14.0
+        ]
+      ],
+      "volume_mm3": 466.19350515245975
+    }
+  ],
+  "instances": [
+    {
+      "id": "housing",
+      "part_id": "housing",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/housing.stl",
+      "bounds_mm": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          22.0,
+          22.0,
+          10.0
+        ]
+      ]
+    },
+    {
+      "id": "bushing",
+      "part_id": "bushing",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          32.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          11.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/bushing.stl",
+      "bounds_mm": [
+        [
+          26.0,
+          5.0,
+          0.0
+        ],
+        [
+          38.0,
+          17.0,
+          8.0
+        ]
+      ]
+    },
+    {
+      "id": "shaft",
+      "part_id": "shaft",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          46.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          11.0
+        ],
+        [
+          -0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "stl": "assembled/shaft.stl",
+      "bounds_mm": [
+        [
+          41.5,
+          6.5,
+          0.0
+        ],
+        [
+          50.5,
+          15.5,
+          14.0
+        ]
+      ]
+    }
+  ]
+}

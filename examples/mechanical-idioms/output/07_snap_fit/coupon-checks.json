@@ -1,0 +1,42 @@
+{
+  "status": "geometry_checks_passed",
+  "checks": [
+    "1.6 x 3 mm beam section",
+    "Finite root and hook connectivity"
+  ],
+  "interference": {
+    "pairs": 0,
+    "boolean_checks": 0,
+    "documented_overlaps": [],
+    "note": "Zero overlap does not establish clearance or physical fit."
+  },
+  "physical_acceptance": "not_performed",
+  "limits": "Geometry/fit-trial specimens only. Material, process compensation, physical fit, loads, fatigue, sealing and manufacturing suitability are unverified.",
+  "exports": {
+    "stls_reloaded": 2,
+    "glb_instances": 1,
+    "shared_geometries": 1,
+    "max_solid_difference_mm3": 0.0,
+    "glb": {
+      "parts_checked": 1,
+      "max_solid_difference_mm3": 3.5495768310798586e-05
+    },
+    "revision": {
+      "status": "untracked"
+    },
+    "manifest_sha256": "2275b4943d59b16edd523e5d8b58344a2f76f2c0f8b3fbbc5045f48a3e147fb3"
+  },
+  "browser": {
+    "status": "passed",
+    "raster_method": "rendered_vs_cleared_framebuffer",
+    "pixels_by_view": {
+      "top": 40584,
+      "under": 40581,
+      "front": 39784,
+      "side": 19838,
+      "iso": 58946
+    },
+    "errors": [],
+    "remote_requests": []
+  }
+}
