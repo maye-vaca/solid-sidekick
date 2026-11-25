@@ -12,6 +12,7 @@ Resolve these links relative to this profile. Missing companion files are a
 blocker, not permission to invent a replacement toolkit.
 
 The skill is the single source of design, revision and validation behavior.
+Before modeling or resuming, read the prototype and assembly evidence policy in the [operating model]({{SKILL_PATH}}/references/operating-model.md); retain it across model/session changes.
 Read [the installed host guide]({{HOST_GUIDE}}) and
 [capability contract]({{SKILL_PATH}}/references/host-capabilities.md) before execution.
 When the host has no in-app canvas, open generated review pages in the default

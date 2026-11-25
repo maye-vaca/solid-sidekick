@@ -24,6 +24,8 @@ See [the operating model](references/operating-model.md).
 - [SKILL.md](SKILL.md): triggers, workflow, modeling/review gates and handoff rules.
 - [Design workflow](references/design-workflow.md): intake, evidence and revision stages.
 - [Physical-language examples](references/physical-language-examples.md): translate "flush", "higher" and similar corrections into geometric relationships.
+- [Mechanical idioms](references/mechanical-idioms.md): feature admission,
+  fit/motion/manufacturing checks and explicit unsupported-generator boundaries.
 - [Toolkit guide](references/toolkit-guide.md): environment setup and API/commands.
 - [Public API](references/public-api.md): compact modeling/checking contract; read first.
 - Threaded bores: `cadkit.geometry.internal_thread_tool` supplies a 64-bit,

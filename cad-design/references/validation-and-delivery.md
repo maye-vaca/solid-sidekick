@@ -6,6 +6,11 @@ Require only the checks relevant to the task, but actually execute them.
 Distinguish "source builds", "geometry validated", "export reloaded", "viewer
 inspected", and "user-approved arrangement". None implies the others.
 
+Apply the [prototype and assembly evidence policy](operating-model.md#prototype-and-assembly-evidence-policy)
+when deciding whether to fix, stop or deliver a fit prototype. Relevant checks
+must pass before claiming their outputs are checked; ordinary untested physical
+fit is disclosed uncertainty, not by itself a reason to block a useful trial.
+
 | Surface | Relevant check |
 |---|---|
 | Solid | Manifold status, finite coordinates, positive volume |
@@ -35,6 +40,15 @@ may contain partial material: do not classify the entire probe by its centre.
 Distinguish a real geometry failure, an incorrect test expectation and a bounded
 numerical residual. For Boolean slivers, quantify any excluded residual and
 verify that no meaningful material was discarded; do not broadly relax checks.
+
+A small total solid difference does not establish that every functional
+feature survived. Check requested holes, reliefs and mating details directly,
+including on the reloaded deliverable where preservation is at issue. Never
+use a part-relative volume tolerance to call a requested feature unnecessary.
+Follow [feature value and viability](mechanical-idioms.md#feature-value-and-viability):
+explain apparent redundancy to the user before proposing omission; if function
+cannot be met, disclose the specific limit and ask whether to seek viable
+alternatives. Do not silently remove, simplify or substitute the feature.
 
 ## Bounded mesh failure diagnosis
 

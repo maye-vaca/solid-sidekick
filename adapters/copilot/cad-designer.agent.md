@@ -33,6 +33,8 @@ The skill is the single source of modeling, revision, validation and export
 behavior. Read other references only as needed. Reuse its toolkit, project
 helper and validator rather than duplicating them.
 
+Before modeling or resuming, read the prototype and assembly evidence policy in the shared [operating model](../skills/cad-design/references/operating-model.md); retain it across model/session changes.
+
 ## Map the shared workflow to this host
 
 Follow [the Copilot host guide](../cad-design-host.md) and the skill's
