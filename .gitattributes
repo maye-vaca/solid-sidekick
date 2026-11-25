@@ -1,0 +1,11 @@
+# Source and ordinary documentation use the same bytes on every platform.
+* text=auto eol=lf
+
+# These trees contain exports and evidence bound to exact-byte hashes.
+examples/portable-review/** -text
+examples/supported-revision/** -text
+examples/mechanical-idioms/output/** -text
+
+*.glb -text
+*.png -text
+*.webm -text
