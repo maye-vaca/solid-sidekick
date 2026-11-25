@@ -103,6 +103,9 @@ python validate.py --browser "<Edge or Chromium executable>"
 
 `CADKIT_BROWSER` is the default browser path when set. Browser checks additionally
 need Playwright in the validation environment; geometry/export runtime does not.
+Preflight the executable and Playwright before retiring qualification or
+advancing a revision; a missing dependency must not consume an accepted handoff.
+Publish browser evidence only after every browser check passes.
 The checker reloads every current local and placed STL, compares bounds and
 symmetric solid differences, verifies manifest provenance/transforms and GLB
 sharing/scale/colors, checks all static instance pairs with AABB pruning, and

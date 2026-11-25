@@ -8,7 +8,6 @@ from unittest.mock import patch
 import numpy as np
 import trimesh
 
-
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts" / "foundation"))
 from cadkit import Assembly, Instance, Part, Placement, VisualRegion
@@ -139,7 +138,6 @@ class SharedValidationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, r"invalid reloaded STL .*watertight=False"):
                 check_exports(Context(assembly), output)
 
-
     def test_stale_metadata_and_paths_fail(self):
         assembly = example()
         with tempfile.TemporaryDirectory() as directory:
@@ -168,22 +166,18 @@ class SharedValidationTests(unittest.TestCase):
         result = context.check_interferences([("base", "overlap")])
         self.assertEqual(len(result["documented_overlaps"]), 1)
 
-
     def test_browser_preflight_rejects_missing_executable(self):
         with self.assertRaisesRegex(ValueError, "Browser executable not found"):
             preflight_browser(Path("definitely-not-a-browser-executable"))
-
 
     def test_browser_preflight_requires_playwright(self):
         with patch("cadkit.validation.importlib.util.find_spec", return_value=None):
             with self.assertRaisesRegex(ValueError, "Playwright is not installed"):
                 preflight_browser(sys.executable)
 
-
     def test_browser_preflight_returns_resolved_executable(self):
         with patch("cadkit.validation.importlib.util.find_spec", return_value=object()):
             self.assertEqual(preflight_browser(sys.executable), Path(sys.executable).resolve())
-
 
     def test_browser_evidence_is_staged_before_publication(self):
         class Page:
@@ -198,7 +192,6 @@ class SharedValidationTests(unittest.TestCase):
             publish_evidence(output, temporary)
             self.assertFalse(temporary.exists())
             self.assertEqual((output / "evidence" / "validated-preview.png").read_bytes(), b"png")
-
 
     def test_failed_browser_capture_removes_temporary_evidence(self):
         class Page:

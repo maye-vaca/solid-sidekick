@@ -50,7 +50,6 @@ class FoundationTests(unittest.TestCase):
                 with tempfile.TemporaryDirectory() as directory:
                     check_exports(Context(assembly), assembly.export(directory))
 
-
     def test_nested_and_depth_staggered_tangent_cuts_remain_valid(self):
         large = cylinder(3, 10).translate((7, 7, -1))
         # A smaller same-depth circle inside the larger one is redundant, not invalid.
@@ -96,7 +95,6 @@ class FoundationTests(unittest.TestCase):
                 output = assembly.export(directory)
                 check_exports(Context(assembly), output)
 
-
     def test_internal_thread_pitch_and_through_bore(self):
         for pitch in (25.4 / 16.0, 25.4 / 18.0, 25.4 / 20.0):
             with self.subTest(pitch=pitch):
@@ -114,7 +112,6 @@ class FoundationTests(unittest.TestCase):
                 bolt = m.Manifold.cylinder(8, 9.25 / 2, circular_segments=96).translate((0, 0, -1))
                 self.assertGreater((nut ^ bolt).volume(), 1)
 
-
     def test_internal_thread_rejects_invalid_inputs(self):
         cases = (
             {"major_diameter": 0}, {"pitch": -1}, {"height": float("inf")},
@@ -126,7 +123,6 @@ class FoundationTests(unittest.TestCase):
             with self.subTest(changes=changes), self.assertRaises(ValueError):
                 internal_thread_tool(**({"major_diameter": 9.525, "pitch": 1.5875,
                                          "height": 6} | changes))
-
 
     def test_example_has_reusable_local_geometry(self):
         assembly = build()

@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "name": "mechanical-design-toolkit",
-  "version": "0.1.0-alpha.8",
+  "version": "0.1.0-alpha.9",
   "license": "MIT",
   "python": ">=3.10",
   "canonical_skill": "cad-design",
-  "scope": "Bounded construction publication/access checks and revision-bound guide, inventory, storyboard and optional video; mechanical alpha.7 retained",
+  "scope": "ACL/browser/loopback repairs; adaptive 64-bit internal threads; pre/post-serialization GLB geometry gates; bounded diagnosis; current-first opt-in comparison; 14 bounded idiom test pieces; construction/access checks retained",
   "execution_requests": ["discover", "local", "remote", "manual"],
   "default_execution_request": "discover",
   "hosts": {
